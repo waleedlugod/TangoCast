@@ -14,4 +14,5 @@ when developing a feature pls create branch
 6. Create a secret key by running `python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'`
 
 **NOTE:** Try not to change the port from 5432, errors may occur if it is otherwise for some reason. But feel free to change if it works.
+
 **NOTE:** When creating a local user for your database, follow [this workflow](https://stackoverflow.com/a/75876944).
