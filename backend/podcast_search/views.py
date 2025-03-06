@@ -9,4 +9,6 @@ class PodcastSearch(generics.ListAPIView):
     serializer_class = PodcastSerializer
 
     def get_queryset(self):
-        return Podcast.objects.filter(title__iexact=self.kwargs["title"])
+        return Podcast.objects.filter(
+            title__iexact=self.request.query_params.get("title")
+        )

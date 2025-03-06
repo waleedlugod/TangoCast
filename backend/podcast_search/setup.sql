@@ -1,5 +1,5 @@
 INSERT INTO
-    podcast_search_song (title)
+    podcast_search_podcast (title)
 VALUES
     ('Pantropiko'),
     ('Doomed'),
