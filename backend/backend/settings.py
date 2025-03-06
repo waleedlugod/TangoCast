@@ -18,6 +18,8 @@ env = environ.Env(
     DEBUG=(bool, True)
 )
 
+environ.Env.read_env()
+
 # Set the project base directory
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
