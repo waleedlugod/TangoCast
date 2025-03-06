@@ -1,15 +1,6 @@
-DROP TABLE songs;
-
-CREATE TABLE
-    songs (
-        id SERIAL PRIMARY KEY,
-        title VARCHAR(255),
-        artist VARCHAR(255)
-    );
-
 INSERT INTO
-    songs (title, artist)
+    podcast_search_song (title)
 VALUES
-    ('Pantropiko', 'BINI'),
-    ('Doomed', 'Bring Me The Horizon'),
-    ('C2 NA RED', 'zaniel');
+    ('Pantropiko'),
+    ('Doomed'),
+    ('C2 NA RED');

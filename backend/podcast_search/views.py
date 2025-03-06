@@ -1,6 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from rest_framework import generics
+from .models import Song
+from .serializers import SongSerializer
+
 
 # Create your views here.
-def index(request):
-    return HttpResponse("test")
+class SongGet(generics.ListAPIView):
+    queryset = Song.objects.all()
+    serializer_class = SongSerializer
