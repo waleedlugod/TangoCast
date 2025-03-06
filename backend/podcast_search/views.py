@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from rest_framework import generics
-from .models import Song
-from .serializers import SongSerializer
+from .models import Podcast
+from .serializers import PodcastSerializer
 
 
 # Create your views here.
-class SongSearch(generics.ListAPIView):
-    serializer_class = SongSerializer
+class PodcastSearch(generics.ListAPIView):
+    serializer_class = PodcastSerializer
 
     def get_queryset(self):
-        return Song.objects.filter(title__iexact=self.kwargs["title"])
+        return Podcast.objects.filter(title__iexact=self.kwargs["title"])
