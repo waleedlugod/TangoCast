@@ -5,6 +5,8 @@ from .serializers import SongSerializer
 
 
 # Create your views here.
-class SongGet(generics.ListAPIView):
-    queryset = Song.objects.all()
+class SongSearch(generics.ListAPIView):
     serializer_class = SongSerializer
+
+    def get_queryset(self):
+        return Song.objects.filter(title__iexact=self.kwargs["title"])
