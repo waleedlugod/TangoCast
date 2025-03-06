@@ -23,6 +23,10 @@ environ.Env.read_env()
 # Set the project base directory
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Set the project media directory
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 # Take environment variables from .env file
 environ.Env.read_env(os.path.join(BASE_DIR, "../.env"))
 
