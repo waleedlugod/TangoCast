@@ -1,14 +1,12 @@
 from django.shortcuts import render
-from rest_framework import generics
+from rest_framework import generics, filters
 from .models import Podcast
 from .serializers import PodcastSerializer
 
 
 # Create your views here.
 class PodcastSearch(generics.ListAPIView):
+    queryset = Podcast.objects.all()
     serializer_class = PodcastSerializer
-
-    def get_queryset(self):
-        return Podcast.objects.filter(
-            title__iexact=self.request.query_params.get("title")
-        )
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title', 'description']
