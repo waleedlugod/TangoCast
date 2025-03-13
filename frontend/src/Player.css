@@ -1,12 +1,13 @@
-.player-container {
+.player {
   width: 100vw;
-  height: fit-content;
+  /* height: fit-content; */
+  height: 100px;
   display: flex;
   flex-direction: row;
   background: #ffffff;
 }
 
-.player-info {
+.player__info {
   width: 300px;
   display: flex;
   flex-direction: row;
@@ -15,27 +16,27 @@
   align-items: center;
 }
 
-.player-info img {
+.player__info img {
   width: 60px;
   height: 60px;
   border-radius: 10px;
 }
 
-.player-info-text {
+.player__info-text {
   margin-left: 1rem;
   font-size: 0.8rem;
 }
 
-.player-info-text p {
+.player__info-text p {
   margin: 0;
   width: fit-content;
 }
 
-.player-info-episode {
+.player__info-episode {
   font-size: 0.6rem;
 }
 
-.player-additional-controls {
+.player__additional {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -45,29 +46,29 @@
   width: fit-content;
 }
 
-.player-additional-controls button {
+.player__additional button {
   border: none;
   background: none;
 }
 
-.player-additional-controls button:hover {
+.player__additional button:hover {
   cursor: pointer;
 }
 
-.player-additional-controls img {
+.player__additional img {
   width: 30px;
   height: auto;
 }
 
-.player-timer-container {
+.player__additional-timer {
   position: relative;
 }
 
-.player-timer-options {
+.player__additional-timer-options {
   display: none;
 }
 
-.player-timer-options-shown {
+.player__additional-timer-options--shown {
   position: absolute;
   display: block;
   width: fit-content;
@@ -83,13 +84,13 @@
   left: -3ch;
 }
 
-.player-timer-options button {
+.player__additional-timer-options button {
   padding: 0.5rem;
   width: 10ch;
   border-radius: 10px;
 }
 
-.player-timer-options button:hover {
+.player__additional-timer-options button:hover {
   background: #e7e9eb;
 }
 
@@ -102,7 +103,7 @@
 /* media queries */
 
 @media only screen and (max-width: 700px) {
-  .player-additional-controls {
+  .player__additional {
     display: none;
   }
 }

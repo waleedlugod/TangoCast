@@ -2,36 +2,23 @@ import { useRef } from 'react';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import './Player.css'
-import podcastAudio from '/test.mp3';
-import podcastImage from '/test.png';
 import timerIcon from '/timer.svg';
 import videoIcon from '/video.svg';
 import transcriptIcon from '/transcript.svg';
 
-const playerControls = [];
-const playerJumpSteps = {
-  backward: 5000,
-  forward: 5000,
-};
-const podcastShowName = "The Magnus Archives"
-const podcastEpisodeName = "Anglerfish"
-const podcastEpisodeNumber = 1;
-
-export default function Player() {
+export default function Player({ podcast, handleVideo, handleTranscript }) {
 
   const audioRef = useRef(null);
-
-  // const audioUrl = "http://localhost:8000/search/";
-  // const audio = fetch(audioUrl).then((res) => {
-  //   return res.json();
-  // });
-  //
-  // console.log(audio);
+  const playerControls = [];
+  const playerJumpSteps = {
+    backward: 5000,
+    forward: 5000,
+  };
 
   function toggleTimerOptions(e) {
     e.preventDefault();
     let timerOptions = document.querySelector("#js-player-timer-options");
-    timerOptions.classList.toggle("player-timer-options-shown");
+    timerOptions.classList.toggle("player__additional-timer-options--shown");
   }
   
   // TODO: add functionality for saving duration even when audio isn't playing
@@ -40,27 +27,27 @@ export default function Player() {
     let audio = audioRef.current.audio.current;
     let timerOptions = document.querySelector("#js-player-timer-options");
     if (!audio.paused) {
-      timerOptions.classList.toggle("player-timer-options-shown");
+      timerOptions.classList.toggle("player__additional-timer-options--shown");
       setTimeout(() => {
         audio.pause();
       }, duration);
     }
-}
+  }
 
   return(
     <>
-      <div className="player-container">
+      <div className="player">
         {/* put into its own component */}
-        <div className="player-info">
-          <img src={podcastImage} />
-          <div className="player-info-text">
-            <p className="player-info-show">{podcastShowName}</p>
-            <p className="player-info-episode">Episode {podcastEpisodeNumber}: {podcastEpisodeName}</p>
+        <div className="player__info">
+          <img src={podcast.image} alt={podcast.imageAlt}/>
+          <div className="player__info-text">
+            <p className="player__info-show">{podcast.showName}</p>
+            <p className="player__info-episode">Episode {podcast.epNumber}: {podcast.epName}</p>
           </div>
         </div>
         <AudioPlayer 
-          src={podcastAudio} 
-          className="player"
+          src={podcast.audio} 
+          className="player__controls"
           showSkipControls="true"
           layout="stacked-reverse"
           customAdditionalControls={playerControls}
@@ -68,16 +55,22 @@ export default function Player() {
           ref={audioRef}
         />
         {/* put into its own component */}
-        <div className="player-additional-controls">
-          <div className="player-timer-container">
-            <button onClick={toggleTimerOptions}><img src={timerIcon} /></button>
-            <div className="player-timer-options" id="js-player-timer-options">
+        <div className="player__additional">
+          <div className="player__additional-timer">
+            <button className="player__additional-timer-button" onClick={toggleTimerOptions}>
+              <img src={timerIcon} alt="Sleep timer" />
+            </button>
+            <div className="player__additional-timer-options" id="js-player-timer-options">
               <button onClick={() => {startSleepTimer(60000);}}>1 min</button>
               <button onClick={() => {startSleepTimer(120000);}}>2 min</button>
             </div>
           </div>
-          <button><img src={videoIcon} /></button>
-          <button><img src={transcriptIcon} /></button>
+          <button className="player__additional-video-button" onClick={handleVideo}>
+            <img src={videoIcon} alt="Enable or disable video" />
+          </button>
+          <button className="player__additional-transcript-button" onClick={handleTranscript}>
+            <img src={transcriptIcon} alt="Enable or disable transcript" />
+          </button>
         </div>
       </div>
     </>
