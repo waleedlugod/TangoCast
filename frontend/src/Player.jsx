@@ -5,6 +5,7 @@ import './Player.css'
 import timerIcon from '/timer.svg';
 import videoIcon from '/video.svg';
 import transcriptIcon from '/transcript.svg';
+import circleIcon from '/icon-circle.svg';
 
 export default function Player({ podcast, handleVideo, handleTranscript }) {
 
@@ -17,17 +18,21 @@ export default function Player({ podcast, handleVideo, handleTranscript }) {
 
   function toggleTimerOptions(e) {
     e.preventDefault();
-    let timerOptions = document.querySelector("#js-player-timer-options");
-    timerOptions.classList.toggle("player__additional-timer-options--shown");
-  }
-  
-  // TODO: add functionality for saving duration even when audio isn't playing
-  // TODO: add dot under timer icon if sleep timer is set
-  function startSleepTimer(duration) {
     let audio = audioRef.current.audio.current;
     let timerOptions = document.querySelector("#js-player-timer-options");
     if (!audio.paused) {
       timerOptions.classList.toggle("player__additional-timer-options--shown");
+    }
+  }
+  
+  // TODO: add functionality for cancelling sleep timer if player is paused
+  function startSleepTimer(duration) {
+    let audio = audioRef.current.audio.current;
+    let timerOptions = document.querySelector("#js-player-timer-options");
+    let timerCircle = document.querySelector("#js-timer-circle");
+    if (!audio.paused) {
+      timerOptions.classList.toggle("player__additional-timer-options--shown");
+      timerCircle.classList.toggle("visible");
       setTimeout(() => {
         audio.pause();
       }, duration);
@@ -58,7 +63,8 @@ export default function Player({ podcast, handleVideo, handleTranscript }) {
         <div className="player__additional">
           <div className="player__additional-timer">
             <button className="player__additional-timer-button" onClick={toggleTimerOptions}>
-              <img src={timerIcon} alt="Sleep timer" />
+              <img className="player__additional-icon" src={timerIcon} alt="Sleep timer" />
+              <img className="player__additional-circle" id="js-timer-circle" src={circleIcon} alt="Circle" />
             </button>
             <div className="player__additional-timer-options" id="js-player-timer-options">
               <button onClick={() => {startSleepTimer(60000);}}>1 min</button>
@@ -66,10 +72,12 @@ export default function Player({ podcast, handleVideo, handleTranscript }) {
             </div>
           </div>
           <button className="player__additional-video-button" onClick={handleVideo}>
-            <img src={videoIcon} alt="Enable or disable video" />
+            <img className="player__additional-icon" src={videoIcon} alt="Enable or disable video" />
+            <img className="player__additional-circle" id="js-video-circle" src={circleIcon} alt="Circle" />
           </button>
           <button className="player__additional-transcript-button" onClick={handleTranscript}>
-            <img src={transcriptIcon} alt="Enable or disable transcript" />
+            <img className="player__additional-icon" src={transcriptIcon} alt="Enable or disable transcript" />
+            <img className="player__additional-circle" id="js-transcript-circle" src={circleIcon} alt="Circle" />
           </button>
         </div>
       </div>

@@ -7,6 +7,12 @@
   background: #ffffff;
 }
 
+.visible {
+  display: block;
+}
+
+/* player info */
+
 .player__info {
   width: 300px;
   display: flex;
@@ -36,6 +42,8 @@
   font-size: 0.6rem;
 }
 
+/* player additional controls */
+
 .player__additional {
   display: flex;
   flex-direction: row;
@@ -55,7 +63,7 @@
   cursor: pointer;
 }
 
-.player__additional img {
+.player__additional-icon {
   width: 30px;
   height: auto;
 }
@@ -94,7 +102,20 @@
   background: #e7e9eb;
 }
 
-/* these overide react-h5-audio-player/lib/styles.css */
+.player__additional-timer-button, .player__additional-video-button, .player__additional-transcript-button {
+  position: relative;
+}
+
+.player__additional-circle {
+  display: none;
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  bottom: -5px;
+  left: 16px;
+}
+
+/* overrides of react-h5-audio-player/lib/styles.css */
 
 .rhap_container {
   box-shadow: none;
