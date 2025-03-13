@@ -16,6 +16,16 @@ export default function Player({ podcast, handleVideo, handleTranscript }) {
     forward: 5000,
   };
 
+  function toggleVideo() {
+    let videoCircle = document.querySelector("#js-video-circle");
+    videoCircle.classList.toggle("visible");
+  }
+
+  function toggleTranscript() {
+    let transcriptCircle = document.querySelector("#js-transcript-circle");
+    transcriptCircle.classList.toggle("visible");
+  }
+
   function toggleTimerOptions(e) {
     e.preventDefault();
     let audio = audioRef.current.audio.current;
@@ -71,11 +81,11 @@ export default function Player({ podcast, handleVideo, handleTranscript }) {
               <button onClick={() => {startSleepTimer(120000);}}>2 min</button>
             </div>
           </div>
-          <button className="player__additional-video-button" onClick={handleVideo}>
+          <button className="player__additional-video-button" onClick={() => {handleVideo(); toggleVideo();}}>
             <img className="player__additional-icon" src={videoIcon} alt="Enable or disable video" />
             <img className="player__additional-circle" id="js-video-circle" src={circleIcon} alt="Circle" />
           </button>
-          <button className="player__additional-transcript-button" onClick={handleTranscript}>
+          <button className="player__additional-transcript-button" onClick={() => {handleTranscript(); toggleTranscript();}}>
             <img className="player__additional-icon" src={transcriptIcon} alt="Enable or disable transcript" />
             <img className="player__additional-circle" id="js-transcript-circle" src={circleIcon} alt="Circle" />
           </button>
