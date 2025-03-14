@@ -1,8 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 async function fetchPodcasts() {
-  const res = await fetch("http://localhost:8000/search");
-  return await res.json();
+  return (await fetch("http://localhost:8000/search")).json();
 }
 
 export default function Search() {
@@ -11,15 +10,11 @@ export default function Search() {
     queryKey: ["podcasts"],
   });
   if (isLoading) return <div>loading...</div>;
-
-  console.log(podcasts);
-
   return (
     <>
-      <p>{JSON.stringify(podcasts)}</p>
-      {/* {podcasts?.map((podcast) => {
-        return podcast;
-      })} */}
+      {podcasts?.map((podcast) => {
+        return <p>{podcast.title}</p>;
+      })}
     </>
   );
 }
