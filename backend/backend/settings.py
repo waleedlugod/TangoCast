@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import environ
 import os
+from datetime import timedelta
 
 env = environ.Env(
     # set casting, default value
@@ -167,12 +168,9 @@ CORS_ALLOWED_ORIGINS = [
 
 AUTH_USER_MODEL = 'user_management.UserModel'
 
-from datetime import timedelta
-
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "AUTH_HEADER_TYPES": ("Bearer",),
     "BLACKLIST_AFTER_ROTATION": True,
 }
-
