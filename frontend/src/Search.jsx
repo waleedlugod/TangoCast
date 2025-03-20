@@ -18,7 +18,11 @@ export default function Search() {
         action={(formData) => setSearch(formData.get("podcast-search"))}
         method="get"
       >
-        <input type="search" name="podcast-search" />
+        <input
+          type="search"
+          name="podcast-search"
+          onChange={(e) => setSearch(e.target.value)}
+        />
         <button type="submit">Search</button>
       </form>
       {isLoading ? (
