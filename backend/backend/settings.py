@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework",
     "podcast_search",
+    'django_filters',
 ]
 
 MIDDLEWARE = [
