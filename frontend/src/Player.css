@@ -42,6 +42,19 @@
   font-size: 0.6rem;
 }
 
+/* player speed */
+
+.player__speed {
+  background: #c2c2c2;
+  border-radius: 5px;
+  padding: 5px 8px;
+  font-size: 0.8rem;
+}
+
+.player__speed:hover {
+  cursor: pointer;
+}
+
 /* player additional controls */
 
 .player__additional {

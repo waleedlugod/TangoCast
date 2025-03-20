@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { useState } from 'react';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import './Player.css'
@@ -20,10 +21,28 @@ function PlayerPodcast(props) {
   );
 }
 
-function PlayerSpeed() {
+function PlayerSpeed(props) {
+  const handleSpeedChange = props.handleSpeedChange;
+  const [playerSpeed, setPlayerSpeed] = useState(1); 
+  
+  function handleClick() {
+    if (playerSpeed == 1) {
+      setPlayerSpeed(2);
+      handleSpeedChange(2);
+    }
+    else if (playerSpeed == 2) {
+      setPlayerSpeed(0.5);
+      handleSpeedChange(0.5);
+    }
+    else {
+      setPlayerSpeed(1);
+      handleSpeedChange(1);
+    }
+  }
+
   return (
-    <div>
-      Speed: <span>x1</span>
+    <div className="player__speed" onClick={handleClick}>
+      Speed: x<span className="player__speed-number">{playerSpeed}</span>
     </div>
   )
 }
@@ -74,7 +93,7 @@ export default function Player({ podcast, handleVideo, handleTranscript }) {
   const audioRef = useRef(null);
   const timerIDRef = useRef(null);
   const timerRemainingRef = useRef(0);
-  const playerControls = [<PlayerSpeed key="0" />];
+  const playerControls = [<PlayerSpeed key="0" handleSpeedChange={handleSpeedChange} />];
   const playerJumpSteps = {
     backward: 5000,
     forward: 5000,
@@ -144,6 +163,11 @@ export default function Player({ podcast, handleVideo, handleTranscript }) {
     if (timerIDRef.current && sleepTimer) {
       pauseTimer();
     }
+  }
+
+  function handleSpeedChange(speed) {
+    let audio = audioRef.current.audio.current;
+    audio.playbackRate = speed;
   }
 
   return(
