@@ -30,13 +30,6 @@ export default function Search() {
         />
         <button type="submit">Search</button>
       </form>
-      {isLoading ? (
-        <p>loading...</p>
-      ) : (
-        podcasts?.map((podcast) => {
-          return <p key={podcast.title}>{podcast.title}</p>;
-        })
-      )}
 
       <select
         name="category"
@@ -47,6 +40,14 @@ export default function Search() {
         <option value="rock">Rock</option>
         <option value="pop">pop</option>
       </select>
+
+      {isLoading ? (
+        <p>loading...</p>
+      ) : (
+        podcasts?.map((podcast) => {
+          return <p key={podcast.title}>{podcast.title}</p>;
+        })
+      )}
     </>
   );
 }
