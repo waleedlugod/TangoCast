@@ -74,20 +74,13 @@
 
 .player__additional-timer-options {
   display: none;
-}
-
-.player__additional-timer-options--shown {
   position: absolute;
-  display: block;
   width: fit-content;
   height: fit-content;
-  top: -100px;
+  bottom: 50px;
   background: white;
   border-radius: 10px;
   padding: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
   box-shadow: 2px 2px 5px #888;
   left: -3ch;
 }
@@ -96,6 +89,10 @@
   padding: 0.5rem;
   width: 10ch;
   border-radius: 10px;
+}
+
+.player__additional-timer-stop {
+  display: none;
 }
 
 .player__additional-timer-options button:hover {
