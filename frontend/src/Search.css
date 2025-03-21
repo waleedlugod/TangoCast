@@ -12,6 +12,10 @@
   border: 1px solid black;
 }
 
+.podcast img {
+  width: 100%;
+}
+
 .podcast-container {
   display: flex;
   flex-direction: row;

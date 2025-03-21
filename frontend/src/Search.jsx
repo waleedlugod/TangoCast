@@ -40,7 +40,7 @@ export default function Search() {
         <option value="">--Choose a category--</option>
         <option value="fiction">Fiction</option>
         <option value="comedy">Comedy</option>
-        <option value="culture">Comedy</option>
+        <option value="culture">Culture</option>
       </select>
 
       <div className="podcast-container">
@@ -51,9 +51,10 @@ export default function Search() {
         ) : (
           podcasts?.map((podcast) => {
             return (
-              <p className="podcast" key={podcast.title}>
-                {podcast.title}
-              </p>
+              <div className="podcast">
+                <p key={podcast.title}>{podcast.title}</p>
+                <img src={podcast.thumbnail} alt="" srcset="" />
+              </div>
             );
           })
         )}
