@@ -29,6 +29,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 # Take environment variables from .env file
+# .env file should in in the root folder
 environ.Env.read_env(os.path.join(BASE_DIR, "../.env"))
 
 # Quick-start development settings - unsuitable for production
@@ -57,6 +58,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "podcast_search",
+    "podcast_share",
     "user_management",
 ]
 
