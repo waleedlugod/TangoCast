@@ -2,12 +2,12 @@ from django.test import TestCase, override_settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from .models import Podcast
 import shutil
+from django.conf import settings
 
-TEST_DIR = "test_data"
 
 # Create your tests here.
 class ChuckleSandwichTest(TestCase):
-    @override_settings(MEDIA_ROOT=(TEST_DIR + "/media"))
+    @override_settings(MEDIA_ROOT=(settings.TEST_DIR + "/media"))
     def setUp(self):
         Podcast.objects.create(
             title="Chuckle Sandwich",
@@ -32,4 +32,4 @@ class ChuckleSandwichTest(TestCase):
         self.assertTrue(podcast.is_featured)
 
     def tearDown(self):
-        shutil.rmtree(TEST_DIR, ignore_errors=True)
+        shutil.rmtree(settings.TEST_DIR, ignore_errors=True)

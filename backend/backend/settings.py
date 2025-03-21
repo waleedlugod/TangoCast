@@ -27,6 +27,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+TEST_DIR = os.path.join(BASE_DIR, 'test_data')
+
 # Take environment variables from .env file
 environ.Env.read_env(os.path.join(BASE_DIR, "../.env"))
 
