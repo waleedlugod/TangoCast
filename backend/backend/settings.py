@@ -28,6 +28,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+TEST_DIR = os.path.join(BASE_DIR, 'test_data')
+
 # Take environment variables from .env file
 # .env file should in in the root folder
 environ.Env.read_env(os.path.join(BASE_DIR, "../.env"))
@@ -58,6 +60,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "podcast_search",
+    'django_filters',
     "podcast_share",
     "user_management",
 ]

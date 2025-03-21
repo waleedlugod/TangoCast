@@ -17,6 +17,8 @@ when developing a feature pls create branch
 
 **NOTE:** When creating a local user for your database, follow [this workflow](https://stackoverflow.com/a/75876944).
 
+**NOTE:** In order for Django to create a test db, make sure to give ur user permissions to create a db via [this command](https://stackoverflow.com/a/14186439)
+
 **NOTE:** Remember to change the contents of your .env file to fit your database user.
 
 ## Running
