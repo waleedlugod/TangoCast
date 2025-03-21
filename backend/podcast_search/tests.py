@@ -1,4 +1,4 @@
-from django.test import TestCase, override_settings
+from django.test import TestCase, override_settings, Client
 from django.core.files.uploadedfile import SimpleUploadedFile
 from .models import Podcast
 import shutil
@@ -20,16 +20,17 @@ class ChuckleSandwichTest(TestCase):
             category="comedy"
             )
 
-    def test_texts(self):
-        podcast = Podcast.objects.get(title="Chuckle Sandwich")
-        self.assertEqual(podcast.transcript, "some transcript")
-        self.assertEqual(podcast.description, "Chuckle Sandwich was a comedy podcast hosted by Ted Nivison, jschlatt, Slimecicle, and Tucker Keane")
-        self.assertEqual(podcast.category, "comedy")
-        self.assertEqual(podcast.is_featured, True)
-        self.assertEqual(podcast.audio.name, "audios/Episode_1.mp3")
-        self.assertEqual(podcast.video.name, "videos/Episode_1.mp4")
-        self.assertEqual(podcast.thumbnail.name, "photos/Episode_1.png")
-        self.assertTrue(podcast.is_featured)
+    def test_api_texts(self):
+        c = Client()
+        podcasts = c.get("/search/").json()
+        self.assertEqual(len(podcasts) , 1)
+
+        podcast = podcasts[0]
+        self.assertEqual(podcast["transcript"], "some transcript")
+        self.assertEqual(podcast["description"], "Chuckle Sandwich was a comedy podcast hosted by Ted Nivison, jschlatt, Slimecicle, and Tucker Keane")
+        self.assertEqual(podcast["category"], "comedy")
+        self.assertEqual(podcast["is_featured"], True)
+        self.assertTrue(podcast["is_featured"])
 
     def tearDown(self):
         shutil.rmtree(settings.TEST_DIR, ignore_errors=True)
