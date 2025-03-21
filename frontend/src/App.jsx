@@ -1,21 +1,18 @@
-import './App.css'
-import Player from './Player.jsx'
-import { BrowserRouter as Router } from "react-router-dom"
-import AppRoutes from "./Routes.jsx"
-import NavBar from "./components/Navbar.jsx"
+import "./App.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter as Router } from "react-router-dom";
+import AppRoutes from "./Routes.jsx";
+import NavBar from "./components/Navbar.jsx";
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <Router>
-      <>
+    <QueryClientProvider client={queryClient}>
+      <Router>
         <NavBar />
-        <div className="main-container">
-          <AppRoutes />
-          <p>This is the main app container.</p>
-        </div>
-        <Player />
-      </>
-    </Router>
+        <AppRoutes />
+      </Router>
+    </QueryClientProvider>
   );
 }
 
