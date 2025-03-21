@@ -4,8 +4,10 @@ import Player from './Player.jsx';
 import FullPlayer from './FullPlayer.jsx';
 import Home from './Home.jsx';
 
+/**
+ * A component that represents the entire app.
+*/
 export default function App() {
-  let [currentPodcast, setCurrentPodcast] = useState(null);
   let [hasVideo, setHasVideo] = useState(false);
   let [hasTranscript, setHasTranscript] = useState(false);
 

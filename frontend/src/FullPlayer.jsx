@@ -1,9 +1,9 @@
 import './FullPlayer.css';
 
+/**
+ * A component that contains the transcript and video of the currently playing podcast.
+*/
 export default function FullPlayer({ podcast, hasVideo, hasTranscript }) {
-  // if hasVideo, return videos
-  // if hasTranscript, return transcript
-
   let videoElement = null;
   let transcriptElement = null;
 

@@ -8,6 +8,9 @@ import videoIcon from '/video.svg';
 import transcriptIcon from '/transcript.svg';
 import circleIcon from '/icon-circle.svg';
 
+/**
+  * A component that holds information about the currently playing podcast.
+*/
 function PlayerPodcast(props) {
   const podcast = props.podcast;
   return (
@@ -21,6 +24,9 @@ function PlayerPodcast(props) {
   );
 }
 
+/**
+  * A component that holds information about the current speed of playback.
+*/
 function PlayerSpeed(props) {
   const handleSpeedChange = props.handleSpeedChange;
   const [playerSpeed, setPlayerSpeed] = useState(1); 
@@ -47,7 +53,10 @@ function PlayerSpeed(props) {
   )
 }
 
-function PlayerAdditional({ handleVideo, handleTranscript, startTimer, pauseTimer, stopTimer }) {
+/**
+  * A component that holds the additional controls of the podcast player
+*/
+function PlayerAdditional({ handleVideo, handleTranscript, startTimer, stopTimer }) {
   function toggleVideo() {
     let videoCircle = document.querySelector("#js-video-circle");
     videoCircle.classList.toggle("visible");
@@ -88,6 +97,10 @@ function PlayerAdditional({ handleVideo, handleTranscript, startTimer, pauseTime
   );
 }
 
+/**
+  * A component that represents the podcast player. It holds information about
+  * the currently playing podcast and controls to modify its playback.
+*/
 export default function Player({ podcast, handleVideo, handleTranscript }) {
 
   const audioRef = useRef(null);
@@ -100,7 +113,6 @@ export default function Player({ podcast, handleVideo, handleTranscript }) {
   };
   let sleepTimer;
 
-  // only one timer can exist at a time
   const Timer = function(callback, delay) {
     let start;
     timerRemainingRef.current = delay;
