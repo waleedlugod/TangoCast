@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "tangocast": "file:frontend"
+  }
+}
