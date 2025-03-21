@@ -6,6 +6,7 @@ function Register() {
         username: "",
         email: "",
         password: "",
+        role: "",
     });
 
     const [message, setMessage] = useState("");
@@ -46,6 +47,24 @@ function Register() {
                     placeholder="Password"
                     onChange={handleChange}
                 />
+                <label>
+                    <input
+                        type="radio"
+                        name="role"
+                        value="listenerUser"
+                        id="listener"
+                        onChange={handleChange}
+                    />Listener
+                </label>
+                <label>
+                    <input
+                        type="radio"
+                        name="role"
+                        value="creatorUser"
+                        id="creator"
+                        onChange={handleChange}
+                    />Creator
+                </label>
                 <button type="submit">Register</button>
             </form>
             {message && <p>{message}</p>}
