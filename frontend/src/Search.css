@@ -1,0 +1,25 @@
+.search-wrapper {
+  padding-inline: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 0;
+}
+
+.podcast {
+  width: 500px;
+  height: 500px;
+  border: 1px solid black;
+}
+
+.podcast-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  column-gap: 100px;
+  row-gap: 100px;
+}
+
+.search-dropdown {
+  width: fit-content;
+}

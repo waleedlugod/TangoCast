@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import "./Search.css";
 
 async function fetchPodcasts(search, category) {
   return (
@@ -18,7 +19,7 @@ export default function Search() {
   });
 
   return (
-    <>
+    <div className="search-wrapper">
       <form
         action={(formData) => setSearch(formData.get("podcast-search"))}
         method="get"
@@ -33,21 +34,30 @@ export default function Search() {
 
       <select
         name="category"
-        id=""
+        className="search-dropdown"
         onChange={(e) => setCategory(e.target.value)}
       >
         <option value="">--Choose a category--</option>
-        <option value="rock">Rock</option>
-        <option value="pop">pop</option>
+        <option value="fiction">Fiction</option>
+        <option value="comedy">Comedy</option>
+        <option value="culture">Comedy</option>
       </select>
 
-      {isLoading ? (
-        <p>loading...</p>
-      ) : (
-        podcasts?.map((podcast) => {
-          return <p key={podcast.title}>{podcast.title}</p>;
-        })
-      )}
-    </>
+      <div className="podcast-container">
+        {isLoading ? (
+          <p>loading...</p>
+        ) : Object.keys(podcasts).length === 0 ? (
+          <p>Could not find podcast</p>
+        ) : (
+          podcasts?.map((podcast) => {
+            return (
+              <p className="podcast" key={podcast.title}>
+                {podcast.title}
+              </p>
+            );
+          })
+        )}
+      </div>
+    </div>
   );
 }

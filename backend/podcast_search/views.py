@@ -11,4 +11,4 @@ class PodcastSearch(generics.ListAPIView):
     serializer_class = PodcastSerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     filterset_fields = ["category"]
-    search_fields = ['title', 'description']
+    search_fields = ['title']
