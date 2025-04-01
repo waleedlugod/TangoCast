@@ -1,11 +1,11 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Register from "./Register.jsx";
-import Login from "./Login.jsx";
-import Search from "./Search.jsx";
+import Register from "../Register/Register.jsx";
+import Login from "../Login/Login.jsx";
+import Search from "../Search/Search.jsx";
 import { useState } from "react";
-import FullPlayer from "./FullPlayer.jsx";
-import Player from "./Player.jsx";
+import FullPlayer from "../FullPlayer/FullPlayer.jsx";
+import Player from "../Player/Player.jsx";
 
 export default function Routes() {
   const [hasVideo, setHasVideo] = useState(false);
