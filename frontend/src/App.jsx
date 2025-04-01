@@ -1,7 +1,7 @@
 import "./App.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router } from "react-router-dom";
-import AppRoutes from "./Routes.jsx";
+import Routes from "./Routes/Routes.jsx";
 import NavBar from "./components/Navbar.jsx";
 
 const queryClient = new QueryClient();
@@ -11,7 +11,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <NavBar />
-        <AppRoutes />
+        <Routes />
       </Router>
     </QueryClientProvider>
   );
