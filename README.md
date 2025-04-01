@@ -16,3 +16,14 @@ when developing a feature pls create branch
 **NOTE:** Try not to change the port from 5432, errors may occur if it is otherwise for some reason. But feel free to change if it works.
 
 **NOTE:** When creating a local user for your database, follow [this workflow](https://stackoverflow.com/a/75876944).
+
+**NOTE:** In order for Django to create a test db, make sure to give ur user permissions to create a db via [this command](https://stackoverflow.com/a/14186439)
+
+**NOTE:** Remember to change the contents of your .env file to fit your database user.
+
+## Running
+
+1. Go to the backend folder and run `python manage.py runserver` to start the backend server at <http://localhost:8000>
+2. Go to the frontend folder and run `npm run dev` to start the frontend server at <http://localhost:5173>
+
+**NOTE:** Handle migrations first before starting the backend server by running `python manage.py makemigrations` and `python manage.py migrate` first.

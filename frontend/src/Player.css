@@ -5,6 +5,8 @@
   display: flex;
   flex-direction: row;
   background: #ffffff;
+  position: fixed;
+  bottom: 0;
 }
 
 .visible {
@@ -112,7 +114,9 @@
   background: #e7e9eb;
 }
 
-.player__additional-timer-button, .player__additional-video-button, .player__additional-transcript-button {
+.player__additional-timer-button,
+.player__additional-video-button,
+.player__additional-transcript-button {
   position: relative;
 }
 
