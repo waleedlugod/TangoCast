@@ -7,7 +7,7 @@ import { useState } from "react";
 import FullPlayer from "./FullPlayer.jsx";
 import Player from "./Player.jsx";
 
-export default function AppRoutes() {
+export default function Routes() {
   const [hasVideo, setHasVideo] = useState(false);
   const [hasTranscript, setHasTranscript] = useState(false);
 
