@@ -55,7 +55,7 @@ function PlayerSpeed(props) {
 
 async function writeClipboardLink() {
   try {
-    await navigator.clipboard.writeText("this is a link");
+    await navigator.clipboard.writeText(location);
   } catch (error) {
     console.error(error.message);
   }
