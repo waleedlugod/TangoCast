@@ -53,6 +53,14 @@ function PlayerSpeed(props) {
   );
 }
 
+async function writeClipboardLink() {
+  try {
+    await navigator.clipboard.writeText("this is a link");
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
 /**
  * A component that holds the additional controls of the podcast player
  */
@@ -163,6 +171,7 @@ function PlayerAdditional({
           alt="Circle"
         />
       </button>
+      <button onClick={writeClipboardLink}>copy link</button>
     </div>
   );
 }
