@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from .models import SharedPodcast
 from podcast_search.models import Podcast
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 from .serializers import SharedPodcastSerializer
 
 
@@ -39,3 +40,12 @@ class GetPodcastShares(generics.ListAPIView):
     lookup_field = "podcast.id"
     lookup_url_kwarg = "id"
     serializer_class = SharedPodcastSerializer
+
+
+class CreatePodcastShare(generics.CreateAPIView):
+    serializer_class = SharedPodcastSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        podcast = Podcast.objects.get(request.id)
+        SharedPodcast.objects.create(podcast=podcast, shared_by=self.request.user)
