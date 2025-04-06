@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from .models import SharedPodcast
 from podcast_search.models import Podcast
+from rest_framework import generics
+from podcast_search import serializers
 
 @login_required
 def share_podcast(request, podcast_id):
@@ -25,3 +27,9 @@ def get_shared_podcast(request, podcast_id, share_uuid):
         'shared_by': shared_podcast.shared_by.username,
         'shared_at': shared_podcast.shared_at.strftime('%Y-%m-%d %H:%M:%S')
     })
+
+class GetPodcast(generics.RetrieveAPIView):
+    queryset = Podcast.objects.all()
+    lookup_field = "id"
+    lookup_url_kwarg = "id"
+    serializer_class = serializers.PodcastSerializer
