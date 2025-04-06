@@ -12,3 +12,9 @@ class PodcastSearch(generics.ListAPIView):
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     filterset_fields = ["category"]
     search_fields = ['title']
+
+class GetPodcast(generics.RetrieveAPIView):
+    queryset = Podcast.objects.all()
+    lookup_field = "id"
+    lookup_url_kwarg = "id"
+    serializer_class = PodcastSerializer
