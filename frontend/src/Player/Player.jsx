@@ -15,11 +15,11 @@ function PlayerPodcast(props) {
   const podcast = props.podcast;
   return (
     <div className="player__info">
-      <img src={podcast.image} alt={podcast.imageAlt} />
+      <img src={podcast.thumbnail} alt={podcast.thumbnail_alt} />
       <div className="player__info-text">
-        <p className="player__info-show">{podcast.showName}</p>
+        <p className="player__info-show">{podcast.title}</p>
         <p className="player__info-episode">
-          Episode {podcast.epNumber}: {podcast.epName}
+          Episode {podcast.episode_number}: {podcast.episode}
         </p>
       </div>
     </div>

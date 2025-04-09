@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: row;
   height: 100%;
+  flex-grow: 1;
+  padding-bottom: 100px;
 }
 
 .visible {
@@ -23,7 +25,6 @@
 }
 
 .full-player__podcast-details {
-  height: fit-content;
   width: 70%;
   display: flex;
   flex-direction: column;

@@ -6,20 +6,12 @@ import Search from "../Search/Search.jsx";
 import { useState } from "react";
 import FullPlayer from "../FullPlayer/FullPlayer.jsx";
 import Player from "../Player/Player.jsx";
+import Navbar from "../components/Navbar.jsx";
 
 export default function AppRoutes() {
   const [hasVideo, setHasVideo] = useState(false);
   const [hasTranscript, setHasTranscript] = useState(false);
   const [currentPodcast, setCurrentPodcast] = useState(null);
-
-  const retrievedPodcast = {
-    audio: "/test.mp3",
-    image: "/test.png",
-    imageAlt: "The Magnus Archives, Episode 1: Anglerfish",
-    showName: "The Magnus Archives",
-    epName: "Anglerfish",
-    epNumber: 1,
-  };
 
   // enables video in FullPlayer from the Player
   function handleVideo() {
@@ -41,6 +33,7 @@ export default function AppRoutes() {
 
   return (
     <>
+      <Navbar />
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
@@ -56,11 +49,15 @@ export default function AppRoutes() {
         />
         <Route path="/search" element={<Search />} />
       </Routes>
-      <Player
-        podcast={retrievedPodcast}
-        handleVideo={handleVideo}
-        handleTranscript={handleTranscript}
-      />
+      {currentPodcast ? (
+        <Player
+          podcast={currentPodcast}
+          handleVideo={handleVideo}
+          handleTranscript={handleTranscript}
+        />
+      ) : (
+        <></>
+      )}
     </>
   );
 }

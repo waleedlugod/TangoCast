@@ -2,6 +2,7 @@ import "./FullPlayer.css";
 import playPauseButton from "/play.svg";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 async function fetchPodcast(podcastId) {
   return (await fetch(`http://localhost:8000/podcast/${podcastId}`)).json();
@@ -10,7 +11,11 @@ async function fetchPodcast(podcastId) {
 /**
  * A component that contains the transcript and video of the currently playing podcast.
  */
-export default function FullPlayer({ hasVideo, hasTranscript }) {
+export default function FullPlayer({
+  setCurrentPodcast,
+  hasVideo,
+  hasTranscript,
+}) {
   let videoElement = null;
   let transcriptElement = null;
   let { id: podcastId } = useParams();
@@ -18,7 +23,7 @@ export default function FullPlayer({ hasVideo, hasTranscript }) {
     queryFn: () => fetchPodcast(podcastId),
     queryKey: ["podcast"],
   });
-  console.log(podcast);
+  useEffect(() => setCurrentPodcast(podcast), [podcast]);
 
   if (hasVideo) {
     videoElement = (
@@ -36,7 +41,7 @@ export default function FullPlayer({ hasVideo, hasTranscript }) {
         className="full-player__transcript visible"
         id="js-podcast-transcript"
       >
-        This is where the transcript should be.
+        {podcast.transcript}
       </div>
     );
   } else {
@@ -54,7 +59,7 @@ export default function FullPlayer({ hasVideo, hasTranscript }) {
               <img
                 className="full-player__podcast-image"
                 src={podcast?.thumbnail}
-                alt={podcast?.thumbnailAlt}
+                alt={podcast?.thumbnail_alt}
               />
               <div className="full-player__podcast-show-ep">
                 <p className="full-player__podcast-show">{podcast?.title}</p>
