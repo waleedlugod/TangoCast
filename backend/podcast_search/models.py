@@ -10,8 +10,8 @@ class Podcast(models.Model):
         max_length=255, verbose_name="episode", blank=True, default=""
     )
     episode_number = models.PositiveIntegerField(default=0)
-    transcript = models.TextField(blank=True, default="")
-    description = models.TextField(blank=True, default="")
+    transcript = models.TextField(default="No transcript available.")
+    description = models.TextField(default="No description available.")
     is_featured = models.BooleanField(default=False)
     audio = models.FileField(upload_to="audios/", null=True, blank=True)
     video = models.FileField(upload_to="videos/", null=True, blank=True)

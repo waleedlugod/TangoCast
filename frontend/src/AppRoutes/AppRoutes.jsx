@@ -9,27 +9,9 @@ import Player from "../Player/Player.jsx";
 import Navbar from "../components/Navbar.jsx";
 
 export default function AppRoutes() {
-  const [hasVideo, setHasVideo] = useState(false);
-  const [hasTranscript, setHasTranscript] = useState(false);
   const [currentPodcast, setCurrentPodcast] = useState(null);
-
-  // enables video in FullPlayer from the Player
-  function handleVideo() {
-    if (hasVideo) {
-      setHasVideo(false);
-    } else {
-      setHasVideo(true);
-    }
-  }
-
-  // enables transcript in FullPlayer from the Player
-  function handleTranscript() {
-    if (hasTranscript) {
-      setHasTranscript(false);
-    } else {
-      setHasTranscript(true);
-    }
-  }
+  const [isVideoEnabled, setIsVideoEnabled] = useState(false);
+  const [isTranscriptEnabled, setIsTranscriptEnabled] = useState(false);
 
   return (
     <>
@@ -42,8 +24,8 @@ export default function AppRoutes() {
           element={
             <FullPlayer
               setCurrentPodcast={setCurrentPodcast}
-              hasVideo={hasVideo}
-              hasTranscript={hasTranscript}
+              isVideoEnabled={setIsVideoEnabled}
+              isTranscriptEnabled={isTranscriptEnabled}
             />
           }
         />
@@ -52,8 +34,10 @@ export default function AppRoutes() {
       {currentPodcast ? (
         <Player
           podcast={currentPodcast}
-          handleVideo={handleVideo}
-          handleTranscript={handleTranscript}
+          isVideoEnabled={isVideoEnabled}
+          setIsVideoEnabled={setIsVideoEnabled}
+          isTranscriptEnabled={isTranscriptEnabled}
+          setIsTranscriptEnabled={setIsTranscriptEnabled}
         />
       ) : (
         <></>

@@ -13,8 +13,8 @@ async function fetchPodcast(podcastId) {
  */
 export default function FullPlayer({
   setCurrentPodcast,
-  hasVideo,
-  hasTranscript,
+  isVideoEnabled,
+  isTranscriptEnabled,
 }) {
   let videoElement = null;
   let transcriptElement = null;
@@ -23,30 +23,6 @@ export default function FullPlayer({
     queryFn: () => fetchPodcast(podcastId),
     queryKey: ["podcast"],
   });
-  useEffect(() => setCurrentPodcast(podcast), [podcast]);
-
-  if (hasVideo) {
-    videoElement = (
-      <div className="full-player__video visible" id="js-podcast-video">
-        This is where the video should be.
-      </div>
-    );
-  } else {
-    videoElement = null;
-  }
-
-  if (hasTranscript) {
-    transcriptElement = (
-      <div
-        className="full-player__transcript visible"
-        id="js-podcast-transcript"
-      >
-        {podcast.transcript}
-      </div>
-    );
-  } else {
-    transcriptElement = null;
-  }
 
   return (
     <>
@@ -71,12 +47,28 @@ export default function FullPlayer({
                 className="full-player__podcast-button"
                 src={playPauseButton}
                 alt=""
+                onClick={() => setCurrentPodcast(podcast)}
               />
             </div>
           </div>
           <div className="full-player__video-transcript">
-            {videoElement}
-            {transcriptElement}
+            {isVideoEnabled ? (
+              <div className="full-player__video visible" id="js-podcast-video">
+                This is where the video should be.
+              </div>
+            ) : (
+              <></>
+            )}
+            {isTranscriptEnabled ? (
+              <div
+                className="full-player__transcript visible"
+                id="js-podcast-transcript"
+              >
+                {podcast.transcript}
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       )}

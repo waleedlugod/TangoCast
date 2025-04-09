@@ -65,8 +65,10 @@ async function writeClipboardLink() {
  * A component that holds the additional controls of the podcast player
  */
 function PlayerAdditional({
-  handleVideo,
-  handleTranscript,
+  isVideoEnabled,
+  setIsVideoEnabled,
+  isTranscriptEnabled,
+  setIsTranscriptEnabled,
   startTimer,
   stopTimer,
 }) {
@@ -136,7 +138,7 @@ function PlayerAdditional({
       <button
         className="player__additional-video-button"
         onClick={() => {
-          handleVideo();
+          setIsVideoEnabled(!isVideoEnabled);
           toggleVideo();
         }}
       >
@@ -155,7 +157,7 @@ function PlayerAdditional({
       <button
         className="player__additional-transcript-button"
         onClick={() => {
-          handleTranscript();
+          setIsTranscriptEnabled(!isTranscriptEnabled);
           toggleTranscript();
         }}
       >
@@ -180,7 +182,13 @@ function PlayerAdditional({
  * A component that represents the podcast player. It holds information about
  * the currently playing podcast and controls to modify its playback.
  */
-export default function Player({ podcast, handleVideo, handleTranscript }) {
+export default function Player({
+  podcast,
+  isVideoEnabled,
+  setIsVideoEnabled,
+  isTranscriptEnabled,
+  setIsTranscriptEnabled,
+}) {
   const audioRef = useRef(null);
   const timerIDRef = useRef(null);
   const timerRemainingRef = useRef(0);
@@ -265,6 +273,7 @@ export default function Player({ podcast, handleVideo, handleTranscript }) {
     let audio = audioRef.current.audio.current;
     audio.playbackRate = speed;
   }
+  console.log(podcast);
 
   return (
     <>
@@ -282,8 +291,10 @@ export default function Player({ podcast, handleVideo, handleTranscript }) {
           onPause={handlePause}
         />
         <PlayerAdditional
-          handleVideo={handleVideo}
-          handleTranscript={handleTranscript}
+          isVideoEnabled={isVideoEnabled}
+          setIsVideoEnabled={setIsVideoEnabled}
+          isTranscriptEnabled={isTranscriptEnabled}
+          setIsTranscriptEnabled={setIsTranscriptEnabled}
           startTimer={startTimer}
           pauseTimer={pauseTimer}
           stopTimer={stopTimer}
