@@ -3,7 +3,6 @@ import playButton from "/play.svg";
 import pauseButton from "/pause.svg";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
 
 async function fetchPodcast(podcastId) {
   return (await fetch(`http://localhost:8000/podcast/${podcastId}`)).json();
@@ -19,7 +18,7 @@ export default function FullPlayer({
   isVideoEnabled,
   isTranscriptEnabled,
 }) {
-  let { id: podcastId } = useParams();
+  const { id: podcastId } = useParams();
   const { data: podcast, isLoading } = useQuery({
     queryFn: () => fetchPodcast(podcastId),
     queryKey: ["podcast"],

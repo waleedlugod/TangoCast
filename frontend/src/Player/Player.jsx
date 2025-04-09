@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useQuery } from "@tanstack/react-query";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import "./Player.css";
@@ -11,8 +11,7 @@ import circleIcon from "/icon-circle.svg";
 /**
  * A component that holds information about the currently playing podcast.
  */
-function PlayerPodcast(props) {
-  const podcast = props.podcast;
+function PlayerPodcast({ podcast }) {
   return (
     <div className="player__info">
       <img src={podcast.thumbnail} alt={podcast.thumbnail_alt} />
@@ -61,10 +60,17 @@ async function writeClipboardLink() {
   }
 }
 
+async function sharePodcastQuery(podcastId) {
+  return (
+    await fetch(`http://localhost:8000/share/shared/${podcastId}`)
+  ).json();
+}
+
 /**
  * A component that holds the additional controls of the podcast player
  */
 function PlayerAdditional({
+  podcast,
   isVideoEnabled,
   setIsVideoEnabled,
   isTranscriptEnabled,
@@ -72,6 +78,15 @@ function PlayerAdditional({
   startTimer,
   stopTimer,
 }) {
+  const { refetch: sharePodcast } = useQuery({
+    queryFn: () => {
+      sharePodcastQuery(podcast.id);
+    },
+    queryKey: ["share"],
+    refetchOnWindowFocus: false,
+    enabled: false,
+  });
+
   function toggleVideo() {
     let videoCircle = document.querySelector("#js-video-circle");
     videoCircle.classList.toggle("visible");
@@ -173,7 +188,14 @@ function PlayerAdditional({
           alt="Circle"
         />
       </button>
-      <button onClick={writeClipboardLink}>copy link</button>
+      <button
+        onClick={() => {
+          writeClipboardLink();
+          sharePodcast();
+        }}
+      >
+        copy link
+      </button>
     </div>
   );
 }
@@ -296,6 +318,7 @@ export default function Player({
           onPause={handlePause}
         />
         <PlayerAdditional
+          podcast={podcast}
           isVideoEnabled={isVideoEnabled}
           setIsVideoEnabled={setIsVideoEnabled}
           isTranscriptEnabled={isTranscriptEnabled}

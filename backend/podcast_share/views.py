@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from .models import SharedPodcast
 from podcast_search.models import Podcast
 from rest_framework import generics
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from .serializers import SharedPodcastSerializer
 
@@ -43,8 +44,8 @@ class GetPodcastShares(generics.ListAPIView):
 
 
 class CreatePodcastShare(generics.CreateAPIView):
-    serializer_class = SharedPodcastSerializer
-    permission_classes = (IsAuthenticated,)
+    authentication_classes = [JWTAuthentication]
+    queryset = SharedPodcast.objects.all()
 
     def post(self, request):
         podcast = Podcast.objects.get(request.id)
