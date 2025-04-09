@@ -1,5 +1,6 @@
 import "./FullPlayer.css";
-import playPauseButton from "/play.svg";
+import playButton from "/play.svg";
+import pauseButton from "/pause.svg";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -13,11 +14,11 @@ async function fetchPodcast(podcastId) {
  */
 export default function FullPlayer({
   setCurrentPodcast,
+  isPlayFullPlayer,
+  setIsPlayFullPlayer,
   isVideoEnabled,
   isTranscriptEnabled,
 }) {
-  let videoElement = null;
-  let transcriptElement = null;
   let { id: podcastId } = useParams();
   const { data: podcast, isLoading } = useQuery({
     queryFn: () => fetchPodcast(podcastId),
@@ -45,9 +46,12 @@ export default function FullPlayer({
               </div>
               <img
                 className="full-player__podcast-button"
-                src={playPauseButton}
+                src={isPlayFullPlayer ? pauseButton : playButton}
                 alt=""
-                onClick={() => setCurrentPodcast(podcast)}
+                onClick={() => {
+                  setCurrentPodcast(podcast);
+                  setIsPlayFullPlayer(!isPlayFullPlayer);
+                }}
               />
             </div>
           </div>

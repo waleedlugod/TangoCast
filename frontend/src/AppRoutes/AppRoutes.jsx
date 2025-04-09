@@ -12,6 +12,7 @@ export default function AppRoutes() {
   const [currentPodcast, setCurrentPodcast] = useState(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState(false);
   const [isTranscriptEnabled, setIsTranscriptEnabled] = useState(false);
+  const [isPlayFullPlayer, setIsPlayFullPlayer] = useState(false);
 
   return (
     <>
@@ -24,6 +25,8 @@ export default function AppRoutes() {
           element={
             <FullPlayer
               setCurrentPodcast={setCurrentPodcast}
+              isPlayFullPlayer={isPlayFullPlayer}
+              setIsPlayFullPlayer={setIsPlayFullPlayer}
               isVideoEnabled={setIsVideoEnabled}
               isTranscriptEnabled={isTranscriptEnabled}
             />
@@ -38,6 +41,7 @@ export default function AppRoutes() {
           setIsVideoEnabled={setIsVideoEnabled}
           isTranscriptEnabled={isTranscriptEnabled}
           setIsTranscriptEnabled={setIsTranscriptEnabled}
+          isPlayFullPlayer={isPlayFullPlayer}
         />
       ) : (
         <></>

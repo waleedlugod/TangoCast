@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useState } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
@@ -188,6 +188,7 @@ export default function Player({
   setIsVideoEnabled,
   isTranscriptEnabled,
   setIsTranscriptEnabled,
+  isPlayFullPlayer,
 }) {
   const audioRef = useRef(null);
   const timerIDRef = useRef(null);
@@ -273,7 +274,11 @@ export default function Player({
     let audio = audioRef.current.audio.current;
     audio.playbackRate = speed;
   }
-  console.log(podcast);
+
+  useEffect(() => {
+    let audio = audioRef.current.audio.current;
+    isPlayFullPlayer ? audio.play() : audio.pause();
+  }, [isPlayFullPlayer]);
 
   return (
     <>
