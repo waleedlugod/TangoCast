@@ -66,3 +66,7 @@
   flex: 1;
   border: 1px solid black;
 }
+
+.full-player__podcast-button {
+  width: 33.35px;
+}

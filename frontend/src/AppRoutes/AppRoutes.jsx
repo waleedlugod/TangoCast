@@ -10,6 +10,7 @@ import Player from "../Player/Player.jsx";
 export default function AppRoutes() {
   const [hasVideo, setHasVideo] = useState(false);
   const [hasTranscript, setHasTranscript] = useState(false);
+  const [currentPodcast, setCurrentPodcast] = useState(null);
 
   const retrievedPodcast = {
     audio: "/test.mp3",
@@ -20,6 +21,7 @@ export default function AppRoutes() {
     epNumber: 1,
   };
 
+  // enables video in FullPlayer from the Player
   function handleVideo() {
     if (hasVideo) {
       setHasVideo(false);
@@ -28,6 +30,7 @@ export default function AppRoutes() {
     }
   }
 
+  // enables transcript in FullPlayer from the Player
   function handleTranscript() {
     if (hasTranscript) {
       setHasTranscript(false);
@@ -42,10 +45,10 @@ export default function AppRoutes() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route
-          path="/player"
+          path="/podcast/:id"
           element={
             <FullPlayer
-              podcast={retrievedPodcast}
+              setCurrentPodcast={setCurrentPodcast}
               hasVideo={hasVideo}
               hasTranscript={hasTranscript}
             />

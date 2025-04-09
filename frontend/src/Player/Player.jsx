@@ -279,7 +279,7 @@ export default function Player({ podcast, handleVideo, handleTranscript }) {
           progressJumpSteps={playerJumpSteps}
           ref={audioRef}
           onPlay={handlePlay}
-          onPuase={handlePause}
+          onPause={handlePause}
         />
         <PlayerAdditional
           handleVideo={handleVideo}
