@@ -6,6 +6,8 @@ import Search from "../Search/Search.jsx";
 import { useState } from "react";
 import FullPlayer from "../FullPlayer/FullPlayer.jsx";
 import Player from "../Player/Player.jsx";
+import Analytics from "../PodcastStudio/Analytics.jsx";
+import PodcastStudio from "../PodcastStudio/Studio.jsx";
 
 export default function AppRoutes() {
   const [hasVideo, setHasVideo] = useState(false);
@@ -52,6 +54,9 @@ export default function AppRoutes() {
           }
         />
         <Route path="/search" element={<Search />} />
+        <Route path="/creator/:id" element={<PodcastStudio />}>
+          <Route index element={<Analytics />} />
+        </Route>
       </Routes>
       <Player
         podcast={retrievedPodcast}
