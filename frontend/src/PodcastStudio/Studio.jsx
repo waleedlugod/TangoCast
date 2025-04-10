@@ -1,11 +1,19 @@
+import { useParams } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import PlaceholderIcon from "../assets/NavBar/PlaceholderIcon.png";
 import AnalyticsIcon from "../assets/NavBar/PodcastStudio/AnalyticsIcon.svg";
 import ContentIcon from "../assets/NavBar/PodcastStudio/ContentIcon.svg";
 import ActivityIcon from "../assets/NavBar/PodcastStudio/ActivityIcon.svg";
 import "./Studio.css";
+import { useEffect } from "react";
 
 export default function PodcastStudio() {
+  let { id } = useParams();
+
+  useEffect(() => {
+    console.log(id);
+  })
+
   return (
     <section className="container"> 
       <section className="left-nav">

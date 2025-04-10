@@ -1,6 +1,9 @@
+import { useParams } from "react-router-dom";
 import "./Analytics.css";
 
 export default function Analytics() {
+  let { id } = useParams();
+
   return (
     <main>
       <div className="main-container">
