@@ -1,3 +1,9 @@
+import "./Analytics.css";
+
 export default function Analytics() {
-  return <h1>Hello World</h1>;
+  return (
+    <main>
+      <p>Hello World</p>
+    </main>
+  );
 }
