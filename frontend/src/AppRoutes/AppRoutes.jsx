@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Routes, Route } from "react-router-dom";
 import Register from "../Register/Register.jsx";
 import Login from "../Login/Login.jsx";
@@ -9,6 +9,7 @@ import Navbar from "../components/Navbar.jsx";
 import AuthProvider from "../context/AuthContext.jsx";
 
 export default function AppRoutes() {
+  const videoRef = useRef(null);
   const [currentPodcast, setCurrentPodcast] = useState(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState(false);
   const [isTranscriptEnabled, setIsTranscriptEnabled] = useState(false);
@@ -35,8 +36,9 @@ export default function AppRoutes() {
               setCurrentPodcast={setCurrentPodcast}
               isPlayFullPlayer={isPlayFullPlayer}
               setIsPlayFullPlayer={setIsPlayFullPlayer}
-              isVideoEnabled={setIsVideoEnabled}
+              isVideoEnabled={isVideoEnabled}
               isTranscriptEnabled={isTranscriptEnabled}
+              videoRef={videoRef}
             />
           }
         />
@@ -45,11 +47,11 @@ export default function AppRoutes() {
       {currentPodcast ? (
         <Player
           podcast={currentPodcast}
-          isVideoEnabled={isVideoEnabled}
           setIsVideoEnabled={setIsVideoEnabled}
-          isTranscriptEnabled={isTranscriptEnabled}
           setIsTranscriptEnabled={setIsTranscriptEnabled}
           isPlayFullPlayer={isPlayFullPlayer}
+          setIsPlayFullPlayer={setIsPlayFullPlayer}
+          videoRef={videoRef}
         />
       ) : (
         <></>

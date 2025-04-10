@@ -66,9 +66,7 @@ async function writeClipboardLink() {
  */
 function PlayerAdditional({
   podcast,
-  isVideoEnabled,
   setIsVideoEnabled,
-  isTranscriptEnabled,
   setIsTranscriptEnabled,
   startTimer,
   stopTimer,
@@ -149,7 +147,11 @@ function PlayerAdditional({
       <button
         className="player__additional-video-button"
         onClick={() => {
-          setIsVideoEnabled(!isVideoEnabled);
+          setIsVideoEnabled((prev) => !prev);
+          videoRef.current.seekTo(
+            audioRef.current.audio.current.currentTime,
+            "seconds"
+          );
           toggleVideo();
         }}
       >
@@ -168,7 +170,7 @@ function PlayerAdditional({
       <button
         className="player__additional-transcript-button"
         onClick={() => {
-          setIsTranscriptEnabled(!isTranscriptEnabled);
+          setIsTranscriptEnabled((prev) => !prev);
           toggleTranscript();
         }}
       >
@@ -207,6 +209,8 @@ export default function Player({
   isTranscriptEnabled,
   setIsTranscriptEnabled,
   isPlayFullPlayer,
+  setIsPlayFullPlayer,
+  videoRef,
 }) {
   const audioRef = useRef(null);
   const timerIDRef = useRef(null);
@@ -280,12 +284,20 @@ export default function Player({
     if (!timerIDRef.current && sleepTimer) {
       resumeTimer();
     }
+    if (videoRef.current) {
+      videoRef.current.seekTo(
+        audioRef.current.audio.current.currentTime,
+        "seconds"
+      );
+    }
+    setIsPlayFullPlayer(true);
   }
 
   function handlePause() {
     if (timerIDRef.current && sleepTimer) {
       pauseTimer();
     }
+    setIsPlayFullPlayer(false);
   }
 
   function handleSpeedChange(speed) {

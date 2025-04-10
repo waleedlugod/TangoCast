@@ -3,6 +3,8 @@ import playButton from "/play.svg";
 import pauseButton from "/pause.svg";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import ReactPlayer from "react-player";
+import React from "react";
 
 async function fetchPodcast(podcastId) {
   return (await fetch(`http://localhost:8000/podcast/${podcastId}`)).json();
@@ -17,6 +19,7 @@ export default function FullPlayer({
   setIsPlayFullPlayer,
   isVideoEnabled,
   isTranscriptEnabled,
+  videoRef,
 }) {
   const { id: podcastId } = useParams();
   const { data: podcast, isLoading } = useQuery({
@@ -49,7 +52,7 @@ export default function FullPlayer({
                 alt=""
                 onClick={() => {
                   setCurrentPodcast(podcast);
-                  setIsPlayFullPlayer(!isPlayFullPlayer);
+                  setIsPlayFullPlayer((prev) => !prev);
                 }}
               />
             </div>
@@ -57,7 +60,15 @@ export default function FullPlayer({
           <div className="full-player__video-transcript">
             {isVideoEnabled ? (
               <div className="full-player__video visible" id="js-podcast-video">
-                This is where the video should be.
+                <ReactPlayer
+                  ref={videoRef}
+                  url={podcast?.video}
+                  muted={true}
+                  playing={isPlayFullPlayer}
+                  width={"100%"}
+                  height={"100%"}
+                  stopOnUnmount={false}
+                />
               </div>
             ) : (
               <></>
