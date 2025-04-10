@@ -1,0 +1,45 @@
+nav {
+  display: flex;
+  position: relative;
+  height: 5rem;
+  width: 100%;
+  padding-left: 0.5em;
+  background-color: #fff;
+  border-bottom: 3px solid #C5E9DE;
+}
+
+.nav__left {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  width: 100%;
+}
+
+.nav__logo {
+  width: 15rem;
+}
+
+button {
+  font-size: 1rem;
+  background: none;
+  border: none;
+}
+
+button:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.nav__right { 
+  justify-self: flex-end;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 1em;
+}
+
+.nav__icon {
+  width: 4rem;
+  aspect-ratio: 1 / 1;
+  border-radius: 50px;
+}
