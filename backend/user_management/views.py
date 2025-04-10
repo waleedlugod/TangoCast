@@ -21,7 +21,7 @@ class RegisterView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(
-                {"message": "User registered successfully"},
+                serializer.data,
                 status=status.HTTP_201_CREATED,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -41,10 +41,42 @@ class LogoutView(APIView):
 
 
 @csrf_exempt
+def user_list(request):
+    if request.method == "GET":
+        users = UserModel.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+    if request.method == "DELETE":
+        users = UserModel.objects.all()
+        for user in users:
+            user.delete()
+        return HttpResponse(status=204)
+
+
+@csrf_exempt
+def creator_list(request):
+    if request.method == "GET":
+        creators = CreatorModel.objects.all()
+        serializer = CreatorSerializer(creators, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+
+@csrf_exempt
 def creator_detail(request, pk):
     try:
         creator = CreatorModel.objects.get(pk=pk)
+    except CreatorModel.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == "GET":
         serializer = CreatorSerializer(creator)
         return JsonResponse(serializer.data)
-    except:
-        return HttpResponse(status=404)
+
+    if request.method == "PUT":
+        data = JSONParser().parse(request)
+        serializer = CreatorSerializer(creator, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=400)

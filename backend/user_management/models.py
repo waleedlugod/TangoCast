@@ -20,7 +20,7 @@ class CreatorModel(models.Model):
     creator_id = models.OneToOneField(
         UserModel, on_delete=models.CASCADE, related_name="creator"
     )
-    staff = models.TextField()
+    staff = models.TextField(blank=True)
 
 
 class ListenerModel(UserModel):

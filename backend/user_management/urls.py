@@ -9,5 +9,7 @@ urlpatterns = [
     path("refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("creator/<int:pk>/", views.creator_detail),
+    path("creators/", views.creator_list),
+    path("users/", views.user_list),
 ]
 app_name = "user_management"
