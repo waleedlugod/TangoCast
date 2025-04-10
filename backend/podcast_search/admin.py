@@ -3,6 +3,6 @@ from .models import Podcast
 
 # Register your models here.
 class PodcastAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ("id",)
 
 admin.site.register(Podcast, PodcastAdmin)
