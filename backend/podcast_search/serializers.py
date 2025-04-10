@@ -25,6 +25,8 @@ class PodcastSerializer(serializers.ModelSerializer):
             "video",
             "thumbnail",
             "category",
+            "views",
+            "earnings"
         ]
 
     def create(self, validated_data):
