@@ -256,6 +256,7 @@ export default function Player({
     timerStop.classList.toggle("visible");
     sleepTimer = new Timer(() => {
       audio.pause();
+      setIsPlayFullPlayer(false);
       stopTimer();
     }, duration);
     if (audio.paused) {
