@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-from podcast_search.models import Podcast
-
 
 class UserModel(AbstractUser):
     ROLE_CHOICES = (
@@ -19,20 +17,20 @@ class UserModel(AbstractUser):
 
 
 class CreatorModel(models.Model):
-    creator_id = models.ForeignKey(
-        UserModel,
-        null=True,
-        blank=True,
-        on_delete=models.CASCADE,
-        related_name="creator",
+    creator_id = models.OneToOneField(
+        UserModel, on_delete=models.CASCADE, related_name="creator"
     )
     staff = models.TextField()
 
 
-class ListenerModel(models.Model):
-    listener_id = models.ForeignKey(
+class ListenerModel(UserModel):
+    listener_id = models.OneToOneField(
         UserModel, on_delete=models.CASCADE, related_name="listener"
     )
     follows = models.ForeignKey(
-        CreatorModel, null=True, blank=True, on_delete=models.SET_NULL, related_name="creator"
+        CreatorModel,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="creator",
     )
