@@ -18,9 +18,13 @@ class PodcastSearch(generics.ListAPIView):
 
 
 @csrf_exempt
-def podcast_creator(request, pk):
-    if request.method == "GET": 
-        podcasts = Podcast.objects.filter(creator__creator_id__id=pk)
+def podcast_detail(request, pk):
+    if request.method == "GET":
+        podcasts = (
+            Podcast.objects.filter(creator__creator_id__id=pk)
+            .order_by("-views")
+            .values()
+        )
         serializer = PodcastSerializer(podcasts, many=True)
         return JsonResponse(serializer.data, safe=False)
 
