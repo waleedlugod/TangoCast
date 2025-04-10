@@ -73,13 +73,15 @@ function PlayerAdditional({
   startTimer,
   stopTimer,
 }) {
-  // const { mutate: sharePodcast, data } = useMutation({
-  //   mutationFn: () => {
-  //     return fetch(`http://localhost:8000/share/shared/${podcast.id}`);
-  //   },
-  // });
   const { authTokens } = useContext(AuthContext);
-  console.log(authTokens);
+  const { mutate: sharePodcast, data } = useMutation({
+    mutationFn: () => {
+      return fetch(`http://localhost:8000/share/shared/${podcast.id}/`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${authTokens.access}` },
+      });
+    },
+  });
 
   function toggleVideo() {
     let videoCircle = document.querySelector("#js-video-circle");
