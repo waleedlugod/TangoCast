@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useState, useEffect, useRef, useContext } from "react";
+import { useMutation } from "@tanstack/react-query";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import "./Player.css";
@@ -7,6 +7,7 @@ import timerIcon from "/timer.svg";
 import videoIcon from "/video.svg";
 import transcriptIcon from "/transcript.svg";
 import circleIcon from "/icon-circle.svg";
+import { AuthContext } from "../context/AuthContext";
 
 /**
  * A component that holds information about the currently playing podcast.
@@ -72,12 +73,13 @@ function PlayerAdditional({
   startTimer,
   stopTimer,
 }) {
-  const { mutate: sharePodcast, data } = useMutation({
-    mutationFn: () => {
-      return fetch(`http://localhost:8000/share/shared/${podcast.id}`);
-    },
-  });
-  console.log(data);
+  // const { mutate: sharePodcast, data } = useMutation({
+  //   mutationFn: () => {
+  //     return fetch(`http://localhost:8000/share/shared/${podcast.id}`);
+  //   },
+  // });
+  const { authTokens } = useContext(AuthContext);
+  console.log(authTokens);
 
   function toggleVideo() {
     let videoCircle = document.querySelector("#js-video-circle");
