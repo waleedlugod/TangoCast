@@ -3,9 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from .models import SharedPodcast
 from podcast_search.models import Podcast
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.authentication import SessionAuthentication
 from .serializers import SharedPodcastSerializer
 
 
@@ -44,9 +46,15 @@ class GetPodcastShares(generics.ListAPIView):
 
 
 class CreatePodcastShare(generics.CreateAPIView):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = SharedPodcastSerializer
     queryset = SharedPodcast.objects.all()
 
     def post(self, request):
-        podcast = Podcast.objects.get(request.id)
-        SharedPodcast.objects.create(podcast=podcast, shared_by=self.request.user)
+        serializer = SharedPodcastSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(shared_by=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

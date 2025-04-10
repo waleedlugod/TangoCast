@@ -5,4 +5,4 @@ from .models import SharedPodcast
 class SharedPodcastSerializer(serializers.ModelSerializer):
     class Meta:
         model = SharedPodcast
-        fields = ["shared_by", "shared_at"]
+        exclude = ["shared_by"]
