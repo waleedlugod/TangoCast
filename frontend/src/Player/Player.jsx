@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import "./Player.css";
@@ -60,12 +60,6 @@ async function writeClipboardLink() {
   }
 }
 
-async function sharePodcastQuery(podcastId) {
-  return (
-    await fetch(`http://localhost:8000/share/shared/${podcastId}`)
-  ).json();
-}
-
 /**
  * A component that holds the additional controls of the podcast player
  */
@@ -78,14 +72,12 @@ function PlayerAdditional({
   startTimer,
   stopTimer,
 }) {
-  const { refetch: sharePodcast } = useQuery({
-    queryFn: () => {
-      sharePodcastQuery(podcast.id);
+  const { mutate: sharePodcast, data } = useMutation({
+    mutationFn: () => {
+      return fetch(`http://localhost:8000/share/shared/${podcast.id}`);
     },
-    queryKey: ["share"],
-    refetchOnWindowFocus: false,
-    enabled: false,
   });
+  console.log(data);
 
   function toggleVideo() {
     let videoCircle = document.querySelector("#js-video-circle");
