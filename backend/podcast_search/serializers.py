@@ -32,4 +32,4 @@ class PodcastSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = validated_data.pop("creator_user_id")
         creator = CreatorModel.objects.get(creator_id=user)
-        return Podcast(creator=creator, **validated_data)
+        return Podcast.objects.create(creator=creator, **validated_data)
