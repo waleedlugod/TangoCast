@@ -5,21 +5,20 @@ import AnalyticsIcon from "../assets/NavBar/PodcastStudio/AnalyticsIcon.svg";
 import ContentIcon from "../assets/NavBar/PodcastStudio/ContentIcon.svg";
 import ActivityIcon from "../assets/NavBar/PodcastStudio/ActivityIcon.svg";
 import "./Studio.css";
-import { useEffect } from "react";
 
 export default function PodcastStudio() {
   let { id } = useParams();
 
-  useEffect(() => {
-    console.log(id);
-  })
-
   return (
-    <section className="container"> 
+    <section className="container">
       <section className="left-nav">
         <div className="left-nav__top">
           <a href="#">
-            <img className="left-nav__icon" src={PlaceholderIcon} alt="User Icon" />
+            <img
+              className="left-nav__icon"
+              src={PlaceholderIcon}
+              alt="User Icon"
+            />
           </a>
         </div>
         <div className="left-nav__bot">
