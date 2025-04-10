@@ -1,8 +1,12 @@
 from django.db import models
 
 
+from user_management.models import CreatorModel
+
+
 # Create your models here.
 class Podcast(models.Model):
+    creator = models.ForeignKey(CreatorModel, null=True, on_delete=models.SET_NULL, related_name="podcast_creator")
     title = models.CharField(max_length=255, verbose_name="title")
     transcript = models.TextField(blank=True, default="")
     description = models.TextField(blank=True, default="")
