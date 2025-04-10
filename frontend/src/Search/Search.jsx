@@ -48,10 +48,14 @@ export default function Search() {
         ) : (
           podcasts?.map((podcast) => {
             return (
-              <div key={podcast.title} className="podcast">
-                <a href={`/podcast/${podcast.id}`}>{podcast.title}</a>
+              <a
+                key={podcast.title}
+                className="podcast"
+                href={`/podcast/${podcast.id}`}
+              >
+                <p>{podcast.title}</p>
                 <img src={podcast.thumbnail} alt="" />
-              </div>
+              </a>
             );
           })
         )}
