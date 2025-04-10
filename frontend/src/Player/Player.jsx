@@ -306,6 +306,15 @@ export default function Player({
     audio.playbackRate = speed;
   }
 
+  function handleOnSeeked() {
+    if (videoRef.current) {
+      videoRef.current.seekTo(
+        audioRef.current.audio.current.currentTime,
+        "seconds"
+      );
+    }
+  }
+
   useEffect(() => {
     let audio = audioRef.current.audio.current;
     isPlayFullPlayer ? audio.play() : audio.pause();
@@ -325,6 +334,7 @@ export default function Player({
           ref={audioRef}
           onPlay={handlePlay}
           onPause={handlePause}
+          onSeeked={handleOnSeeked}
         />
         <PlayerAdditional
           podcast={podcast}
