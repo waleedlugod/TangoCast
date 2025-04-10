@@ -72,7 +72,7 @@ function PlayerAdditional({
   stopTimer,
 }) {
   const { authTokens } = useContext(AuthContext);
-  const { mutate: sharePodcast, data } = useMutation({
+  const { mutate: sharePodcast, data: respnose } = useMutation({
     mutationFn: () => {
       return fetch(`http://localhost:8000/share/shared/${podcast.id}/`, {
         method: "POST",
