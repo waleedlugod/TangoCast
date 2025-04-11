@@ -61,6 +61,14 @@ def creator_list(request):
         serializer = CreatorSerializer(creators, many=True)
         return JsonResponse(serializer.data, safe=False)
 
+    elif request.method == "POST":
+        data = JSONParser().parse(request)
+        serializer = CreatorSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
+
 
 @csrf_exempt
 def creator_detail(request, pk):
@@ -73,10 +81,14 @@ def creator_detail(request, pk):
         serializer = CreatorSerializer(creator)
         return JsonResponse(serializer.data)
 
-    if request.method == "PUT":
+    elif request.method == "PUT":
         data = JSONParser().parse(request)
         serializer = CreatorSerializer(creator, data=data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data)
         return JsonResponse(serializer.errors, status=400)
+
+    elif request.method == "DELETE":
+        creator.delete()
+        return HttpResponse(status=204)
