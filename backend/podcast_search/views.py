@@ -18,6 +18,30 @@ class PodcastSearch(generics.ListAPIView):
 
 
 @csrf_exempt
+def podcast_detail(request, pk):
+    try:
+        podcast = Podcast.objects.get(id=pk)
+    except Podcast.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == "GET":
+        serializer = PodcastSerializer(podcast)
+        return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == "PUT":
+        data = JSONParser().parse(request)
+        serializer = PodcastSerializer(podcast, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=400)
+
+    elif request.method == "DELETE":
+        podcast.delete()
+        return HttpResponse(status=204)
+
+
+@csrf_exempt
 def podcast_creator(request, pk):
     try:
         podcasts = Podcast.objects.filter(creator__creator_id__id=pk)
