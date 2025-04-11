@@ -19,9 +19,13 @@ class UserModel(AbstractUser):
 
 class CreatorModel(models.Model):
     creator_id = models.OneToOneField(
-        UserModel, on_delete=models.CASCADE, related_name="creator"
+        UserModel, on_delete=models.CASCADE, related_name="creator", primary_key=True
     )
     staff = models.TextField(blank=True)
+
+    class Meta:
+        verbose_name = "creator"
+        verbose_name_plural = "creators"
 
 
 class ListenerModel(UserModel):
@@ -33,5 +37,9 @@ class ListenerModel(UserModel):
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name="creator",
+        related_name="follows",
     )
+
+    class Meta:
+        verbose_name = "listener"
+        verbose_name_plural = "listeners"
