@@ -1,8 +1,8 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import TangoCastLogo from "../assets/NavBar/TangoCastLogo.svg";
 import PlaceholderIcon from "../assets/NavBar/PlaceholderIcon.png";
 import "./NavBar.css";
+import "./Navbar.css";
 
 function Navbar() {
   const handleLogout = () => {
@@ -31,7 +31,7 @@ function Navbar() {
       </div>
       <div className="nav__right">
         <a href="#">
-            <img className="nav__icon" src={PlaceholderIcon} alt="User Icon" />
+          <img className="nav__icon" src={PlaceholderIcon} alt="User Icon" />
         </a>
       </div>
     </nav>

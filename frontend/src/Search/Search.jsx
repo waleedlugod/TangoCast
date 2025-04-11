@@ -5,7 +5,7 @@ import "./Search.css";
 async function fetchPodcasts(search, category) {
   return (
     await fetch(
-      `http://localhost:8000/search/?search=${search}&category=${category}`
+      `http://localhost:8000/podcast/?search=${search}&category=${category}`
     )
   ).json();
 }
@@ -20,10 +20,7 @@ export default function Search() {
 
   return (
     <div className="search-wrapper">
-      <form
-        action={(formData) => setSearch(formData.get("podcast-search"))}
-        method="get"
-      >
+      <form action={(formData) => setSearch(formData.get("podcast-search"))}>
         <input
           type="search"
           name="podcast-search"
@@ -51,10 +48,14 @@ export default function Search() {
         ) : (
           podcasts?.map((podcast) => {
             return (
-              <div className="podcast">
-                <p key={podcast.title}>{podcast.title}</p>
-                <img src={podcast.thumbnail} alt="" srcset="" />
-              </div>
+              <a
+                key={podcast.title}
+                className="podcast"
+                href={`/podcast/${podcast.id}`}
+              >
+                <p>{podcast.title}</p>
+                <img src={podcast.thumbnail} alt="" />
+              </a>
             );
           })
         )}
