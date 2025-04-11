@@ -19,7 +19,10 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CreatorSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(source="creator_id.id")
+    id = serializers.PrimaryKeyRelatedField(
+        queryset=UserModel.objects.all(), write_only=True
+    )
+    creator_id = UserSerializer(read_only=True)
     username = serializers.CharField(source="creator_id.username")
     email = serializers.EmailField(source="creator_id.email")
     profile_photo = serializers.ImageField(
@@ -40,6 +43,7 @@ class CreatorSerializer(serializers.ModelSerializer):
         model = CreatorModel
         fields = [
             "id",
+            "creator_id",
             "username",
             "email",
             "profile_photo",
