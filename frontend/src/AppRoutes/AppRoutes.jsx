@@ -5,6 +5,8 @@ import Login from "../Login/Login.jsx";
 import Search from "../Search/Search.jsx";
 import FullPlayer from "../FullPlayer/FullPlayer.jsx";
 import Player from "../Player/Player.jsx";
+import Analytics from "../PodcastStudio/Analytics.jsx";
+import PodcastStudio from "../PodcastStudio/Studio.jsx";
 import Navbar from "../components/Navbar.jsx";
 import AuthProvider from "../context/AuthContext.jsx";
 
@@ -43,6 +45,9 @@ export default function AppRoutes() {
           }
         />
         <Route path="/search" element={<Search />} />
+        <Route path="/creator/:pk" element={<PodcastStudio />}>
+          <Route index element={<Analytics />} />
+        </Route>
       </Routes>
       {currentPodcast ? (
         <Player

@@ -2,9 +2,18 @@ from django.db import models
 import uuid
 
 
+from user_management.models import CreatorModel
+
+
 # Create your models here.
 class Podcast(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    creator = models.ForeignKey(
+        CreatorModel,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="podcast_creator",
+    )
     title = models.CharField(max_length=255, verbose_name="title")
     episode = models.CharField(
         max_length=255, verbose_name="episode", blank=True, default=""
@@ -17,6 +26,8 @@ class Podcast(models.Model):
     video = models.FileField(upload_to="videos/", null=True, blank=True)
     thumbnail = models.FileField(upload_to="photos/", null=True, blank=True)
     category = models.CharField(max_length=255, verbose_name="category", blank=True)
+    views = models.BigIntegerField(blank=True)
+    earnings = models.BigIntegerField(blank=True)
     is_public = models.BooleanField(default=False)
 
     def __str__(self):

@@ -1,5 +1,8 @@
-import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
+import TangoCastLogo from "../assets/NavBar/TangoCastLogo.svg";
+import PlaceholderIcon from "../assets/NavBar/PlaceholderIcon.png";
+import "./NavBar.css";
+import "./Navbar.css";
 
 function Navbar() {
   const handleLogout = () => {
@@ -17,10 +20,20 @@ function Navbar() {
   };
 
   return (
-    <nav className="navbar">
-      <button onClick={handleLogout}>Logout</button>
-      <button onClick={handleLogin}>Login</button>
-      <button onClick={handleRegister}>Register</button>
+    <nav>
+      <div className="nav__left">
+        <a href="#">
+          <img className="nav__logo" src={TangoCastLogo} alt="TangoCast" />
+        </a>
+        <button onClick={handleLogout}>Logout</button>
+        <button onClick={handleLogin}>Login</button>
+        <button onClick={handleRegister}>Register</button>
+      </div>
+      <div className="nav__right">
+        <a href="#">
+          <img className="nav__icon" src={PlaceholderIcon} alt="User Icon" />
+        </a>
+      </div>
     </nav>
   );
 }
