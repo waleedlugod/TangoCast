@@ -17,6 +17,13 @@ class PodcastSearch(generics.ListAPIView):
     search_fields = ["title"]
 
 
+class GetPodcast(generics.RetrieveAPIView):
+    queryset = Podcast.objects.all()
+    lookup_field = "id"
+    lookup_url_kwarg = "id"
+    serializer_class = PodcastSerializer
+
+
 @csrf_exempt
 def podcast_detail(request, pk):
     try:

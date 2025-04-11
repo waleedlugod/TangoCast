@@ -4,7 +4,6 @@
   font-weight: 400;
 
   color: #000000;
-  background-color: #acacac;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,7 +12,19 @@
   height: 100%;
 }
 
+#root {
+  height: 100%;
+}
+
+html,
 body {
   height: 100%;
+}
+
+*,
+::after,
+::before {
+  box-sizing: border-box;
   margin: 0;
+  padding: 0;
 }

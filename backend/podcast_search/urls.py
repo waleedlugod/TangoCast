@@ -7,4 +7,5 @@ urlpatterns = [
     path("podcast/creator/<int:pk>/", views.podcast_creator),
     path("podcast/<int:pk>", views.podcast_detail),
     path("podcasts/", views.podcast_list),
+    path("<uuid:id>/", views.GetPodcast.as_view(), name="get_podcast"),
 ]

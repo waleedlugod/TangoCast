@@ -13,21 +13,7 @@ class PodcastSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Podcast
-        fields = [
-            "id",
-            "creator",
-            "creator_user_id",
-            "title",
-            "transcript",
-            "description",
-            "is_featured",
-            "audio",
-            "video",
-            "thumbnail",
-            "category",
-            "views",
-            "earnings"
-        ]
+        fields = "__all__"
 
     def create(self, validated_data):
         user = validated_data.pop("creator_user_id")

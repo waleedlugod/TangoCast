@@ -1,7 +1,11 @@
 from django.urls import path
-from .views import share_podcast, get_shared_podcast
+from . import views
 
 urlpatterns = [
-    path('<int:podcast_id>/share/', share_podcast, name='share_podcast'),
-    path('<int:podcast_id>/share/<uuid:share_uuid>/', get_shared_podcast, name='get_shared_podcast'),
+    path("<uuid:id>/", views.GetPodcastShares.as_view(), name="get_podcast_shares"),
+    path(
+        "shared/<uuid:id>/",
+        views.CreatePodcastShare.as_view(),
+        name="get_podcast_shares",
+    ),
 ]
