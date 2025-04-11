@@ -1,8 +1,31 @@
 import { useParams } from "react-router-dom";
 import "./Analytics.css";
+import { useEffect, useState } from "react";
 
 export default function Analytics() {
-  let { id } = useParams();
+  let { pk } = useParams();
+  const [podcasts, setPodcasts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `http://127.0.0.1:8000/search/podcast/${pk}/`
+        );
+        const result = await response.json();
+        setPodcasts(Array.isArray(result) ? result : [result]);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  let totalViews = 0;
+  for (const podcast of podcasts) {
+    totalViews += podcast.views;
+  }
 
   return (
     <main>
@@ -18,7 +41,7 @@ export default function Analytics() {
             </div>
             <div className="data__views">
               <p>Views</p>
-              <p>1.0M</p>
+              <p>{totalViews}</p>
             </div>
           </div>
           <div className="data__bot">
@@ -28,6 +51,11 @@ export default function Analytics() {
         </div>
         <div className="top-podcasts">
           <p>Top Podcasts</p>
+          <div>
+            {podcasts?.map((podcast) => (
+              <div key={podcast.id}>{podcast.title}</div>
+            ))}
+          </div>
         </div>
       </div>
     </main>

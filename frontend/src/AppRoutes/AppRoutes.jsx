@@ -54,7 +54,7 @@ export default function AppRoutes() {
           }
         />
         <Route path="/search" element={<Search />} />
-        <Route path="/creator/:id" element={<PodcastStudio />}>
+        <Route path="/creator/:pk" element={<PodcastStudio />}>
           <Route index element={<Analytics />} />
         </Route>
       </Routes>
