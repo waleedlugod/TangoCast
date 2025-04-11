@@ -8,6 +8,7 @@ import videoIcon from "/video.svg";
 import transcriptIcon from "/transcript.svg";
 import circleIcon from "/icon-circle.svg";
 import { AuthContext } from "../context/AuthContext";
+import shareIcon from "/share.svg";
 
 /**
  * A component that holds information about the currently playing podcast.
@@ -192,7 +193,7 @@ function PlayerAdditional({
           sharePodcast();
         }}
       >
-        copy link
+        <img src={shareIcon} alt="" />
       </button>
     </div>
   );
