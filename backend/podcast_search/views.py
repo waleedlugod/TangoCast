@@ -19,18 +19,35 @@ class PodcastSearch(generics.ListAPIView):
 
 @csrf_exempt
 def podcast_detail(request, pk):
+    try:
+        podcast = Podcast.objects.get(creator__creator_id__id=pk)
+    except Podcast.DoesNotExist:
+        return HttpResponse(status=404)
+
     if request.method == "GET":
-        podcasts = (
-            Podcast.objects.filter(creator__creator_id__id=pk)
-            .order_by("-views")
-            .values()
-        )
-        serializer = PodcastSerializer(podcasts, many=True)
+        serializer = PodcastSerializer(podcast)
         return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == "PUT":
+        data = JSONParser().parse(request)
+        serializer = PodcastSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data)
+        return JsonResponse(serializer.errors, status=400)
+
+    elif request.method == "DELETE":
+        podcast.delete()
+        return HttpResponse(status=204)
 
 
 @csrf_exempt
 def podcast_list(request):
+    if request.method == "GET":
+        podcasts = Podcast.objects.all()
+        serializer = PodcastSerializer(podcasts, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
     if request.method == "POST":
         data = JSONParser().parse(request)
         serializer = PodcastSerializer(data=data)
@@ -38,8 +55,3 @@ def podcast_list(request):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
-
-    elif request.method == "DELETE":
-        for podcast in Podcast.objects.all():
-            podcast.delete()
-        return HttpResponse(status=204)
