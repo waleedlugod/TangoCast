@@ -58,21 +58,21 @@ export default function FullPlayer({
             </div>
           </div>
           <div className="full-player__video-transcript">
-            {isVideoEnabled ? (
-              <div className="full-player__video visible" id="js-podcast-video">
+            <div className="full-player__video visible" id="js-podcast-video">
+              {isVideoEnabled ? (
                 <ReactPlayer
                   ref={videoRef}
                   url={podcast?.video}
                   muted={true}
                   playing={isPlayFullPlayer}
-                  width={"100%"}
+                  // width={"100%"}
                   height={"100%"}
                   stopOnUnmount={false}
                 />
-              </div>
-            ) : (
-              <></>
-            )}
+              ) : (
+                <></>
+              )}
+            </div>
             {isTranscriptEnabled ? (
               <div
                 className="full-player__transcript visible"
