@@ -14,6 +14,7 @@ class UserModel(AbstractUser):
     bio = models.TextField(blank=True)
     instagram_social = models.URLField(null=True, blank=True)
     x_social = models.URLField(null=True, blank=True)
+    followers = models.BigIntegerField(blank=True, default=0)
 
 
 class CreatorModel(models.Model):
