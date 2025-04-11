@@ -33,6 +33,7 @@ class CreatorSerializer(serializers.ModelSerializer):
         source="creator_id.instagram_social", required=False
     )
     x_social = serializers.URLField(source="creator_id.x_social", required=False)
+    followers = serializers.IntegerField(source="creator_id.followers", required=False)
     staff = serializers.CharField(required=False)
 
     class Meta:
@@ -46,5 +47,6 @@ class CreatorSerializer(serializers.ModelSerializer):
             "bio",
             "instagram_social",
             "x_social",
+            "followers",
             "staff",
         ]

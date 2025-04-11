@@ -65,7 +65,7 @@ def creator_list(request):
 @csrf_exempt
 def creator_detail(request, pk):
     try:
-        creator = CreatorModel.objects.get(pk=pk)
+        creator = CreatorModel.objects.get(creator_id__id=pk)
     except CreatorModel.DoesNotExist:
         return HttpResponse(status=404)
 
