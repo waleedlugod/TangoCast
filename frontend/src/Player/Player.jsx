@@ -1,5 +1,5 @@
-import { useRef } from "react";
-import { useState } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
+import { useMutation } from "@tanstack/react-query";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import "./Player.css";
@@ -7,19 +7,20 @@ import timerIcon from "/timer.svg";
 import videoIcon from "/video.svg";
 import transcriptIcon from "/transcript.svg";
 import circleIcon from "/icon-circle.svg";
+import { AuthContext } from "../context/AuthContext";
+import shareIcon from "/share.svg";
 
 /**
  * A component that holds information about the currently playing podcast.
  */
-function PlayerPodcast(props) {
-  const podcast = props.podcast;
+function PlayerPodcast({ podcast }) {
   return (
     <div className="player__info">
-      <img src={podcast.image} alt={podcast.imageAlt} />
+      <img src={podcast.thumbnail} alt={podcast.thumbnail_alt} />
       <div className="player__info-text">
-        <p className="player__info-show">{podcast.showName}</p>
+        <p className="player__info-show">{podcast.title}</p>
         <p className="player__info-episode">
-          Episode {podcast.epNumber}: {podcast.epName}
+          Episode {podcast.episode_number}: {podcast.episode}
         </p>
       </div>
     </div>
@@ -53,15 +54,34 @@ function PlayerSpeed(props) {
   );
 }
 
+async function writeClipboardLink() {
+  try {
+    await navigator.clipboard.writeText(location);
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
 /**
  * A component that holds the additional controls of the podcast player
  */
 function PlayerAdditional({
-  handleVideo,
-  handleTranscript,
+  podcast,
+  setIsVideoEnabled,
+  setIsTranscriptEnabled,
   startTimer,
   stopTimer,
 }) {
+  const { authTokens } = useContext(AuthContext);
+  const { mutate: sharePodcast, data: respnose } = useMutation({
+    mutationFn: () => {
+      return fetch(`http://localhost:8000/share/shared/${podcast.id}/`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${authTokens.access}` },
+      });
+    },
+  });
+
   function toggleVideo() {
     let videoCircle = document.querySelector("#js-video-circle");
     videoCircle.classList.toggle("visible");
@@ -128,7 +148,11 @@ function PlayerAdditional({
       <button
         className="player__additional-video-button"
         onClick={() => {
-          handleVideo();
+          setIsVideoEnabled((prev) => !prev);
+          videoRef.current.seekTo(
+            audioRef.current.audio.current.currentTime,
+            "seconds"
+          );
           toggleVideo();
         }}
       >
@@ -147,7 +171,7 @@ function PlayerAdditional({
       <button
         className="player__additional-transcript-button"
         onClick={() => {
-          handleTranscript();
+          setIsTranscriptEnabled((prev) => !prev);
           toggleTranscript();
         }}
       >
@@ -163,6 +187,14 @@ function PlayerAdditional({
           alt="Circle"
         />
       </button>
+      <button
+        onClick={() => {
+          writeClipboardLink();
+          sharePodcast();
+        }}
+      >
+        <img src={shareIcon} alt="" />
+      </button>
     </div>
   );
 }
@@ -171,7 +203,16 @@ function PlayerAdditional({
  * A component that represents the podcast player. It holds information about
  * the currently playing podcast and controls to modify its playback.
  */
-export default function Player({ podcast, handleVideo, handleTranscript }) {
+export default function Player({
+  podcast,
+  isVideoEnabled,
+  setIsVideoEnabled,
+  isTranscriptEnabled,
+  setIsTranscriptEnabled,
+  isPlayFullPlayer,
+  setIsPlayFullPlayer,
+  videoRef,
+}) {
   const audioRef = useRef(null);
   const timerIDRef = useRef(null);
   const timerRemainingRef = useRef(0);
@@ -216,6 +257,7 @@ export default function Player({ podcast, handleVideo, handleTranscript }) {
     timerStop.classList.toggle("visible");
     sleepTimer = new Timer(() => {
       audio.pause();
+      setIsPlayFullPlayer(false);
       stopTimer();
     }, duration);
     if (audio.paused) {
@@ -244,18 +286,40 @@ export default function Player({ podcast, handleVideo, handleTranscript }) {
     if (!timerIDRef.current && sleepTimer) {
       resumeTimer();
     }
+    if (videoRef.current) {
+      videoRef.current.seekTo(
+        audioRef.current.audio.current.currentTime,
+        "seconds"
+      );
+    }
+    setIsPlayFullPlayer(true);
   }
 
   function handlePause() {
     if (timerIDRef.current && sleepTimer) {
       pauseTimer();
     }
+    setIsPlayFullPlayer(false);
   }
 
   function handleSpeedChange(speed) {
     let audio = audioRef.current.audio.current;
     audio.playbackRate = speed;
   }
+
+  function handleOnSeeked() {
+    if (videoRef.current) {
+      videoRef.current.seekTo(
+        audioRef.current.audio.current.currentTime,
+        "seconds"
+      );
+    }
+  }
+
+  useEffect(() => {
+    let audio = audioRef.current.audio.current;
+    isPlayFullPlayer ? audio.play() : audio.pause();
+  }, [isPlayFullPlayer]);
 
   return (
     <>
@@ -270,11 +334,15 @@ export default function Player({ podcast, handleVideo, handleTranscript }) {
           progressJumpSteps={playerJumpSteps}
           ref={audioRef}
           onPlay={handlePlay}
-          onPuase={handlePause}
+          onPause={handlePause}
+          onSeeked={handleOnSeeked}
         />
         <PlayerAdditional
-          handleVideo={handleVideo}
-          handleTranscript={handleTranscript}
+          podcast={podcast}
+          isVideoEnabled={isVideoEnabled}
+          setIsVideoEnabled={setIsVideoEnabled}
+          isTranscriptEnabled={isTranscriptEnabled}
+          setIsTranscriptEnabled={setIsTranscriptEnabled}
           startTimer={startTimer}
           pauseTimer={pauseTimer}
           stopTimer={stopTimer}
