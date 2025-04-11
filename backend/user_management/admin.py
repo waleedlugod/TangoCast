@@ -35,3 +35,4 @@ class CustomUserAdmin(UserAdmin):
 
 
 admin.site.register(UserModel, CustomUserAdmin)
+admin.site.register(CreatorModel)
