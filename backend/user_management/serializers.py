@@ -18,9 +18,36 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
-class CreatorSerializer(serializers.ModelSerializer): 
-    creator_id = UserSerializer() 
+class CreatorSerializer(serializers.ModelSerializer):
+    creator_id = UserSerializer()
 
     class Meta:
         model = CreatorModel
         fields = "__all__"
+
+    def create(self, validated_data):
+        user_data = validated_data.pop("user")
+
+        user_serializer = UserSerializer(data=user_data)
+        user_serializer.is_valid(raise_exception=True)
+        user = user_serializer.save()
+
+        creator = CreatorModel.objects.create(creator_id=user, **validated_data)
+
+        return creator
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop("user")
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        if user_data:
+            user_serializer = UserSerializer(
+                instance=instance.user, data=user_data, partial=self.partial
+            )
+            user_serializer.is_valid(raise_exception=True)
+            user_serializer.save()
+
+        return instance
