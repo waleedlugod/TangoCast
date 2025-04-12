@@ -23,6 +23,7 @@ class CustomUserAdmin(UserAdmin):
                     "banner_photo",
                     "instagram_social",
                     "x_social",
+                    "followers",
                 )
             },
         ),
