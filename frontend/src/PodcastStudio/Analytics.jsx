@@ -22,7 +22,9 @@ export default function Analytics() {
         const userResult = await userResponse.json();
 
         setPodcasts(
-          Array.isArray(podcastResult) ? podcastResult : [podcastResult]
+          Array.isArray(podcastResult)
+            ? podcastResult.slice(0, 5)
+            : [podcastResult].slice(0, 5)
         );
         setUser(userResult);
       } catch (err) {
