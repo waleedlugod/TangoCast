@@ -45,7 +45,9 @@ class CreatorPodcastViewSet(viewsets.ModelViewSet):
             raise NotFound("Creator not found")
 
         if request.method == "GET":
-            podcasts = Podcast.objects.filter(creator=creator)
+            podcasts = (
+                Podcast.objects.filter(creator=creator).order_by("-views")
+            )
             serializer = PodcastSerializer(podcasts, many=True)
             return JsonResponse(serializer.data, safe=False)
 
