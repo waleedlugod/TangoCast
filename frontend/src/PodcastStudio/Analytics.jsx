@@ -84,7 +84,7 @@ export default function Analytics() {
           <div className="data__top">
             <div className="data__followers">
               <p>Followers</p>
-              <p>{user?.followers}</p>
+              <p>{user?.creator_id?.followers}</p>
             </div>
             <div className="data__views">
               <p>Views</p>
