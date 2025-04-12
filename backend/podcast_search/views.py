@@ -2,10 +2,14 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics, filters, viewsets
+from rest_framework.decorators import action
+from rest_framework.exceptions import NotFound
 from rest_framework.parsers import JSONParser
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Podcast
 from .serializers import PodcastSerializer
+from user_management.models import CreatorModel
+from user_management.serializers import CreatorSerializer
 
 
 # Create your views here.
@@ -27,3 +31,26 @@ class GetPodcast(generics.RetrieveAPIView):
 class PodcastViewSet(viewsets.ModelViewSet):
     queryset = Podcast.objects.all()
     serializer_class = PodcastSerializer
+
+
+class CreatorPodcastViewSet(viewsets.ModelViewSet):
+    queryset = CreatorModel.objects.all()
+    serializer_class = CreatorSerializer
+
+    @action(detail=True, methods=["get", "post"])
+    def podcasts(self, request, pk=None):
+        try:
+            creator = self.get_object()
+        except CreatorModel.DoesNotExist:
+            raise NotFound("Creator not found")
+
+        if request.method == "GET":
+            podcasts = Podcast.objects.filter(creator=creator)
+            serializer = PodcastSerializer(podcasts, many=True)
+            return JsonResponse(serializer.data, safe=False)
+
+        if request.method == "POST":
+            serializer = PodcastSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save(creator=creator)
+            return JsonResponse(serializer.data, status=201)

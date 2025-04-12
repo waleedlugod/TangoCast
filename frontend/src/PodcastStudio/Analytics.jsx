@@ -12,8 +12,10 @@ export default function Analytics() {
     const fetchData = async () => {
       try {
         const [podcastResponse, userResponse] = await Promise.all([
-          fetch(`http://127.0.0.1:8000/podcast/creator/${pk}/`),
-          fetch(`http://127.0.0.1:8000/creator/${pk}/`),
+          fetch(
+            `http://127.0.0.1:8000/podcast/podcasts/creators/${pk}/podcasts`
+          ),
+          fetch(`http://127.0.0.1:8000/creators/${pk}/`),
         ]);
 
         const podcastResult = await podcastResponse.json();

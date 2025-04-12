@@ -6,6 +6,7 @@ from . import views
 
 router = DefaultRouter()
 router.register(r"", views.PodcastViewSet, basename="podcast")
+router.register(r"creators", views.CreatorPodcastViewSet, basename="creator")
 
 urlpatterns = [
     path("", views.PodcastSearch.as_view(), name="podcast-search-view"),
