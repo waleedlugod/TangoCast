@@ -18,39 +18,9 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
-class CreatorSerializer(serializers.ModelSerializer):
-    id = serializers.PrimaryKeyRelatedField(
-        queryset=UserModel.objects.all(), write_only=True
-    )
-    creator_id = UserSerializer(read_only=True)
-    username = serializers.CharField(source="creator_id.username")
-    email = serializers.EmailField(source="creator_id.email")
-    profile_photo = serializers.ImageField(
-        source="creator_id.profile_photo", allow_empty_file=True, required=False
-    )
-    banner_photo = serializers.ImageField(
-        source="creator_id.banner_photo", allow_empty_file=True, required=False
-    )
-    bio = serializers.CharField(source="creator_id.bio", required=False)
-    instagram_social = serializers.URLField(
-        source="creator_id.instagram_social", required=False
-    )
-    x_social = serializers.URLField(source="creator_id.x_social", required=False)
-    followers = serializers.IntegerField(source="creator_id.followers", required=False)
-    staff = serializers.CharField(required=False)
+class CreatorSerializer(serializers.ModelSerializer): 
+    creator_id = UserSerializer() 
 
     class Meta:
         model = CreatorModel
-        fields = [
-            "id",
-            "creator_id",
-            "username",
-            "email",
-            "profile_photo",
-            "banner_photo",
-            "bio",
-            "instagram_social",
-            "x_social",
-            "followers",
-            "staff",
-        ]
+        fields = "__all__"
