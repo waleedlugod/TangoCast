@@ -98,7 +98,61 @@ main {
   padding-top: 1em;
 }
 
-.top-podcasts p:nth-child(1) {
+.top-podcasts__title {
   font-size: 2rem;
   font-weight: bold;
+}
+
+.podcast-card__number {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.podcast-card {
+  padding-top: 1em;
+  padding-bottom: 1em;
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-top: 4px solid #C5E9DE;
+}
+
+.podcast-card__left {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 2em;
+}
+
+.podcast-card__mid {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.podcast-card__mid img {
+  aspect-ratio: 1 / 1;
+  width: 8rem;
+  border-radius: 10px;
+}
+
+.podcast-card__info {
+  display: flex;
+  flex-direction: column;
+}
+
+.podcast-card__title {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.podcast-card__right {
+  position: absolute;
+  right: 0;
+  padding-right: 1em;
+}
+
+.podcast-card__right p {
+  font-size: 1.1rem;
 }
