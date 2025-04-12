@@ -105,7 +105,7 @@ export default function Analytics() {
                   <p className="podcast-card__number">{index + 1}.</p>
                   <div className="podcast-card__mid">
                     <img
-                      src={`http://127.0.0.1:8000/${podcast.thumbnail}`}
+                      src={`http://127.0.0.1:8000${podcast.thumbnail}`}
                       alt={`${podcast.title} thumbnail`}
                     />
                     <div className="podcast-card__info">
