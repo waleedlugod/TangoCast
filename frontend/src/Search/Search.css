@@ -7,9 +7,8 @@
 }
 
 .podcast {
-  width: 500px;
-  height: 500px;
   border: 1px solid black;
+  text-decoration: none;
 }
 
 .podcast img {
@@ -17,11 +16,11 @@
 }
 
 .podcast-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   column-gap: 100px;
   row-gap: 100px;
+  padding: 4rem;
 }
 
 .search-dropdown {

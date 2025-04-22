@@ -28,6 +28,7 @@ function Login() {
       );
       localStorage.setItem("authTokens", JSON.stringify(response.data));
       setMessage("Login successful!");
+      navigate("/");
     } catch (error) {
       setMessage("Error: " + error);
     }

@@ -5,12 +5,14 @@ import "./NavBar.css";
 import "./Navbar.css";
 
 function Navbar() {
+  const navigate = useNavigate();
+  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+
   const handleLogout = () => {
     localStorage.removeItem("authTokens");
     alert("Logged out successfully!");
+    navigate("/login");
   };
-
-  const navigate = useNavigate();
 
   const handleLogin = () => {
     navigate("/login");
@@ -22,12 +24,17 @@ function Navbar() {
   return (
     <nav>
       <div className="nav__left">
-        <a href="#">
+        <a href="/">
           <img className="nav__logo" src={TangoCastLogo} alt="TangoCast" />
         </a>
-        <button onClick={handleLogout}>Logout</button>
-        <button onClick={handleLogin}>Login</button>
-        <button onClick={handleRegister}>Register</button>
+        {authTokens ? (
+          <button onClick={handleLogout}>Logout</button>
+        ) : (
+          <>
+            <button onClick={handleLogin}>Login</button>
+            <button onClick={handleRegister}>Register</button>
+          </>
+        )}
       </div>
       <div className="nav__right">
         <a href="#">
