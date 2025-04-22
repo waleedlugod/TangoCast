@@ -27,19 +27,23 @@ class CreatorModel(models.Model):
         verbose_name = "creator"
         verbose_name_plural = "creators"
 
+    def __str__(self):
+        return UserModel.objects.get(id=self.creator_id.id).username
 
-class ListenerModel(UserModel):
+
+class ListenerModel(models.Model):
     listener_id = models.OneToOneField(
-        UserModel, on_delete=models.CASCADE, related_name="listener"
+        UserModel, on_delete=models.CASCADE, related_name="listener", primary_key=True
     )
-    follows = models.ForeignKey(
+    follows = models.ManyToManyField(
         CreatorModel,
-        null=True,
         blank=True,
-        on_delete=models.SET_NULL,
         related_name="follows",
     )
 
     class Meta:
         verbose_name = "listener"
         verbose_name_plural = "listeners"
+
+    def __str__(self):
+        return UserModel.objects.get(id=self.listener_id.id).username

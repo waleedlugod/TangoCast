@@ -1,17 +1,19 @@
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-
-from rest_framework import status
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.parsers import JSONParser
+from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import UserModel, CreatorModel
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication
 
-from .serializers import UserSerializer, CreatorSerializer
+from .models import UserModel, CreatorModel, ListenerModel
+from podcast_search.models import Podcast
+from podcast_search.serializers import PodcastSerializer
+
+from .serializers import UserSerializer, CreatorSerializer, ListenerSerializer
 
 
 class RegisterView(APIView):
@@ -49,3 +51,23 @@ class UserViewSet(viewsets.ModelViewSet):
 class CreatorViewSet(viewsets.ModelViewSet):
     queryset = CreatorModel.objects.all()
     serializer_class = CreatorSerializer
+
+
+class ListenerViewSet(viewsets.ModelViewSet):
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
+    queryset = ListenerModel.objects.all()
+    serializer_class = ListenerSerializer
+
+    @action(detail=False)
+    def get_followed_podcasts(self, request):
+        listener = ListenerModel.objects.get(listener_id=request.user)
+        podcasts = Podcast.objects.filter(creator__in=listener.follows.all())
+        serializer = PodcastSerializer(podcasts, many=True)
+        return Response(serializer.data)
+
+    def get_permissions(self):
+        if self.action == "get_followed_podcasts":
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = []
+        return [permission() for permission in permission_classes]

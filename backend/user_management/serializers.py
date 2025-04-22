@@ -51,3 +51,9 @@ class CreatorSerializer(serializers.ModelSerializer):
             user_serializer.save()
 
         return instance
+
+
+class ListenerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ListenerModel
+        fields = "__all__"
