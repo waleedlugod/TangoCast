@@ -1,12 +1,23 @@
-import './Home.css';
+import "./Home.css";
+import { useQuery } from "@tanstack/react-query";
 
-/**
- * A component that holds the current page the user is on in the website.
-*/
+async function fetchFollowingPodcasts(authTokens) {
+  return (
+    await fetch(`http://localhost:8000/listeners/get_followed_podcasts/`, {
+      headers: { Authorization: `Bearer ${authTokens.access}` },
+    })
+  ).json();
+}
+
 export default function Home() {
+  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+  const { data: podcasts, isLoading } = useQuery({
+    queryFn: () => fetchFollowingPodcasts(authTokens),
+    queryKey: ["followingPodcasts"],
+  });
   return (
     <div className="home">
-      This is home! All other website stuff goes here.
+      {authTokens ? <>logged in</> : <p>You are not logged in.</p>}
     </div>
-  )
+  );
 }

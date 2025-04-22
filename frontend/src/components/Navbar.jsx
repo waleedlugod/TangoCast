@@ -6,7 +6,7 @@ import "./Navbar.css";
 
 function Navbar() {
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("authTokens");
     alert("Logged out successfully!");
   };
 

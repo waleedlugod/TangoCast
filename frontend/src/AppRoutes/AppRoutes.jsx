@@ -8,7 +8,7 @@ import Player from "../Player/Player.jsx";
 import Analytics from "../PodcastStudio/Analytics.jsx";
 import PodcastStudio from "../PodcastStudio/Studio.jsx";
 import Navbar from "../components/Navbar.jsx";
-import AuthProvider from "../context/AuthContext.jsx";
+import Home from "../Home/Home.jsx";
 
 export default function AppRoutes() {
   const videoRef = useRef(null);
@@ -16,21 +16,14 @@ export default function AppRoutes() {
   const [isVideoEnabled, setIsVideoEnabled] = useState(false);
   const [isTranscriptEnabled, setIsTranscriptEnabled] = useState(false);
   const [isPlayFullPlayer, setIsPlayFullPlayer] = useState(false);
-  const [authTokens, setAuthTokens] = useState(() =>
-    localStorage.getItem("authTokens")
-      ? JSON.parse(localStorage.getItem("authTokens"))
-      : null
-  );
 
   return (
-    <AuthProvider authTokens={authTokens}>
+    <>
       <Navbar />
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
-        <Route
-          path="/login"
-          element={<Login setAuthTokens={setAuthTokens} />}
-        />
+        <Route path="/login" element={<Login />} />
         <Route
           path="/podcast/:id"
           element={
@@ -61,6 +54,6 @@ export default function AppRoutes() {
       ) : (
         <></>
       )}
-    </AuthProvider>
+    </>
   );
 }
