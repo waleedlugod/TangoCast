@@ -26,4 +26,5 @@ urlpatterns = [
     path("share/", include("podcast_share.urls")),
     path("podcast/", include("podcast_search.urls")),
     path("", include("user_management.urls")),
+    path("api/reactions/", include("podcast_reactions.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

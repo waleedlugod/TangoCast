@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     "django_filters",
     "podcast_share",
     "user_management",
+    'podcast_reactions',
 ]
 
 MIDDLEWARE = [
