@@ -1,16 +1,12 @@
+import { useContext } from "react";
 import "./Home.css";
-import { useQuery } from "@tanstack/react-query";
+import { AuthContext } from "../context/AuthContext";
 
-async function fetchFollowingPodcasts(authTokens) {
-  return (
-    await fetch(`http://localhost:8000/listeners/get_followed_podcasts/`, {
-      headers: { Authorization: `Bearer ${authTokens.access}` },
-    })
-  ).json();
-}
-
+/**
+ * A component that holds the current page the user is on in the website.
+ */
 export default function Home() {
-  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+  const { authTokens } = useContext(AuthContext);
   const { data: podcasts, isLoading } = useQuery({
     queryFn: () => fetchFollowingPodcasts(authTokens),
     queryKey: ["followingPodcasts"],

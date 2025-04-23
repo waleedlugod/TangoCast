@@ -3,13 +3,15 @@ import TangoCastLogo from "../assets/NavBar/TangoCastLogo.svg";
 import PlaceholderIcon from "../assets/NavBar/PlaceholderIcon.png";
 import "./NavBar.css";
 import "./Navbar.css";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 function Navbar() {
   const navigate = useNavigate();
-  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
+  const { authTokens } = useContext(AuthContext);
 
   const handleLogout = () => {
-    localStorage.removeItem("authTokens");
+    localStorage.removeItem("token");
     alert("Logged out successfully!");
     navigate("/login");
   };

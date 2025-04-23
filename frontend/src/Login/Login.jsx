@@ -1,14 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { Navigate, useNavigate } from "react-router-dom";
 
-function Login() {
-  const navigate = useNavigate();
-  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
-  useEffect(() => {
-    if (authTokens) navigate("/");
-  }, []);
-
+function Login({ setAuthTokens }) {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -26,11 +19,15 @@ function Login() {
         "http://127.0.0.1:8000/login/",
         formData
       );
+      setAuthTokens({
+        access: response.data.access,
+        refresh: response.data.refresh,
+      });
       localStorage.setItem("authTokens", JSON.stringify(response.data));
       setMessage("Login successful!");
       navigate("/");
     } catch (error) {
-      setMessage("Error: " + error);
+      setMessage("Error: " + error.response.data);
     }
   };
 
