@@ -9,6 +9,7 @@ import Analytics from "../PodcastStudio/Analytics.jsx";
 import PodcastStudio from "../PodcastStudio/Studio.jsx";
 import Navbar from "../components/Navbar.jsx";
 import AuthProvider from "../context/AuthContext.jsx";
+import Home from "../Home/Home.jsx";
 
 export default function AppRoutes() {
   const videoRef = useRef(null);
@@ -23,9 +24,10 @@ export default function AppRoutes() {
   );
 
   return (
-    <AuthProvider authTokens={authTokens}>
+    <AuthProvider authTokens={authTokens} setAuthTokens={setAuthTokens}>
       <Navbar />
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route
           path="/login"

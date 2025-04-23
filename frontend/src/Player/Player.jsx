@@ -80,6 +80,7 @@ function PlayerAdditional({
         headers: { Authorization: `Bearer ${authTokens.access}` },
       });
     },
+    mutationKey: "sharePodcast",
   });
 
   function toggleVideo() {

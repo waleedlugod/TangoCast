@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Login({ setAuthTokens }) {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -27,7 +29,7 @@ function Login({ setAuthTokens }) {
       setMessage("Login successful!");
       navigate("/");
     } catch (error) {
-      setMessage("Error: " + error.response.data);
+      setMessage("Error: " + error);
     }
   };
 
