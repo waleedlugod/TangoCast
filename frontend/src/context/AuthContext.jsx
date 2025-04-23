@@ -23,7 +23,6 @@ export default function AuthProvider({ children, authTokens, setAuthTokens }) {
       };
       setAuthTokens(updatedTokens);
       localStorage.setItem("authTokens", JSON.stringify(updatedTokens));
-      console.log(updatedTokens);
     },
   });
 
@@ -37,6 +36,12 @@ export default function AuthProvider({ children, authTokens, setAuthTokens }) {
   }, [authTokens]);
 
   return (
-    <AuthContext value={{ authTokens: authTokens }}>{children}</AuthContext>
+    <AuthContext
+      value={{
+        authTokens: authTokens,
+      }}
+    >
+      {children}
+    </AuthContext>
   );
 }
