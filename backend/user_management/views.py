@@ -13,6 +13,9 @@ from .models import UserModel, CreatorModel, ListenerModel
 from podcast_search.models import Podcast
 from podcast_search.serializers import PodcastSerializer
 
+from podcast_share.models import SharedPodcast
+from podcast_share.serializers import SharedPodcastSerializer
+
 from .serializers import UserSerializer, CreatorSerializer, ListenerSerializer
 
 
@@ -71,3 +74,14 @@ class ListenerViewSet(viewsets.ModelViewSet):
         else:
             permission_classes = []
         return [permission() for permission in permission_classes]
+
+    @action(detail=False)
+    def get_followed_shares(self, request):
+        followed = ListenerModel.objects.get(listener_id=request.user).follows.all()
+        followed_users = UserModel.objects.filter(id__in=followed)
+        shared_podcasts_of_followed = SharedPodcast.objects.filter(
+            shared_by__in=followed_users
+        ).values_list("podcast", flat=True)
+        podcasts = Podcast.objects.filter(id__in=shared_podcasts_of_followed)
+        serializer = PodcastSerializer(podcasts, many=True)
+        return Response(serializer.data)
