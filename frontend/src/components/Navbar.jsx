@@ -8,7 +8,7 @@ import { AuthContext } from "../context/AuthContext";
 
 function Navbar() {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -30,7 +30,7 @@ function Navbar() {
           <img className="nav__logo" src={TangoCastLogo} alt="TangoCast" />
         </a>
         {user ? (
-          <button onClick={handleLogout}>Logout</button>
+          <button onClick={logout}>Logout</button>
         ) : (
           <button onClick={handleLogin}>Login</button>
         )}

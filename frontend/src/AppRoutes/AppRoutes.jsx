@@ -17,22 +17,14 @@ export default function AppRoutes() {
   const [isVideoEnabled, setIsVideoEnabled] = useState(false);
   const [isTranscriptEnabled, setIsTranscriptEnabled] = useState(false);
   const [isPlayFullPlayer, setIsPlayFullPlayer] = useState(false);
-  const [authTokens, setAuthTokens] = useState(() =>
-    localStorage.getItem("authTokens")
-      ? JSON.parse(localStorage.getItem("authTokens"))
-      : null
-  );
 
   return (
-    <AuthProvider authTokens={authTokens} setAuthTokens={setAuthTokens}>
+    <AuthProvider>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
-        <Route
-          path="/login"
-          element={<Login setAuthTokens={setAuthTokens} />}
-        />
+        <Route path="/login" element={<Login />} />
         <Route
           path="/podcast/:id"
           element={
