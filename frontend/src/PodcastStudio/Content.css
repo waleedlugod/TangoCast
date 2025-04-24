@@ -46,6 +46,10 @@ a {
     padding-right: 3em;
 }
 
+.content__titles p {
+  font-size: 1.25rem;
+}
+
 .content-podcast-card {
   padding-top: 1em;
   padding-bottom: 1em;
