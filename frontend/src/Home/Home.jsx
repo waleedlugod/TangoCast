@@ -37,46 +37,44 @@ export default function Home() {
       queryKey: ["followingSharedPodcasts", authTokens],
     }
   );
+  console.log(sharedPodcasts);
 
   return (
     <div className="home">
-      <h1>Recently uploaded podcasts by creators you follow</h1>
-      {isLoadingRecentPodcasts ? (
-        <p>Loading podcasts...</p>
-      ) : !authTokens || recentPodcasts.code == "token_not_valid" ? (
-        <p>Log in to get recent podcasts.</p>
-      ) : Object.keys(recentPodcasts).length == 0 ? (
-        <p>Could not find any podcasts</p>
+      {isLoadingRecentPodcasts || isLoadingSharedPodcasts ? (
+        <p>Loading content...</p>
+      ) : recentPodcasts.code == "token_not_valid" ||
+        sharedPodcasts.code == "token_not_valid" ? (
+        <p>Login first to access content.</p>
       ) : (
-        <div className="podcast-container">
-          {recentPodcasts.map((podcast) => (
-            <a
-              key={podcast.id}
-              href={`/podcast/${podcast.id}`}
-              className="podcast"
-            >
-              <p>{podcast.title}</p>
-              <p>By: {podcast.creator.creator_id.username}</p>
-            </a>
-          ))}
-        </div>
-      )}
-      <h1>Podcasts shared by those you follow</h1>
-      {isLoadingSharedPodcasts ? (
-        <p>Loading shared podcasts...</p>
-      ) : (
-        <div className="podcast-container">
-          {sharedPodcasts.map((podcast) => (
-            <a
-              key={podcast.id}
-              href={`/podcast/${podcast.id}`}
-              className="podcast"
-            >
-              <p>{podcast.title}</p>
-              <p>By: {podcast.creator.creator_id.username}</p>
-            </a>
-          ))}
-        </div>
+        <>
+          <h1>Recently uploaded podcasts by creators you follow</h1>
+          <div className="podcast-container">
+            {recentPodcasts.map((podcast) => (
+              <a
+                key={podcast.id}
+                href={`/podcast/${podcast.id}`}
+                className="podcast"
+              >
+                <p>{podcast.title}</p>
+                <p>By: {podcast.creator.creator_id.username}</p>
+              </a>
+            ))}
+          </div>
+          <h1>Podcasts shared by those you follow</h1>
+          <div className="podcast-container">
+            {sharedPodcasts.map((podcast) => (
+              <a
+                key={podcast.id}
+                href={`/podcast/${podcast.id}`}
+                className="podcast"
+              >
+                <p>{podcast.title}</p>
+                <p>By: {podcast.creator.creator_id.username}</p>
+              </a>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

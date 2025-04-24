@@ -29,14 +29,9 @@ function Navbar() {
         <a href="/">
           <img className="nav__logo" src={TangoCastLogo} alt="TangoCast" />
         </a>
-        {authTokens ? (
-          <button onClick={handleLogout}>Logout</button>
-        ) : (
-          <>
-            <button onClick={handleLogin}>Login</button>
-            <button onClick={handleRegister}>Register</button>
-          </>
-        )}
+        <button onClick={handleLogout}>Logout</button>
+        <button onClick={handleLogin}>Login</button>
+        <button onClick={handleRegister}>Register</button>
       </div>
       <div className="nav__right">
         <a href="#">
