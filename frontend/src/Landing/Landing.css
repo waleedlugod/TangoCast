@@ -1,0 +1,55 @@
+.landing {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 112px;
+  background: linear-gradient(180deg, #FFF 59.13%, #C3F1E3 100%);
+}
+
+.landing__logo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2.3rem;
+}
+
+.landing__logo p {
+  font-size: 2rem;
+}
+
+.landing__buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+}
+
+.landing__buttons a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  width: 224px;
+  font-size: 2rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.landing__buttons a:hover {
+  cursor: pointer;
+}
+
+.landing__button--login {
+  color: #16A77C;
+  background: #FFFFFF;
+  border: 3px solid #16A77C;
+  border-radius: 15px;
+}
+
+.landing__button--register {
+  color: #FFFFFF;
+  background: #16A77C;
+  border-radius: 15px; 
+}
