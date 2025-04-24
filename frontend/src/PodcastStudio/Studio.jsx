@@ -30,11 +30,7 @@ export default function PodcastStudio() {
           <a className="left-nav__link" href="#">
             <img src={ContentIcon} alt="" />
             <p>Content</p>
-          </a>
-          <a className="left-nav__link" href="#">
-            <img src={ActivityIcon} alt="" />
-            <p>Activity</p>
-          </a>
+          </a> 
         </div>
       </section>
       <Outlet />
