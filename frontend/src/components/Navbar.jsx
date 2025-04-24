@@ -13,9 +13,9 @@ function Navbar() {
   return (
     <nav>
       <div className="nav__left">
-        <a href="/">
+        <button onClick={() => navigate("/")}>
           <img className="nav__logo" src={TangoCastLogo} alt="TangoCast" />
-        </a>
+        </button>
         {user ? (
           <button onClick={logout}>Logout</button>
         ) : (
