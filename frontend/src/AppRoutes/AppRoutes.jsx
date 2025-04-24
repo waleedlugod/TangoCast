@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { Routes, Route } from "react-router-dom";
+import Landing from "../Landing/Landing.jsx";
 import Register from "../Register/Register.jsx";
 import Login from "../Login/Login.jsx";
 import Search from "../Search/Search.jsx";
@@ -8,7 +9,8 @@ import Player from "../Player/Player.jsx";
 import Analytics from "../PodcastStudio/Analytics.jsx";
 import PodcastStudio from "../PodcastStudio/Studio.jsx";
 import Navbar from "../components/Navbar.jsx";
-import AuthProvider from "../context/AuthContext.jsx";
+import AuthProvider from "../context/AuthContext.jsx"
+import Home from "../Home/Home.jsx";
 
 export default function AppRoutes() {
   const videoRef = useRef(null);
@@ -21,11 +23,13 @@ export default function AppRoutes() {
       ? JSON.parse(localStorage.getItem("authTokens"))
       : null
   );
+  // const currentAuthTokens = JSON.parse(localStorage.getItem("authTokens"));
 
   return (
     <AuthProvider authTokens={authTokens}>
-      <Navbar />
+      { authTokens ? <Navbar /> : null }
       <Routes>
+        { authTokens ? <Route path="/" element={<Home />} /> : <Route path="/" element={<Landing />} /> }
         <Route path="/register" element={<Register />} />
         <Route
           path="/login"
