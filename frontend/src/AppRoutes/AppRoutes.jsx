@@ -50,7 +50,8 @@ export default function AppRoutes() {
         <Route path="/creator/:pk" element={<PodcastStudio />}>
           <Route index element={<Analytics />} />
           <Route path="content" element={<Content />} />
-          <Route path="edit/:id" element={<ContentForm />} />
+          <Route path="edit/:id" element={<ContentForm isUpload={false} />} />
+          <Route path="upload" element={<ContentForm isUpload={true} />} />
         </Route>
       </Routes>
       {currentPodcast ? (

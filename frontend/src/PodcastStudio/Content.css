@@ -22,11 +22,30 @@ a {
   gap: 2em;
 }
 
+.content-main-container__title {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75em;
+}
+
+.content-main-container__title a {
+  margin-right: 2em;
+  padding: 1em 1.25em;
+  background-color: #16A77C;
+  color: #fff;
+  border-radius: 10px;
+}
+
+.content-main-container__title button:hover {
+  text-decoration: none;
+}
+
 .content-main-container__title h1 {
   font-size: 2.6rem;
   margin: 0;
   padding: 0;
-  padding-top: 0.5em;
   padding-left: 1em;
 }
 

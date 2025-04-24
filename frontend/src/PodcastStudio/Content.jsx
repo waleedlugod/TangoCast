@@ -22,6 +22,7 @@ export default function Content() {
       <div className="content-main-container">
         <div className="content-main-container__title">
           <h1>Channel Content</h1>
+          <Link to={`/creator/${pk}/upload`}>Upload Podcast</Link>
         </div>
         <div className="content__podcasts">
           <div className="content__titles">
