@@ -10,19 +10,6 @@ function Navbar() {
   const navigate = useNavigate();
   const { user, logout } = useContext(AuthContext);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    alert("Logged out successfully!");
-    navigate("/login");
-  };
-
-  const handleLogin = () => {
-    navigate("/login");
-  };
-  const handleRegister = () => {
-    navigate("/Register");
-  };
-
   return (
     <nav>
       <div className="nav__left">
@@ -32,9 +19,9 @@ function Navbar() {
         {user ? (
           <button onClick={logout}>Logout</button>
         ) : (
-          <button onClick={handleLogin}>Login</button>
+          <button onClick={() => navigate("/login")}>Login</button>
         )}
-        <button onClick={handleRegister}>Register</button>
+        <button onClick={() => navigate("/register")}>Register</button>
       </div>
       <div className="nav__right">
         <a href="#">
