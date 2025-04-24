@@ -10,32 +10,19 @@ import axios from "axios";
 export default function Home() {
   const { authTokens, user } = useContext(AuthContext);
 
-  async function fetchFollowingPodcasts() {
-    const data = await axios.get(
-      `http://localhost:8000/listeners/get_followed_podcasts/`,
-      {
-        headers: { Authorization: `Bearer ${authTokens.access}` },
-      }
-    );
-    return data;
-  }
-
-  async function fetchFollowingSharedPodcasts() {
-    const data = await axios.get(
-      `http://localhost:8000/listeners/get_followed_shares/`,
-      {
-        headers: { Authorization: `Bearer ${authTokens.access}` },
-      }
-    );
-    return data;
-  }
-
   const {
     data: recentPodcasts,
     isLoading: isLoadingRecentPodcasts,
     isError: isErrorRecentPodcasts,
   } = useQuery({
-    queryFn: () => fetchFollowingPodcasts(),
+    queryFn: () => {
+      return axios.get(
+        `http://localhost:8000/listeners/get_followed_podcasts/`,
+        {
+          headers: { Authorization: `Bearer ${authTokens.access}` },
+        }
+      );
+    },
     queryKey: ["followingPodcasts"],
   });
 
@@ -44,13 +31,17 @@ export default function Home() {
     isLoading: isLoadingSharedPodcasts,
     isError: isErrorSharedPodcasts,
   } = useQuery({
-    queryFn: () => fetchFollowingSharedPodcasts(),
+    queryFn: () => {
+      return axios.get(`http://localhost:8000/listeners/get_followed_shares/`, {
+        headers: { Authorization: `Bearer ${authTokens.access}` },
+      });
+    },
     queryKey: ["followingSharedPodcasts"],
   });
 
   return (
     <div className="home">
-      {isErrorRecentPodcasts || isErrorSharedPodcasts ? (
+      {!user ? (
         <p>Login first to access content.</p>
       ) : isLoadingRecentPodcasts || isLoadingSharedPodcasts ? (
         <p>Loading content...</p>

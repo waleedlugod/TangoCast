@@ -14,38 +14,29 @@ export default function AuthProvider({ children }) {
 
   const navigate = useNavigate();
 
-  async function updateTokensQuery() {
-    const res = await axios.post(
-      "http://localhost:8000/refresh/",
-      {
-        refresh: authTokens.refresh,
-      },
-      {
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-    return res;
-  }
-
-  async function getUserQuery() {
-    const res = await axios.get("http://localhost:8000/users/get_me/", {
-      headers: { Authorization: `Bearer ${authTokens.access}` },
-    });
-    return res;
-  }
-
-  const [user, setUser] = useState(null);
-  const { data: dataUser, refetch: getUser } = useQuery({
-    queryFn: getUserQuery,
+  // query for current user
+  const { data: user, refetch: getUser } = useQuery({
+    queryFn: () => {
+      return axios.get("http://localhost:8000/users/get_me/", {
+        headers: { Authorization: `Bearer ${authTokens.access}` },
+      });
+    },
     queryKey: ["getUser"],
   });
 
-  useEffect(() => {
-    setUser(dataUser);
-  }, [dataUser]);
-
+  // update tokens
   const { mutate: updateTokens } = useMutation({
-    mutationFn: () => updateTokensQuery(),
+    mutationFn: () => {
+      return axios.post(
+        "http://localhost:8000/refresh/",
+        {
+          refresh: authTokens.refresh,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    },
     mutationKey: ["updateTokens"],
     onSuccess: (res) => {
       const updatedTokens = {
@@ -62,6 +53,7 @@ export default function AuthProvider({ children }) {
     },
   });
 
+  // update tokens every 10 minutes
   useEffect(() => {
     setInterval(() => {
       if (authTokens) {
@@ -70,9 +62,11 @@ export default function AuthProvider({ children }) {
     }, 600000); // 10 minutes
   }, []);
 
+  // login
   const { mutate: login } = useMutation({
-    mutationFn: (formData) =>
-      axios.post("http://127.0.0.1:8000/login/", formData),
+    mutationFn: (formData) => {
+      return axios.post("http://127.0.0.1:8000/login/", formData);
+    },
     mutationKey: ["login"],
     onSuccess: (res) => {
       setAuthTokens({
@@ -85,16 +79,19 @@ export default function AuthProvider({ children }) {
     },
   });
 
+  // logout
   const { mutate: logout } = useMutation({
-    mutationFn: () =>
-      axios.post("http://localhost:8000/logout/", {
+    mutationFn: () => {
+      return axios.post("http://localhost:8000/logout/", {
         refresh: authTokens.refresh,
-      }),
+      });
+    },
     mutationKey: ["logout"],
     onSuccess: () => {
       localStorage.removeItem("authTokens");
       setAuthTokens(null);
       setUser(null);
+      navigate("/login");
     },
   });
 
