@@ -22,6 +22,7 @@ function Navbar() {
           <button onClick={() => navigate("/login")}>Login</button>
         )}
         <button onClick={() => navigate("/register")}>Register</button>
+        <button onClick={() => navigate("/search")}>Search</button>
       </div>
       <div className="nav__right">
         <a href="#">
