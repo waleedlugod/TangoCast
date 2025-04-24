@@ -10,6 +10,7 @@ import PodcastStudio from "../PodcastStudio/Studio.jsx";
 import Navbar from "../components/Navbar.jsx";
 import AuthProvider from "../context/AuthContext.jsx";
 import Content from "../PodcastStudio/Content.jsx";
+import ContentForm from "../PodcastStudio/ContentForm.jsx";
 
 export default function AppRoutes() {
   const videoRef = useRef(null);
@@ -49,6 +50,7 @@ export default function AppRoutes() {
         <Route path="/creator/:pk" element={<PodcastStudio />}>
           <Route index element={<Analytics />} />
           <Route path="content" element={<Content />} />
+          <Route path="edit/:id" element={<ContentForm />} />
         </Route>
       </Routes>
       {currentPodcast ? (
