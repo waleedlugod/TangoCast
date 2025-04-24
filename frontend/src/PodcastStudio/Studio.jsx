@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PlaceholderIcon from "../assets/NavBar/PlaceholderIcon.png";
 import AnalyticsIcon from "../assets/NavBar/PodcastStudio/AnalyticsIcon.svg";
 import ContentIcon from "../assets/NavBar/PodcastStudio/ContentIcon.svg";
@@ -7,6 +8,8 @@ import ActivityIcon from "../assets/NavBar/PodcastStudio/ActivityIcon.svg";
 import "./Studio.css";
 
 export default function PodcastStudio() {
+  let { pk } = useParams();
+
   return (
     <section className="container">
       <section className="left-nav">
@@ -20,10 +23,10 @@ export default function PodcastStudio() {
           </a>
         </div>
         <div className="left-nav__bot">
-          <a className="left-nav__link" href="#">
+          <Link className="left-nav__link" to={`/creator/${pk}`}>
             <img src={AnalyticsIcon} alt="" />
             <p>Analytics</p>
-          </a>
+          </Link>
           <a className="left-nav__link" href="#">
             <img src={ContentIcon} alt="" />
             <p>Content</p>
