@@ -4,11 +4,7 @@ import pauseButton from "/pause.svg";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import ReactPlayer from "react-player";
-import React from "react";
-
-async function fetchPodcast(podcastId) {
-  return (await fetch(`http://localhost:8000/podcast/${podcastId}`)).json();
-}
+import axios from "axios";
 
 /**
  * A component that contains the transcript and video of the currently playing podcast.
@@ -23,7 +19,9 @@ export default function FullPlayer({
 }) {
   const { id: podcastId } = useParams();
   const { data: podcast, isLoading } = useQuery({
-    queryFn: () => fetchPodcast(podcastId),
+    queryFn: () => {
+      return axios.get(`http://localhost:8000/podcast/${podcastId}`);
+    },
     queryKey: ["podcast"],
   });
 
@@ -37,13 +35,15 @@ export default function FullPlayer({
             <div className="full-player__podcast-details">
               <img
                 className="full-player__podcast-image"
-                src={podcast?.thumbnail}
-                alt={podcast?.thumbnail_alt}
+                src={podcast.data.thumbnail}
+                alt={podcast.data.thumbnail_alt}
               />
               <div className="full-player__podcast-show-ep">
-                <p className="full-player__podcast-show">{podcast?.title}</p>
+                <p className="full-player__podcast-show">
+                  {podcast.data.title}
+                </p>
                 <p className="full-player__podcast-ep">
-                  Episode {podcast?.episode_number}: {podcast?.episode}
+                  Episode {podcast.data?.episode_number}: {podcast.data.episode}
                 </p>
               </div>
               <img
@@ -51,7 +51,7 @@ export default function FullPlayer({
                 src={isPlayFullPlayer ? pauseButton : playButton}
                 alt=""
                 onClick={() => {
-                  setCurrentPodcast(podcast);
+                  setCurrentPodcast(podcast.data);
                   setIsPlayFullPlayer((prev) => !prev);
                 }}
               />
@@ -62,7 +62,7 @@ export default function FullPlayer({
               {isVideoEnabled ? (
                 <ReactPlayer
                   ref={videoRef}
-                  url={podcast?.video}
+                  url={podcast.data.video}
                   muted={true}
                   playing={isPlayFullPlayer}
                   // width={"100%"}
@@ -78,7 +78,7 @@ export default function FullPlayer({
                 className="full-player__transcript visible"
                 id="js-podcast-transcript"
               >
-                {podcast.transcript}
+                {podcast.data.transcript}
               </div>
             ) : (
               <></>

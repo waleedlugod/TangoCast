@@ -1,20 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import "./Search.css";
-
-async function fetchPodcasts(search, category) {
-  return (
-    await fetch(
-      `http://localhost:8000/podcast/?search=${search}&category=${category}`
-    )
-  ).json();
-}
+import axios from "axios";
 
 export default function Search() {
   const [category, setCategory] = useState("");
   const [search, setSearch] = useState("");
   const { data: podcasts, isLoading } = useQuery({
-    queryFn: () => fetchPodcasts(search, category),
+    queryFn: () => {
+      return axios.get(
+        `http://localhost:8000/podcast/?search=${search}&category=${category}`
+      );
+    },
     queryKey: ["podcasts", { search, category }],
   });
 
@@ -43,10 +40,10 @@ export default function Search() {
       <div className="podcast-container">
         {isLoading ? (
           <p>loading...</p>
-        ) : Object.keys(podcasts).length === 0 ? (
+        ) : Object.keys(podcasts.data).length === 0 ? (
           <p>Could not find podcast</p>
         ) : (
-          podcasts?.map((podcast) => {
+          podcasts.data?.map((podcast) => {
             return (
               <a
                 key={podcast.title}

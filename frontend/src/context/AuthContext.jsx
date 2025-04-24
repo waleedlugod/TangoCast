@@ -15,7 +15,7 @@ export default function AuthProvider({ children }) {
   const navigate = useNavigate();
 
   // query for current user
-  const { data: user, refetch: getUser } = useQuery({
+  const { data: userData, refetch: getUser } = useQuery({
     queryFn: () => {
       return axios.get("http://localhost:8000/users/get_me/", {
         headers: { Authorization: `Bearer ${authTokens.access}` },
@@ -23,6 +23,10 @@ export default function AuthProvider({ children }) {
     },
     queryKey: ["getUser"],
   });
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    if (userData) setUser(userData.data);
+  }, [userData]);
 
   // update tokens
   const { mutate: updateTokens } = useMutation({
