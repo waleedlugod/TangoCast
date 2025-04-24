@@ -50,6 +50,18 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = UserModel.objects.all()
     serializer_class = UserSerializer
 
+    @action(detail=False)
+    def get_me(self, request):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
+
+    def get_permissions(self):
+        if self.action == "get_me":
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = []
+        return [permission() for permission in permission_classes]
+
 
 class CreatorViewSet(viewsets.ModelViewSet):
     queryset = CreatorModel.objects.all()
@@ -61,19 +73,22 @@ class ListenerViewSet(viewsets.ModelViewSet):
     queryset = ListenerModel.objects.all()
     serializer_class = ListenerSerializer
 
+    def get_permissions(self):
+        if (
+            self.action == "get_followed_podcasts"
+            or self.action == "get_followed_shares"
+        ):
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = []
+        return [permission() for permission in permission_classes]
+
     @action(detail=False)
     def get_followed_podcasts(self, request):
         listener = ListenerModel.objects.get(listener_id=request.user)
         podcasts = Podcast.objects.filter(creator__in=listener.follows.all())
         serializer = PodcastSerializer(podcasts, many=True)
         return Response(serializer.data)
-
-    def get_permissions(self):
-        if self.action == "get_followed_podcasts":
-            permission_classes = [IsAuthenticated]
-        else:
-            permission_classes = []
-        return [permission() for permission in permission_classes]
 
     @action(detail=False)
     def get_followed_shares(self, request):
