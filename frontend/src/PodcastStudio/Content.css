@@ -38,10 +38,6 @@ a {
   border-radius: 10px;
 }
 
-.content-main-container__title button:hover {
-  text-decoration: none;
-}
-
 .content-main-container__title h1 {
   font-size: 2.6rem;
   margin: 0;

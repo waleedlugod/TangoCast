@@ -2,9 +2,8 @@ import { useParams } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import { Link } from "react-router-dom";
 import PlaceholderIcon from "../assets/NavBar/PlaceholderIcon.png";
-import AnalyticsIcon from "../assets/NavBar/PodcastStudio/AnalyticsIcon.svg";
-import ContentIcon from "../assets/NavBar/PodcastStudio/ContentIcon.svg";
-import ActivityIcon from "../assets/NavBar/PodcastStudio/ActivityIcon.svg";
+import AnalyticsIcon from "../assets/PodcastStudio/AnalyticsIcon.svg";
+import ContentIcon from "../assets/PodcastStudio/ContentIcon.svg";
 import "./Studio.css";
 
 export default function PodcastStudio() {
