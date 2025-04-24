@@ -56,7 +56,7 @@ export default function AuthProvider({ children }) {
       localStorage.setItem("authTokens", JSON.stringify(updatedTokens));
       getUser();
     },
-    onError: (error) => {
+    onError: () => {
       setAuthTokens(null);
       setUser(null);
     },
@@ -67,7 +67,7 @@ export default function AuthProvider({ children }) {
       if (authTokens) {
         updateTokens();
       }
-    }, 2000); // 10 minutes
+    }, 600000); // 10 minutes
   }, []);
 
   const { mutate: login } = useMutation({
