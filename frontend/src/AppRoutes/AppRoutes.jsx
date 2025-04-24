@@ -9,6 +9,7 @@ import Analytics from "../PodcastStudio/Analytics.jsx";
 import PodcastStudio from "../PodcastStudio/Studio.jsx";
 import Navbar from "../components/Navbar.jsx";
 import AuthProvider from "../context/AuthContext.jsx";
+import Content from "../PodcastStudio/Content.jsx";
 
 export default function AppRoutes() {
   const videoRef = useRef(null);
@@ -47,6 +48,7 @@ export default function AppRoutes() {
         <Route path="/search" element={<Search />} />
         <Route path="/creator/:pk" element={<PodcastStudio />}>
           <Route index element={<Analytics />} />
+          <Route path="content" element={<Content />} />
         </Route>
       </Routes>
       {currentPodcast ? (

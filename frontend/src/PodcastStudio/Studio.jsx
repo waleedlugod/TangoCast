@@ -27,10 +27,10 @@ export default function PodcastStudio() {
             <img src={AnalyticsIcon} alt="" />
             <p>Analytics</p>
           </Link>
-          <a className="left-nav__link" href="#">
+          <Link className="left-nav__link" to={`/creator/${pk}/content`}>
             <img src={ContentIcon} alt="" />
             <p>Content</p>
-          </a> 
+          </Link> 
         </div>
       </section>
       <Outlet />
