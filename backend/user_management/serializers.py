@@ -14,6 +14,8 @@ class UserSerializer(serializers.ModelSerializer):
         role = validated_data.get("role")
         if role == "creatorUser":
             CreatorModel.objects.create(creator_id=user)
+        elif role == "listenerUser":
+            ListenerModel.objects.create(listener_id=user)
 
         return user
 
