@@ -72,3 +72,14 @@
   width: 33.35px;
   cursor: pointer;
 }
+
+.full-player_podcast-creator-wrapper {
+  display: flex;
+  flex-direction: row;
+  column-gap: 1rem;
+}
+.full-player_podcast-creator-wrapper button {
+  background-color: #c5e9de;
+  padding: 0.275rem;
+  border-radius: 0.5rem;
+}

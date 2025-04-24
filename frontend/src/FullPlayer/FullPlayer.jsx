@@ -45,6 +45,10 @@ export default function FullPlayer({
                 <p className="full-player__podcast-ep">
                   Episode {podcast.data?.episode_number}: {podcast.data.episode}
                 </p>
+                <div className="full-player_podcast-creator-wrapper">
+                  <p>By: {podcast.data.creator.creator_id.username}</p>
+                  <button>follow/following</button>
+                </div>
               </div>
               <img
                 className="full-player__podcast-button"

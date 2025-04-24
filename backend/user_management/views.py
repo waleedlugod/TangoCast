@@ -52,8 +52,19 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(detail=False)
     def get_me(self, request):
-        serializer = UserSerializer(request.user)
-        return Response(serializer.data)
+        user_serializer = UserSerializer(request.user)
+        if request.user.role == "listenerUser":
+            listener = ListenerModel.objects.get(listener_id=request.user)
+            listener_serializer = ListenerSerializer(listener)
+            return Response(
+                {"user": user_serializer.data, "listener": listener_serializer.data}
+            )
+        elif request.user.role == "creatorUser":
+            creator = CreatorModel.objects.get(creator_id=request.user)
+            creator_serializer = CreatorSerializer(creator)
+            return Response(
+                {"user": user_serializer.data, "creator": creator_serializer.data}
+            )
 
     def get_permissions(self):
         if self.action == "get_me":
