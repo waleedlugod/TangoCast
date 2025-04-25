@@ -9,10 +9,10 @@ import { useNavigate } from "react-router-dom";
  */
 export default function Home() {
   const navigate = useNavigate();
-  const { authTokens, user } = useContext(AuthContext);
+  const { authTokens } = useContext(AuthContext);
   useEffect(() => {
-    if (!user) navigate("/");
-  }, [user]);
+    if (!authTokens) navigate("/");
+  }, [authTokens]);
 
   const {
     data: recentPodcasts,
@@ -45,7 +45,7 @@ export default function Home() {
 
   return (
     <div className="home">
-      {!user ? (
+      {!authTokens ? (
         <p>Login first to access content.</p>
       ) : isLoadingRecentPodcasts || isLoadingSharedPodcasts ? (
         <p>Loading content...</p>

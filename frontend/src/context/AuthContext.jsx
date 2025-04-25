@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -14,19 +14,18 @@ export default function AuthProvider({ children }) {
 
   const navigate = useNavigate();
 
+  const queryClient = useQueryClient();
+
   // query for current user
-  const { data: userData, refetch: getUser } = useQuery({
+  const { data: user } = useQuery({
     queryFn: () => {
       return axios.get("http://localhost:8000/users/get_me/", {
         headers: { Authorization: `Bearer ${authTokens.access}` },
       });
     },
     queryKey: ["getUser"],
+    select: (data) => (data = data.data),
   });
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    if (userData) setUser(userData.data);
-  }, [userData]);
 
   // update tokens
   const { mutate: updateTokens } = useMutation({
@@ -49,11 +48,9 @@ export default function AuthProvider({ children }) {
       };
       setAuthTokens(updatedTokens);
       localStorage.setItem("authTokens", JSON.stringify(updatedTokens));
-      getUser();
     },
     onError: () => {
       setAuthTokens(null);
-      setUser(null);
     },
   });
 
@@ -78,7 +75,6 @@ export default function AuthProvider({ children }) {
         refresh: res.data.refresh,
       });
       localStorage.setItem("authTokens", JSON.stringify(res.data));
-      getUser();
       navigate("/");
     },
   });
@@ -94,10 +90,13 @@ export default function AuthProvider({ children }) {
     onSuccess: () => {
       localStorage.removeItem("authTokens");
       setAuthTokens(null);
-      setUser(null);
       navigate("/login");
     },
   });
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ["getUser"] });
+  }, [authTokens]);
 
   return (
     <AuthContext

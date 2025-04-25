@@ -7,10 +7,10 @@ import { AuthContext } from "../context/AuthContext";
 
 export default function Landing() {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { authTokens } = useContext(AuthContext);
   useEffect(() => {
-    if (user) navigate("/dashboard");
-  }, user);
+    if (authTokens) navigate("/dashboard");
+  }, [authTokens]);
 
   return (
     <div className="landing">

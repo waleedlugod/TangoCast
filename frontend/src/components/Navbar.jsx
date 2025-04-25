@@ -8,15 +8,17 @@ import { AuthContext } from "../context/AuthContext";
 
 function Navbar() {
   const navigate = useNavigate();
-  const { user, logout } = useContext(AuthContext);
+  const { authTokens, logout } = useContext(AuthContext);
 
   return (
     <nav>
       <div className="nav__left">
-        <button onClick={() => navigate("/")}>
+        <button
+          onClick={() => (authTokens ? navigate("/dashboard") : navigate("/"))}
+        >
           <img className="nav__logo" src={TangoCastLogo} alt="TangoCast" />
         </button>
-        {user ? (
+        {authTokens ? (
           <button onClick={logout}>Logout</button>
         ) : (
           <>
@@ -27,7 +29,7 @@ function Navbar() {
         <button onClick={() => navigate("/search")}>Search</button>
       </div>
       <div className="nav__right">
-        {user && (
+        {authTokens && (
           <a href="#">
             <img className="nav__icon" src={PlaceholderIcon} alt="User Icon" />
           </a>

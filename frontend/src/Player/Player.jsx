@@ -195,7 +195,7 @@ function PlayerAdditional({
       <button
         onClick={() => {
           writeClipboardLink();
-          if (user) sharePodcast();
+          if (authTokens) sharePodcast();
         }}
       >
         <img src={shareIcon} alt="" />

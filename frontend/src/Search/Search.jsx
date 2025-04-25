@@ -13,6 +13,7 @@ export default function Search() {
       );
     },
     queryKey: ["podcasts", { search, category }],
+    select: (data) => data.data,
   });
 
   return (
@@ -40,10 +41,10 @@ export default function Search() {
       <div className="podcast-container">
         {isLoading ? (
           <p>loading...</p>
-        ) : Object.keys(podcasts.data).length === 0 ? (
+        ) : Object.keys(podcasts).length === 0 ? (
           <p>Could not find podcast</p>
         ) : (
-          podcasts.data?.map((podcast) => {
+          podcasts.map((podcast) => {
             return (
               <a
                 key={podcast.title}
