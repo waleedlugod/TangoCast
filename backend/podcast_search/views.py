@@ -31,6 +31,7 @@ class GetPodcast(generics.RetrieveAPIView):
     serializer_class = PodcastSerializer
 
 
+# TODO: remove all other apis and use this as the sole api
 class PodcastViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permision_classes = [IsAuthenticated]
@@ -52,9 +53,7 @@ class CreatorPodcastViewSet(viewsets.ModelViewSet):
             raise NotFound("Creator not found")
 
         if request.method == "GET":
-            podcasts = (
-                Podcast.objects.filter(creator=creator).order_by("-views")
-            )
+            podcasts = Podcast.objects.filter(creator=creator).order_by("-views")
             serializer = PodcastSerializer(podcasts, many=True)
             return JsonResponse(serializer.data, safe=False)
 

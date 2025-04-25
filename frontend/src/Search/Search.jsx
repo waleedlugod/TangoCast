@@ -5,6 +5,7 @@ import "./Search.css";
 async function fetchPodcasts(search, category) {
   return (
     await fetch(
+      // TODO: update url when other TODOs are done
       `http://localhost:8000/podcast/?search=${search}&category=${category}`
     )
   ).json();

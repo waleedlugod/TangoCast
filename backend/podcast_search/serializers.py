@@ -6,14 +6,15 @@ from user_management.serializers import CreatorSerializer
 
 
 class PodcastSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Podcast
+        fields = "__all__"
+
+    # TODO: remove everything below
     creator = CreatorSerializer()
     creator_user_id = serializers.PrimaryKeyRelatedField(
         queryset=UserModel.objects.all(), write_only=True
     )
-
-    class Meta:
-        model = Podcast
-        fields = "__all__"
 
     def create(self, validated_data):
         user = validated_data.pop("creator_user_id")
