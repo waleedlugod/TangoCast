@@ -12,15 +12,19 @@ export default function Analytics() {
     const fetchData = async () => {
       try {
         const [podcastResponse, userResponse] = await Promise.all([
-          fetch(`http://127.0.0.1:8000/search/podcast/creator/${pk}/`),
-          fetch(`http://127.0.0.1:8000/creator/${pk}/`),
+          fetch(
+            `http://127.0.0.1:8000/podcast/podcasts/creators/${pk}/podcasts`
+          ),
+          fetch(`http://127.0.0.1:8000/creators/${pk}/`),
         ]);
 
         const podcastResult = await podcastResponse.json();
         const userResult = await userResponse.json();
 
         setPodcasts(
-          Array.isArray(podcastResult) ? podcastResult : [podcastResult]
+          Array.isArray(podcastResult)
+            ? podcastResult.slice(0, 5)
+            : [podcastResult].slice(0, 5)
         );
         setUser(userResult);
       } catch (err) {
@@ -82,7 +86,7 @@ export default function Analytics() {
           <div className="data__top">
             <div className="data__followers">
               <p>Followers</p>
-              <p>{user?.followers}</p>
+              <p>{user?.creator_id?.followers}</p>
             </div>
             <div className="data__views">
               <p>Views</p>
@@ -95,10 +99,27 @@ export default function Analytics() {
           </div>
         </div>
         <div className="top-podcasts">
-          <p>Top Podcasts</p>
+          <p className="top-podcasts__title">Top Podcasts</p>
           <div>
-            {podcasts?.map((podcast) => (
-              <div key={podcast.id}>{podcast.title}</div>
+            {podcasts?.map((podcast, index) => (
+              <div className="podcast-card" key={podcast.id}>
+                <div className="podcast-card__left">
+                  <p className="podcast-card__number">{index + 1}.</p>
+                  <div className="podcast-card__mid">
+                    <img
+                      src={`http://127.0.0.1:8000${podcast.thumbnail}`}
+                      alt={`${podcast.title} thumbnail`}
+                    />
+                    <div className="podcast-card__info">
+                      <p className="podcast-card__title">{podcast.title}</p>
+                      <p className="podcast-card__episode">{podcast.episode}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="podcast-card__right">
+                  <p>{podcast.views} Views</p>
+                </div>
+              </div>
             ))}
           </div>
         </div>

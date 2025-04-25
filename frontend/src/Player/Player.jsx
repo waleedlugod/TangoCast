@@ -9,6 +9,7 @@ import transcriptIcon from "/transcript.svg";
 import circleIcon from "/icon-circle.svg";
 import { AuthContext } from "../context/AuthContext";
 import shareIcon from "/share.svg";
+import axios from "axios";
 
 /**
  * A component that holds information about the currently playing podcast.
@@ -72,14 +73,18 @@ function PlayerAdditional({
   startTimer,
   stopTimer,
 }) {
-  const { authTokens } = useContext(AuthContext);
-  const { mutate: sharePodcast, data: respnose } = useMutation({
+  const { authTokens, user } = useContext(AuthContext);
+  const { mutate: sharePodcast } = useMutation({
     mutationFn: () => {
-      return fetch(`http://localhost:8000/share/shared/${podcast.id}/`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${authTokens.access}` },
-      });
+      return axios.post(
+        `http://localhost:8000/share/shared/`,
+        { podcast: podcast.id, shared_by: user.id },
+        {
+          headers: { Authorization: `Bearer ${authTokens.access}` },
+        }
+      );
     },
+    mutationKey: "sharePodcast",
   });
 
   function toggleVideo() {

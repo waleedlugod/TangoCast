@@ -14,39 +14,48 @@ class UserSerializer(serializers.ModelSerializer):
         role = validated_data.get("role")
         if role == "creatorUser":
             CreatorModel.objects.create(creator_id=user)
+        elif role == "listenerUser":
+            ListenerModel.objects.create(listener_id=user)
 
         return user
 
 
 class CreatorSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(source="creator_id.id")
-    username = serializers.CharField(source="creator_id.username")
-    email = serializers.EmailField(source="creator_id.email")
-    profile_photo = serializers.ImageField(
-        source="creator_id.profile_photo", allow_empty_file=True, required=False
-    )
-    banner_photo = serializers.ImageField(
-        source="creator_id.banner_photo", allow_empty_file=True, required=False
-    )
-    bio = serializers.CharField(source="creator_id.bio", required=False)
-    instagram_social = serializers.URLField(
-        source="creator_id.instagram_social", required=False
-    )
-    x_social = serializers.URLField(source="creator_id.x_social", required=False)
-    followers = serializers.IntegerField(source="creator_id.followers", required=False)
-    staff = serializers.CharField(required=False)
+    creator_id = UserSerializer()
 
     class Meta:
         model = CreatorModel
-        fields = [
-            "id",
-            "username",
-            "email",
-            "profile_photo",
-            "banner_photo",
-            "bio",
-            "instagram_social",
-            "x_social",
-            "followers",
-            "staff",
-        ]
+        fields = "__all__"
+
+    def create(self, validated_data):
+        user_data = validated_data.pop("user")
+
+        user_serializer = UserSerializer(data=user_data)
+        user_serializer.is_valid(raise_exception=True)
+        user = user_serializer.save()
+
+        creator = CreatorModel.objects.create(creator_id=user, **validated_data)
+
+        return creator
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop("user")
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        if user_data:
+            user_serializer = UserSerializer(
+                instance=instance.user, data=user_data, partial=self.partial
+            )
+            user_serializer.is_valid(raise_exception=True)
+            user_serializer.save()
+
+        return instance
+
+
+class ListenerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ListenerModel
+        fields = "__all__"

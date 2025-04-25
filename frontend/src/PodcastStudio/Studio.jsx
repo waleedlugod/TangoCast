@@ -7,8 +7,6 @@ import ActivityIcon from "../assets/NavBar/PodcastStudio/ActivityIcon.svg";
 import "./Studio.css";
 
 export default function PodcastStudio() {
-  let { id } = useParams();
-
   return (
     <section className="container">
       <section className="left-nav">
