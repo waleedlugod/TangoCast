@@ -5,6 +5,9 @@ from rest_framework import generics, filters, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound
 from rest_framework.parsers import JSONParser
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Podcast
 from .serializers import PodcastSerializer
@@ -29,11 +32,15 @@ class GetPodcast(generics.RetrieveAPIView):
 
 
 class PodcastViewSet(viewsets.ModelViewSet):
+    authentication_classes = [JWTAuthentication]
+    permision_classes = [IsAuthenticated]
     queryset = Podcast.objects.all()
     serializer_class = PodcastSerializer
 
 
 class CreatorPodcastViewSet(viewsets.ModelViewSet):
+    authentication_classes = [JWTAuthentication]
+    permision_classes = [IsAuthenticated]
     queryset = CreatorModel.objects.all()
     serializer_class = CreatorSerializer
 
