@@ -1,5 +1,4 @@
 import { useContext, useEffect } from "react";
-import "./Home.css";
 import { AuthContext } from "../context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";

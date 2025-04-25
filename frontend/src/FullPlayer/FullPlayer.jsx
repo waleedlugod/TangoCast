@@ -47,7 +47,7 @@ export default function FullPlayer({
                 </p>
                 <div className="full-player_podcast-creator-wrapper">
                   <p>By: {podcast.data.creator.creator_id.username}</p>
-                  <button>follow/following</button>
+                  {/* <button>follow/following</button> */}
                 </div>
               </div>
               <img
