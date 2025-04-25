@@ -13,10 +13,8 @@ export default function ContentForm({ isUpload }) {
 
   const { data } = useQuery({
     queryKey: ["creator", { pk }],
-    queryFn: async () => {
-      return await axios
-        .get(`http://127.0.0.1:8000/creators/${pk}`)
-        .then((res) => res.data);
+    queryFn: () => {
+      return axios.get(`http://127.0.0.1:8000/creators/${pk}`);
     },
   });
 
