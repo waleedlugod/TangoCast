@@ -1,15 +1,53 @@
 import { useParams, Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { useRef } from "react";
 import axios from "axios";
 import "./ContentForm.css";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 export default function ContentForm({ isUpload }) {
+  let formRef = useRef(null);
   let { pk, id } = useParams();
+  const { authTokens } = useContext(AuthContext);
+
+  const { data } = useQuery({
+    queryKey: ["creator", { pk }],
+    queryFn: async () => {
+      return await axios
+        .get(`http://127.0.0.1:8000/creators/${pk}`)
+        .then((res) => res.data);
+    },
+  });
+
+  const mutation = useMutation({
+    mutationKey: ["createPodcast"],
+    mutationFn: (formData) => {
+      return axios.post(`http://127.0.0.1:8000/podcast/podcasts/`, formData, {
+        headers: {
+          Authorization: `Bearer ${authTokens.access}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formRaw = new FormData(formRef.current);
+    formRaw.set("creator", data);
+    const formJson = Object.fromEntries(formRaw);
+    mutation.mutate(JSON.stringify(formJson));
+  };
 
   return (
     <main className="form-main">
       <div className="form-main-container">
-        <form action="">
+        <form ref={formRef} onSubmit={handleSubmit}>
           <div className="form-body">
             <div className="form-heading">
               <div className="form-heading__left">
