@@ -1,14 +1,19 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import "./Home.css";
 import { AuthContext } from "../context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 /**
  * A component that holds the current page the user is on in the website.
  */
 export default function Home() {
+  const navigate = useNavigate();
   const { authTokens, user } = useContext(AuthContext);
+  useEffect(() => {
+    if (!user) navigate("/");
+  }, [user]);
 
   const {
     data: recentPodcasts,

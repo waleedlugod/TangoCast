@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { Routes, Route } from "react-router-dom";
+import Landing from "../Landing/Landing.jsx";
 import Register from "../Register/Register.jsx";
 import Login from "../Login/Login.jsx";
 import Search from "../Search/Search.jsx";
@@ -22,7 +23,8 @@ export default function AppRoutes() {
     <AuthProvider>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/dashboard" element={<Home />} />
+        <Route path="/" element={<Landing />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route
