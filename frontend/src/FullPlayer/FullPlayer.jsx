@@ -2,13 +2,11 @@ import "./FullPlayer.css";
 import playButton from "/play.svg";
 import pauseButton from "/pause.svg";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ReactPlayer from "react-player";
-import React from "react";
-
-async function fetchPodcast(podcastId) {
-  return (await fetch(`http://localhost:8000/podcast/${podcastId}`)).json();
-}
+import axios from "axios";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 /**
  * A component that contains the transcript and video of the currently playing podcast.
@@ -21,10 +19,40 @@ export default function FullPlayer({
   isTranscriptEnabled,
   videoRef,
 }) {
+  const { authTokens, user } = useContext(AuthContext);
   const { id: podcastId } = useParams();
   const { data: podcast, isLoading } = useQuery({
-    queryFn: () => fetchPodcast(podcastId),
+    queryFn: () => {
+      return axios.get(`http://localhost:8000/podcast/${podcastId}`);
+    },
     queryKey: ["podcast"],
+    select: (data) => (data = data.data),
+  });
+
+  const queryClient = useQueryClient();
+
+  const { mutate: follow, isSuccess: isSuccessFollow } = useMutation({
+    mutationKey: ["follow"],
+    mutationFn: () => {
+      return axios.patch(`http://localhost:8000/listeners/${user.user.id}/`, {
+        follows: [...user.listener.follows, podcast.creator.creator_id.id],
+      });
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["getUser"] }),
+  });
+
+  const { mutate: unfollow, isSuccess: isSuccessUnfollow } = useMutation({
+    mutationKey: ["unfollow"],
+    mutationFn: () => {
+      return axios.patch(`http://localhost:8000/listeners/${user.user.id}/`, {
+        follows: [
+          ...user.listener.follows.filter(
+            (value) => value != podcast.creator.creator_id.id
+          ),
+        ],
+      });
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["getUser"] }),
   });
 
   return (
@@ -37,14 +65,25 @@ export default function FullPlayer({
             <div className="full-player__podcast-details">
               <img
                 className="full-player__podcast-image"
-                src={podcast?.thumbnail}
-                alt={podcast?.thumbnail_alt}
+                src={podcast.thumbnail}
+                alt={podcast.thumbnail_alt}
               />
               <div className="full-player__podcast-show-ep">
-                <p className="full-player__podcast-show">{podcast?.title}</p>
+                <p className="full-player__podcast-show">{podcast.title}</p>
                 <p className="full-player__podcast-ep">
-                  Episode {podcast?.episode_number}: {podcast?.episode}
+                  Episode {podcast.episode_number}: {podcast.episode}
                 </p>
+                <div className="full-player_podcast-creator-wrapper">
+                  <p>By: {podcast.creator.creator_id.username}</p>
+                  {authTokens &&
+                  user.listener.follows.includes(
+                    podcast.creator.creator_id.id
+                  ) ? (
+                    <button onClick={unfollow}>unfollow</button>
+                  ) : (
+                    <button onClick={follow}>follow</button>
+                  )}
+                </div>
               </div>
               <img
                 className="full-player__podcast-button"
@@ -62,7 +101,7 @@ export default function FullPlayer({
               {isVideoEnabled ? (
                 <ReactPlayer
                   ref={videoRef}
-                  url={podcast?.video}
+                  url={podcast.video}
                   muted={true}
                   playing={isPlayFullPlayer}
                   // width={"100%"}

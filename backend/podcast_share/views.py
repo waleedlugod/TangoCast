@@ -50,12 +50,3 @@ class CreatePodcastShare(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = SharedPodcastSerializer
     queryset = SharedPodcast.objects.all()
-
-    def post(self, request, id):
-        serializer = SharedPodcastSerializer(data=request.data)
-        if serializer.is_valid():
-            podcast = Podcast.objects.get(id=id)
-            serializer.save(shared_by=request.user, podcast=podcast)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import UserModel, CreatorModel
+from .models import UserModel, CreatorModel, ListenerModel
 
 
 class CreatorInline(admin.StackedInline):
@@ -23,6 +23,7 @@ class CustomUserAdmin(UserAdmin):
                     "banner_photo",
                     "instagram_social",
                     "x_social",
+                    "followers",
                 )
             },
         ),
@@ -36,3 +37,4 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(UserModel, CustomUserAdmin)
 admin.site.register(CreatorModel)
+admin.site.register(ListenerModel)

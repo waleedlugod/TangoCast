@@ -1,11 +1,18 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework import generics, filters
+from rest_framework import generics, filters, viewsets
+from rest_framework.decorators import action
+from rest_framework.exceptions import NotFound
 from rest_framework.parsers import JSONParser
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Podcast
 from .serializers import PodcastSerializer
+from user_management.models import CreatorModel
+from user_management.serializers import CreatorSerializer
 
 
 # Create your views here.
@@ -24,53 +31,35 @@ class GetPodcast(generics.RetrieveAPIView):
     serializer_class = PodcastSerializer
 
 
-@csrf_exempt
-def podcast_detail(request, pk):
-    try:
-        podcast = Podcast.objects.get(id=pk)
-    except Podcast.DoesNotExist:
-        return HttpResponse(status=404)
-
-    if request.method == "GET":
-        serializer = PodcastSerializer(podcast)
-        return JsonResponse(serializer.data, safe=False)
-
-    elif request.method == "PUT":
-        data = JSONParser().parse(request)
-        serializer = PodcastSerializer(podcast, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data)
-        return JsonResponse(serializer.errors, status=400)
-
-    elif request.method == "DELETE":
-        podcast.delete()
-        return HttpResponse(status=204)
+class PodcastViewSet(viewsets.ModelViewSet):
+    authentication_classes = [JWTAuthentication]
+    permision_classes = [IsAuthenticated]
+    queryset = Podcast.objects.all()
+    serializer_class = PodcastSerializer
 
 
-@csrf_exempt
-def podcast_creator(request, pk):
-    try:
-        podcasts = Podcast.objects.filter(creator__creator_id__id=pk)
-    except Podcast.DoesNotExist:
-        return HttpResponse(status=404)
+class CreatorPodcastViewSet(viewsets.ModelViewSet):
+    authentication_classes = [JWTAuthentication]
+    permision_classes = [IsAuthenticated]
+    queryset = CreatorModel.objects.all()
+    serializer_class = CreatorSerializer
 
-    if request.method == "GET":
-        serializer = PodcastSerializer(podcasts, many=True)
-        return JsonResponse(serializer.data, safe=False)
+    @action(detail=True, methods=["get", "post"])
+    def podcasts(self, request, pk=None):
+        try:
+            creator = self.get_object()
+        except CreatorModel.DoesNotExist:
+            raise NotFound("Creator not found")
 
+        if request.method == "GET":
+            podcasts = (
+                Podcast.objects.filter(creator=creator).order_by("-views")
+            )
+            serializer = PodcastSerializer(podcasts, many=True)
+            return JsonResponse(serializer.data, safe=False)
 
-@csrf_exempt
-def podcast_list(request):
-    if request.method == "GET":
-        podcasts = Podcast.objects.all()
-        serializer = PodcastSerializer(podcasts, many=True)
-        return JsonResponse(serializer.data, safe=False)
-
-    if request.method == "POST":
-        data = JSONParser().parse(request)
-        serializer = PodcastSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
+        if request.method == "POST":
+            serializer = PodcastSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save(creator=creator)
             return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
