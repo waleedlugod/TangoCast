@@ -195,7 +195,7 @@ function PlayerAdditional({
       <button
         onClick={() => {
           writeClipboardLink();
-          sharePodcast();
+          if (user) sharePodcast();
         }}
       >
         <img src={shareIcon} alt="" />
@@ -326,11 +326,9 @@ export default function Player({
     isPlayFullPlayer ? audio.play() : audio.pause();
   }, [isPlayFullPlayer]);
 
-  const { user } = useContext(AuthContext);
-
   return (
     <>
-      <div className="player" style={{ display: user ? "block" : "none" }}>
+      <div className="player">
         <PlayerPodcast podcast={podcast} />
         <AudioPlayer
           src={podcast.audio}
