@@ -7,7 +7,7 @@ import ReactPlayer from "react-player";
 import React from "react";
 
 async function fetchPodcast(podcastId) {
-  // TODO: update url when other bugs TODOs are done
+  // TODO: update url when other TODOs are done
   return (await fetch(`http://localhost:8000/podcast/${podcastId}`)).json();
 }
 

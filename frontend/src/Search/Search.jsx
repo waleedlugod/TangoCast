@@ -52,6 +52,7 @@ export default function Search() {
               <a
                 key={podcast.title}
                 className="podcast"
+                // TODO: fix url after other TODOs are done
                 href={`/podcast/${podcast.id}`}
               >
                 <p>{podcast.title}</p>

@@ -5,6 +5,7 @@ import axios from "axios";
 
 async function fetchPodcasts(pk) {
   return await axios
+    // TODO: fix url after other TODOs are done
     .get(`http://127.0.0.1:8000/podcast/podcasts/creators/${pk}/podcasts`)
     .then((res) => res.data);
 }
@@ -36,7 +37,11 @@ export default function Content() {
           ) : (
             data?.map((podcast, index) => {
               return (
-                <Link to={`/creator/${pk}/edit/${podcast.id}`} className="content-podcast-card" key={podcast.id}>
+                <Link
+                  to={`/creator/${pk}/edit/${podcast.id}`}
+                  className="content-podcast-card"
+                  key={podcast.id}
+                >
                   <div className="content-podcast-card__left">
                     <div className="content-podcast-card__mid">
                       <img
@@ -44,7 +49,9 @@ export default function Content() {
                         alt={`${podcast.title} thumbnail`}
                       />
                       <div className="content-podcast-card__info">
-                        <p className="content-podcast-card__title">{podcast.title}</p>
+                        <p className="content-podcast-card__title">
+                          {podcast.title}
+                        </p>
                         <p className="content-podcast-card__episode">
                           {podcast.episode}
                         </p>
