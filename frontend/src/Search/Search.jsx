@@ -32,9 +32,9 @@ export default function Search() {
         onChange={(e) => setCategory(e.target.value)}
       >
         <option value="">--Choose a category--</option>
-        <option value="fiction">Fiction</option>
+        <option value="sports">Sports</option>
+        <option value="society">Society</option>
         <option value="comedy">Comedy</option>
-        <option value="culture">Culture</option>
       </select>
 
       <div className="podcast-container">

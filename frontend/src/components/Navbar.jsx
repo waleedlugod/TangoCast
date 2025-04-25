@@ -19,15 +19,19 @@ function Navbar() {
         {user ? (
           <button onClick={logout}>Logout</button>
         ) : (
-          <button onClick={() => navigate("/login")}>Login</button>
+          <>
+            <button onClick={() => navigate("/login")}>Login</button>
+            <button onClick={() => navigate("/register")}>Register</button>
+          </>
         )}
-        <button onClick={() => navigate("/register")}>Register</button>
         <button onClick={() => navigate("/search")}>Search</button>
       </div>
       <div className="nav__right">
-        <a href="#">
-          <img className="nav__icon" src={PlaceholderIcon} alt="User Icon" />
-        </a>
+        {user && (
+          <a href="#">
+            <img className="nav__icon" src={PlaceholderIcon} alt="User Icon" />
+          </a>
+        )}
       </div>
     </nav>
   );

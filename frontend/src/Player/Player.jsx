@@ -326,9 +326,11 @@ export default function Player({
     isPlayFullPlayer ? audio.play() : audio.pause();
   }, [isPlayFullPlayer]);
 
+  const { user } = useContext(AuthContext);
+
   return (
     <>
-      <div className="player">
+      <div className="player" style={{ display: user ? "block" : "none" }}>
         <PlayerPodcast podcast={podcast} />
         <AudioPlayer
           src={podcast.audio}
