@@ -18,6 +18,7 @@ class UserModel(AbstractUser):
 
 
 class CreatorModel(models.Model):
+    # need to change to foreign key
     creator_id = models.OneToOneField(
         UserModel, on_delete=models.CASCADE, related_name="creator", primary_key=True
     )
@@ -32,6 +33,7 @@ class CreatorModel(models.Model):
 
 
 class ListenerModel(models.Model):
+    # need to change to foreign key
     listener_id = models.OneToOneField(
         UserModel, on_delete=models.CASCADE, related_name="listener", primary_key=True
     )
