@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { Routes, Route } from "react-router-dom";
+import Landing from "../Landing/Landing.jsx";
 import Register from "../Register/Register.jsx";
 import Login from "../Login/Login.jsx";
 import Search from "../Search/Search.jsx";
@@ -9,6 +10,7 @@ import Analytics from "../PodcastStudio/Analytics.jsx";
 import PodcastStudio from "../PodcastStudio/Studio.jsx";
 import Navbar from "../components/Navbar.jsx";
 import AuthProvider from "../context/AuthContext.jsx";
+import Home from "../Home/Home.jsx";
 import Content from "../PodcastStudio/Content.jsx";
 import ContentForm from "../PodcastStudio/ContentForm.jsx";
 
@@ -18,21 +20,15 @@ export default function AppRoutes() {
   const [isVideoEnabled, setIsVideoEnabled] = useState(false);
   const [isTranscriptEnabled, setIsTranscriptEnabled] = useState(false);
   const [isPlayFullPlayer, setIsPlayFullPlayer] = useState(false);
-  const [authTokens, setAuthTokens] = useState(() =>
-    localStorage.getItem("authTokens")
-      ? JSON.parse(localStorage.getItem("authTokens"))
-      : null
-  );
 
   return (
-    <AuthProvider authTokens={authTokens}>
+    <AuthProvider>
       <Navbar />
       <Routes>
+        <Route path="/dashboard" element={<Home />} />
+        <Route path="/" element={<Landing />} />
         <Route path="/register" element={<Register />} />
-        <Route
-          path="/login"
-          element={<Login setAuthTokens={setAuthTokens} />}
-        />
+        <Route path="/login" element={<Login />} />
         <Route
           path="/podcast/:id"
           element={

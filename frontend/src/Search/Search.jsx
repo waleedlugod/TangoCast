@@ -1,22 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import "./Search.css";
-
-async function fetchPodcasts(search, category) {
-  return (
-    await fetch(
-      // TODO: update url when other TODOs are done
-      `http://localhost:8000/podcast/?search=${search}&category=${category}`
-    )
-  ).json();
-}
+import axios from "axios";
 
 export default function Search() {
   const [category, setCategory] = useState("");
   const [search, setSearch] = useState("");
   const { data: podcasts, isLoading } = useQuery({
-    queryFn: () => fetchPodcasts(search, category),
+    queryFn: () => {
+      return axios.get(
+        `http://localhost:8000/podcast/?search=${search}&category=${category}`
+      );
+    },
     queryKey: ["podcasts", { search, category }],
+    select: (data) => data.data,
   });
 
   return (
@@ -36,9 +33,9 @@ export default function Search() {
         onChange={(e) => setCategory(e.target.value)}
       >
         <option value="">--Choose a category--</option>
-        <option value="fiction">Fiction</option>
+        <option value="sports">Sports</option>
+        <option value="society">Society</option>
         <option value="comedy">Comedy</option>
-        <option value="culture">Culture</option>
       </select>
 
       <div className="podcast-container">
@@ -47,7 +44,7 @@ export default function Search() {
         ) : Object.keys(podcasts).length === 0 ? (
           <p>Could not find podcast</p>
         ) : (
-          podcasts?.map((podcast) => {
+          podcasts.map((podcast) => {
             return (
               <a
                 key={podcast.title}
