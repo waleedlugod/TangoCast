@@ -44,7 +44,6 @@ export default function Home() {
     queryKey: ["followingSharedPodcasts"],
     select: (data) => data.data,
   });
-  console.log(recentPodcasts);
 
   return (
     <div className="home">

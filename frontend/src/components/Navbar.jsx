@@ -8,7 +8,7 @@ import { AuthContext } from "../context/AuthContext";
 
 function Navbar() {
   const navigate = useNavigate();
-  const { authTokens, logout } = useContext(AuthContext);
+  const { authTokens, user, logout } = useContext(AuthContext);
 
   return (
     <nav>
@@ -31,7 +31,11 @@ function Navbar() {
       <div className="nav__right">
         {authTokens && (
           <Link to={"/studio"}>
-            <img className="nav__icon" src={PlaceholderIcon} alt="User Icon" />
+            <img
+              className="nav__icon"
+              src={user.user.profile_photo}
+              alt="User Icon"
+            />
           </Link>
         )}
       </div>
