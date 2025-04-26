@@ -28,6 +28,7 @@ export default function Home() {
       );
     },
     queryKey: ["followingPodcasts"],
+    select: (data) => data.data,
   });
 
   const {
@@ -41,7 +42,9 @@ export default function Home() {
       });
     },
     queryKey: ["followingSharedPodcasts"],
+    select: (data) => data.data,
   });
+  console.log(recentPodcasts);
 
   return (
     <div className="home">
@@ -53,7 +56,7 @@ export default function Home() {
         <>
           <h1>Recently uploaded podcasts by creators you follow</h1>
           <div className="podcast-container">
-            {recentPodcasts.data.map((podcast) => (
+            {recentPodcasts.map((podcast) => (
               <a
                 key={podcast.id}
                 href={`/podcast/${podcast.id}`}
@@ -66,7 +69,7 @@ export default function Home() {
           </div>
           <h1>Podcasts shared by those you follow</h1>
           <div className="podcast-container">
-            {sharedPodcasts.data.map((podcast) => (
+            {sharedPodcasts.map((podcast) => (
               <a
                 key={podcast.id}
                 href={`/podcast/${podcast.id}`}

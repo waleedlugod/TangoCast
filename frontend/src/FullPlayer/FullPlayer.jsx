@@ -35,9 +35,13 @@ export default function FullPlayer({
   const { mutate: follow, isSuccess: isSuccessFollow } = useMutation({
     mutationKey: ["follow"],
     mutationFn: () => {
-      return axios.patch(`http://localhost:8000/listeners/${user.user.id}/`, {
-        follows: [...user.listener.follows, podcast.creator.creator_id.id],
-      });
+      return axios.patch(
+        `http://localhost:8000/listeners/${user.user.id}/`,
+        {
+          follows: [...user.listener.follows, podcast.creator.creator_id.id],
+        },
+        { headers: { Authorization: `Bearer ${authTokens.access}` } }
+      );
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["getUser"] }),
   });
@@ -45,13 +49,17 @@ export default function FullPlayer({
   const { mutate: unfollow, isSuccess: isSuccessUnfollow } = useMutation({
     mutationKey: ["unfollow"],
     mutationFn: () => {
-      return axios.patch(`http://localhost:8000/listeners/${user.user.id}/`, {
-        follows: [
-          ...user.listener.follows.filter(
-            (value) => value != podcast.creator.creator_id.id
-          ),
-        ],
-      });
+      return axios.patch(
+        `http://localhost:8000/listeners/${user.user.id}/`,
+        {
+          follows: [
+            ...user.listener.follows.filter(
+              (value) => value != podcast.creator.creator_id.id
+            ),
+          ],
+        },
+        { headers: { Authorization: `Bearer ${authTokens.access}` } }
+      );
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["getUser"] }),
   });
@@ -76,13 +84,20 @@ export default function FullPlayer({
                 </p>
                 <div className="full-player_podcast-creator-wrapper">
                   <p>By: {podcast.creator.creator_id.username}</p>
-                  {authTokens &&
-                  user.listener.follows.includes(
-                    podcast.creator.creator_id.id
-                  ) ? (
-                    <button onClick={unfollow}>unfollow</button>
+                  {authTokens ? (
+                    // user is logged in
+                    user.listener.follows.includes(
+                      podcast.creator.creator_id.id
+                    ) ? (
+                      // user follows creator
+                      <button onClick={unfollow}>unfollow</button>
+                    ) : (
+                      // user does not follow creator
+                      <button onClick={follow}>follow</button>
+                    )
                   ) : (
-                    <button onClick={follow}>follow</button>
+                    // user not logged in
+                    <p>Login to follow</p>
                   )}
                 </div>
               </div>

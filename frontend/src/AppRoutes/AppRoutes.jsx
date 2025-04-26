@@ -43,7 +43,7 @@ export default function AppRoutes() {
           }
         />
         <Route path="/search" element={<Search />} />
-        <Route path="/creator/:pk" element={<PodcastStudio />}>
+        <Route path="studio" element={<PodcastStudio />}>
           <Route index element={<Analytics />} />
           <Route path="content" element={<Content />} />
           <Route path="edit/:id" element={<ContentForm isUpload={false} />} />

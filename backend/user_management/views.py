@@ -80,7 +80,9 @@ class ListenerViewSet(viewsets.ModelViewSet):
     @action(detail=False, permission_classes=[IsAuthenticated])
     def get_followed_podcasts(self, request):
         listener = ListenerModel.objects.get(listener_id=request.user)
-        podcasts = Podcast.objects.filter(creator__in=listener.follows.all())
+        podcasts = Podcast.objects.filter(
+            creator__in=listener.follows.all()
+        ).select_related("creator")
         serializer = PodcastSerializer(podcasts, many=True)
         return Response(serializer.data)
 

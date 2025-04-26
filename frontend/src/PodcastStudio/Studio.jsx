@@ -7,8 +7,6 @@ import ContentIcon from "../assets/PodcastStudio/ContentIcon.svg";
 import "./Studio.css";
 
 export default function PodcastStudio() {
-  let { pk } = useParams();
-
   return (
     <section className="container">
       <section className="left-nav">
@@ -22,14 +20,14 @@ export default function PodcastStudio() {
           </a>
         </div>
         <div className="left-nav__bot">
-          <Link className="left-nav__link" to={`/creator/${pk}`}>
+          {/* <Link className="left-nav__link" to={`/creator/${pk}`}>
             <img src={AnalyticsIcon} alt="" />
             <p>Analytics</p>
           </Link>
           <Link className="left-nav__link" to={`/creator/${pk}/content`}>
             <img src={ContentIcon} alt="" />
             <p>Content</p>
-          </Link> 
+          </Link> */}
         </div>
       </section>
       <Outlet />
