@@ -6,7 +6,7 @@ import axios from "axios";
 async function fetchPodcasts(pk) {
   return await axios
     // TODO: fix url after other TODOs are done
-    .get(`http://127.0.0.1:8000/podcast/podcasts/creators/${pk}/podcasts`)
+    .get(`http://127.0.0.1:8000/podcast/creators/${pk}/podcasts`)
     .then((res) => res.data);
 }
 

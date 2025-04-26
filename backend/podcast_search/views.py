@@ -24,13 +24,6 @@ class PodcastSearch(generics.ListAPIView):
     search_fields = ["title"]
 
 
-class GetPodcast(generics.RetrieveAPIView):
-    queryset = Podcast.objects.all()
-    lookup_field = "id"
-    lookup_url_kwarg = "id"
-    serializer_class = PodcastSerializer
-
-
 # TODO: remove all other apis and use this as the sole api
 class PodcastViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication, SessionAuthentication]

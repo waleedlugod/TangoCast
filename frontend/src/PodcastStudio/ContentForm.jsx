@@ -24,7 +24,7 @@ export default function ContentForm({ isUpload }) {
     mutationKey: ["createPodcast"],
     mutationFn: (formData) => {
       // TODO: fix url after other TODOs are done
-      return axios.post(`http://127.0.0.1:8000/podcast/podcasts/`, formData, {
+      return axios.post(`http://127.0.0.1:8000/podcast/`, formData, {
         headers: {
           Authorization: `Bearer ${authTokens.access}`,
         },

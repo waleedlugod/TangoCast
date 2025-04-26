@@ -13,9 +13,7 @@ export default function Analytics() {
       try {
         const [podcastResponse, userResponse] = await Promise.all([
           // TODO: fix url after other TODOs are done
-          fetch(
-            `http://127.0.0.1:8000/podcast/podcasts/creators/${pk}/podcasts`
-          ),
+          fetch(`http://127.0.0.1:8000/podcast/creators/${pk}/podcasts`),
           fetch(`http://127.0.0.1:8000/creators/${pk}/`),
         ]);
 
