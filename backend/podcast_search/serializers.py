@@ -20,7 +20,7 @@ class PodcastSerializer(serializers.ModelSerializer):
         return Podcast.objects.create(creator=creator, **validated_data)
 
     def update(self, instance, validated_data):
-        user = validated_data.pop("creator_d")
+        user = validated_data.pop("creator_id")
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
