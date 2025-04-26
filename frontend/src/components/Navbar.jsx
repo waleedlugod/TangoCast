@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TangoCastLogo from "../assets/NavBar/TangoCastLogo.svg";
 import PlaceholderIcon from "../assets/NavBar/PlaceholderIcon.png";
 import "./NavBar.css";
@@ -30,9 +30,9 @@ function Navbar() {
       </div>
       <div className="nav__right">
         {authTokens && (
-          <a href="#">
+          <Link to={"/studio"}>
             <img className="nav__icon" src={PlaceholderIcon} alt="User Icon" />
-          </a>
+          </Link>
         )}
       </div>
     </nav>

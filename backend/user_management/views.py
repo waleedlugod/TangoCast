@@ -71,6 +71,12 @@ class CreatorViewSet(viewsets.ModelViewSet):
     queryset = CreatorModel.objects.all()
     serializer_class = CreatorSerializer
 
+    @action(detail=False, permission_classes=[IsAuthenticated])
+    def get_followers(self, request):
+        followers = ListenerModel.objects.filter(follows__creator_id=request.user)
+        serializer = ListenerSerializer(followers, many=True)
+        return Response(serializer.data)
+
 
 class ListenerViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication, SessionAuthentication]
