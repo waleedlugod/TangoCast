@@ -30,18 +30,15 @@ export default function ContentForm({ isUpload }) {
         },
       });
     },
-    onError: (err) => {
-      console.log(err);
-    },
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const formRaw = new FormData(formRef.current);
-    formRaw.set("creator", data);
-    const formJson = Object.fromEntries(formRaw);
-    mutation.mutate(JSON.stringify(formJson));
+    formRaw.set("creator", data.creator_id.id);
+    console.log(formRaw.audio);
+    mutation.mutate(formRaw);
   };
 
   return (
@@ -92,7 +89,7 @@ export default function ContentForm({ isUpload }) {
                   </div>
                   <div className="form-info__file">
                     <label htmlFor="transcript">Transcript</label>
-                    <input id="transcript" type="file" name="transcript" />
+                    <textarea name="transcript" id="transcript"></textarea>
                   </div>
                 </div>
               </div>

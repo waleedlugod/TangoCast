@@ -33,7 +33,7 @@ class GetPodcast(generics.RetrieveAPIView):
 
 # TODO: remove all other apis and use this as the sole api
 class PodcastViewSet(viewsets.ModelViewSet):
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permision_classes = [IsAuthenticated]
     queryset = Podcast.objects.all()
     serializer_class = PodcastSerializer

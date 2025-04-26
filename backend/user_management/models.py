@@ -18,7 +18,6 @@ class UserModel(AbstractUser):
 
 
 class CreatorModel(models.Model):
-    # TODO: need to change to foreign key
     creator_id = models.OneToOneField(
         UserModel, on_delete=models.CASCADE, related_name="creator", primary_key=True
     )
