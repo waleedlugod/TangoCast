@@ -15,21 +15,16 @@ from user_management.models import CreatorModel
 from user_management.serializers import CreatorSerializer
 
 
-# Create your views here.
-class PodcastSearch(generics.ListAPIView):
-    queryset = Podcast.objects.all()
-    serializer_class = PodcastSerializer
-    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
-    filterset_fields = ["category"]
-    search_fields = ["title"]
-
-
 # TODO: remove all other apis and use this as the sole api
 class PodcastViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication, SessionAuthentication]
     permision_classes = [IsAuthenticated]
     queryset = Podcast.objects.all()
     serializer_class = PodcastSerializer
+
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    search_fields = ["title"]
+    filterset_fields = ["category"]
 
 
 class CreatorPodcastViewSet(viewsets.ModelViewSet):
