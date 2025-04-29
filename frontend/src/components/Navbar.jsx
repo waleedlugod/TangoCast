@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TangoCastLogo from "../assets/NavBar/TangoCastLogo.svg";
 import PlaceholderIcon from "../assets/NavBar/PlaceholderIcon.png";
 import "./NavBar.css";
@@ -8,7 +8,7 @@ import { AuthContext } from "../context/AuthContext";
 
 function Navbar() {
   const navigate = useNavigate();
-  const { authTokens, logout } = useContext(AuthContext);
+  const { authTokens, user, logout } = useContext(AuthContext);
 
   return (
     <nav>
@@ -30,9 +30,13 @@ function Navbar() {
       </div>
       <div className="nav__right">
         {authTokens && (
-          <a href="#">
-            <img className="nav__icon" src={PlaceholderIcon} alt="User Icon" />
-          </a>
+          <Link to={"/studio"}>
+            <img
+              className="nav__icon"
+              src={user.user.profile_photo}
+              alt="User Icon"
+            />
+          </Link>
         )}
       </div>
     </nav>

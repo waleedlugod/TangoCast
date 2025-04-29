@@ -1,52 +1,60 @@
 import { useParams } from "react-router-dom";
 import "./Analytics.css";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { AuthContext } from "../context/AuthContext";
+import axios from "axios";
 
 export default function Analytics() {
-  let { pk } = useParams();
-  const [podcasts, setPodcasts] = useState([]);
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { authTokens, user } = useContext(AuthContext);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [podcastResponse, userResponse] = await Promise.all([
-          fetch(
-            `http://127.0.0.1:8000/podcast/podcasts/creators/${pk}/podcasts`
-          ),
-          fetch(`http://127.0.0.1:8000/creators/${pk}/`),
-        ]);
+  const {
+    data: podcasts,
+    isLoading: isLoadingPodcasts,
+    isError: isErrorPodcasts,
+  } = useQuery({
+    queryKey: ["analytics", user],
+    queryFn: () => {
+      return axios.get(
+        `http://localhost:8000/podcast/?creator=${user.user.id}&ordering=-views`
+      );
+    },
+    select: (data) => {
+      data = data.data;
+      data.total_views = data.reduce(
+        (partialSum, podcast) => (partialSum += podcast.views),
+        0
+      );
+      data.total_earnings = data.reduce(
+        (partialSum, podcast) => (partialSum += podcast.earnings),
+        0
+      );
+      return data;
+    },
+  });
 
-        const podcastResult = await podcastResponse.json();
-        const userResult = await userResponse.json();
+  const {
+    data: followers,
+    isLoading: isLoadingFollowers,
+    isError: isErrorFollowers,
+  } = useQuery({
+    queryKey: ["getFollowers"],
+    queryFn: () => {
+      return axios.get("http://localhost:8000/creators/get_followers", {
+        headers: { Authorization: `Bearer ${authTokens.access}` },
+      });
+    },
+    select: (data) =>
+      (data = data.data.reduce((followers) => followers + 1, 0)),
+  });
 
-        setPodcasts(
-          Array.isArray(podcastResult)
-            ? podcastResult.slice(0, 5)
-            : [podcastResult].slice(0, 5)
-        );
-        setUser(userResult);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  let totalViews = 0,
-    totalEarnings = 0;
-  for (const podcast of podcasts) {
-    totalViews += podcast.views;
-    totalEarnings += podcast.earnings;
-  }
-
-  if (loading) {
-    return (
-      <main>
+  return (
+    <main>
+      {isLoadingPodcasts ? (
+        <p>Loading...</p>
+      ) : isErrorPodcasts ? (
+        <p>Error loading podcasts.</p>
+      ) : (
         <div className="main-container">
           <div className="main-container__title">
             <h1>Channel Analytics</h1>
@@ -55,75 +63,47 @@ export default function Analytics() {
             <div className="data__top">
               <div className="data__followers">
                 <p>Followers</p>
-                <p>Loading...</p>
+                <p>{followers}</p>
               </div>
               <div className="data__views">
                 <p>Views</p>
-                <p>Loading...</p>
+                <p>{podcasts.total_views}</p>
               </div>
             </div>
             <div className="data__bot">
               <p>Earnings</p>
-              <p>Loading...</p>
+              <p>PHP {podcasts.total_earnings}</p>
             </div>
           </div>
           <div className="top-podcasts">
-            <p>Top Podcasts</p>
-            <p>Loading...</p>
-          </div>
-        </div>
-      </main>
-    );
-  }
-
-  return (
-    <main>
-      <div className="main-container">
-        <div className="main-container__title">
-          <h1>Channel Analytics</h1>
-        </div>
-        <div className="main-container__data">
-          <div className="data__top">
-            <div className="data__followers">
-              <p>Followers</p>
-              <p>{user?.creator_id?.followers}</p>
-            </div>
-            <div className="data__views">
-              <p>Views</p>
-              <p>{totalViews}</p>
-            </div>
-          </div>
-          <div className="data__bot">
-            <p>Earnings</p>
-            <p>PHP {totalEarnings}</p>
-          </div>
-        </div>
-        <div className="top-podcasts">
-          <p className="top-podcasts__title">Top Podcasts</p>
-          <div>
-            {podcasts?.map((podcast, index) => (
-              <div className="podcast-card" key={podcast.id}>
-                <div className="podcast-card__left">
-                  <p className="podcast-card__number">{index + 1}.</p>
-                  <div className="podcast-card__mid">
-                    <img
-                      src={`http://127.0.0.1:8000${podcast.thumbnail}`}
-                      alt={`${podcast.title} thumbnail`}
-                    />
-                    <div className="podcast-card__info">
-                      <p className="podcast-card__title">{podcast.title}</p>
-                      <p className="podcast-card__episode">{podcast.episode}</p>
+            <p className="top-podcasts__title">Top Podcasts</p>
+            <div>
+              {podcasts?.map((podcast, index) => (
+                <div className="podcast-card" key={podcast.id}>
+                  <div className="podcast-card__left">
+                    <p className="podcast-card__number">{index + 1}.</p>
+                    <div className="podcast-card__mid">
+                      <img
+                        src={podcast.thumbnail}
+                        alt={`${podcast.title} thumbnail`}
+                      />
+                      <div className="podcast-card__info">
+                        <p className="podcast-card__title">{podcast.title}</p>
+                        <p className="podcast-card__episode">
+                          {podcast.episode}
+                        </p>
+                      </div>
                     </div>
                   </div>
+                  <div className="podcast-card__right">
+                    <p>{podcast.views} Views</p>
+                  </div>
                 </div>
-                <div className="podcast-card__right">
-                  <p>{podcast.views} Views</p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </main>
   );
 }

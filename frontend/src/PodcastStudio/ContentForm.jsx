@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useRef } from "react";
 import axios from "axios";
@@ -8,46 +8,32 @@ import { AuthContext } from "../context/AuthContext";
 
 export default function ContentForm({ isUpload }) {
   let formRef = useRef(null);
-  let { pk, id } = useParams();
-  const { authTokens } = useContext(AuthContext);
+  const { authTokens, user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const { data } = useQuery({
-    queryKey: ["creator", { pk }],
-    queryFn: async () => {
-      return await axios
-        .get(`http://127.0.0.1:8000/creators/${pk}`)
-        .then((res) => res.data);
-    },
-  });
-
-  const mutation = useMutation({
+  const { mutate: upload } = useMutation({
     mutationKey: ["createPodcast"],
-    mutationFn: (formData) => {
-      return axios.post(`http://127.0.0.1:8000/podcast/podcasts/`, formData, {
+    mutationFn: () => {
+      return axios.post(`http://127.0.0.1:8000/podcast/`, formRef.current, {
         headers: {
           Authorization: `Bearer ${authTokens.access}`,
-          "Content-Type": "multipart/form-data",
         },
       });
     },
-    onError: (err) => {
-      console.log(err);
-    },
+    onSuccess: () => navigate("/studio/content"),
   });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const formRaw = new FormData(formRef.current);
-    formRaw.set("creator", data);
-    const formJson = Object.fromEntries(formRaw);
-    mutation.mutate(JSON.stringify(formJson));
-  };
 
   return (
     <main className="form-main">
       <div className="form-main-container">
-        <form ref={formRef} onSubmit={handleSubmit}>
+        <form
+          ref={formRef}
+          onSubmit={(e) => {
+            e.preventDefault();
+            upload();
+          }}
+        >
+          <input type="hidden" name="creator_id" value={user.user.id} />
           <div className="form-body">
             <div className="form-heading">
               <div className="form-heading__left">
@@ -55,7 +41,7 @@ export default function ContentForm({ isUpload }) {
               </div>
               <div className="form-heading__right">
                 <button type="submit">Save</button>
-                <Link to={`/creator/${pk}/content`}>Cancel</Link>
+                <Link to={"/studio/content"}>Cancel</Link>
               </div>
             </div>
             <div className="form-info">
@@ -92,7 +78,7 @@ export default function ContentForm({ isUpload }) {
                   </div>
                   <div className="form-info__file">
                     <label htmlFor="transcript">Transcript</label>
-                    <input id="transcript" type="file" name="transcript" />
+                    <textarea name="transcript" id="transcript"></textarea>
                   </div>
                 </div>
               </div>
