@@ -1,0 +1,123 @@
+.register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex: 1;
+  background: linear-gradient(180deg, #FFF 59.13%, #C3F1E3 100%);
+}
+
+.register__modal { 
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem 1.5rem;
+  width: 400px;
+  border: 2px solid #16A77C;
+  border-radius: 20px;
+  background: #FFFFFF;
+}
+
+.register__heading {
+  font-size: 2rem;
+}
+
+.register__form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.register__inputs {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.register__inputs > input {
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  border: 2px solid #16A77C;
+  border-radius: 20px;
+  /* font-size: 18px; */
+}
+
+.register__radio-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+}
+
+.register__radio-buttons__label {
+  display: block;
+  position: relative;
+  padding-left: 25px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.register__radio-buttons__input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.register__radio-buttons__button {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #ccc;
+  border-radius: 50%;
+}
+
+.register__radio-buttons:hover input ~ .register__radio-buttons__button {
+  background-color: #ccc;
+}
+
+.register__radio-buttons input:checked ~ .register__radio-buttons__button {
+  background-color: #16A77C;
+}
+
+.register__radio-buttons__button:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.register__radio-buttons input:checked ~ .register__radio-buttons__button:after {
+  display: block;
+}
+
+.register__radio-buttons .register__radio-buttons__button:after {
+  top: 7px;
+  left: 7px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: white;
+}
+
+.register__submit-button {
+  color: #FFFFFF;
+  font-weight: 700;
+  border-radius: 15px;
+  background: #16A77C;
+  padding: 0.75rem 2rem;
+  width: fit-content;
+}
