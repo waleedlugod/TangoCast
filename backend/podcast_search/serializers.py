@@ -26,9 +26,6 @@ class PodcastSerializer(serializers.ModelSerializer):
         instance.save()
         if user:
             creator = CreatorModel.objects.get(creator_id=user)
-            creator_serializer = CreatorSerializer(
-                instance=creator, data=user, partial=self.partial
-            )
-            creator_serializer.is_valid(raise_exception=True)
-            creator_serializer.save()
+            instance.creator = creator
+            instance.save()
         return instance

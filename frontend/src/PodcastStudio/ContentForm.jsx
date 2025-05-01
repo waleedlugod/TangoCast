@@ -10,6 +10,7 @@ export default function ContentForm({ isUpload }) {
   let formRef = useRef(null);
   const { authTokens, user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const { mutate: upload } = useMutation({
     mutationKey: ["createPodcast"],
@@ -23,6 +24,22 @@ export default function ContentForm({ isUpload }) {
     onSuccess: () => navigate("/studio/content"),
   });
 
+  const { mutate: edit } = useMutation({
+    mutationKey: ["editPodcast"],
+    mutationFn: () => {
+      return axios.patch(
+        `http://127.0.0.1:8000/podcast/${id}/`,
+        formRef.current,
+        {
+          headers: {
+            Authorization: `Bearer ${authTokens.access}`,
+          },
+        }
+      );
+    },
+    onSuccess: () => navigate("/studio/content"),
+  });
+
   return (
     <main className="form-main">
       <div className="form-main-container">
@@ -30,7 +47,7 @@ export default function ContentForm({ isUpload }) {
           ref={formRef}
           onSubmit={(e) => {
             e.preventDefault();
-            upload();
+            isUpload ? upload() : edit();
           }}
         >
           <input type="hidden" name="creator_id" value={user.user.id} />
