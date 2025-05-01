@@ -5,7 +5,7 @@ from .models import SharedPodcast
 from podcast_search.models import Podcast
 from rest_framework import generics, status
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.authentication import SessionAuthentication
 from .serializers import SharedPodcastSerializer
@@ -43,6 +43,7 @@ class GetPodcastShares(generics.ListAPIView):
     lookup_field = "podcast.id"
     lookup_url_kwarg = "id"
     serializer_class = SharedPodcastSerializer
+    permission_classes = [AllowAny]
 
 
 class CreatePodcastShare(generics.CreateAPIView):

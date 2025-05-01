@@ -75,6 +75,7 @@ class CreatorViewSet(viewsets.ModelViewSet):
     queryset = CreatorModel.objects.all()
     serializer_class = CreatorSerializer
     authentication_classes = [JWTAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     @action(detail=False, permission_classes=[IsAuthenticated])
     def get_followers(self, request):
@@ -87,6 +88,7 @@ class ListenerViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication, SessionAuthentication]
     queryset = ListenerModel.objects.all()
     serializer_class = ListenerSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     @action(detail=False, permission_classes=[IsAuthenticated])
     def get_followed_podcasts(self, request):
