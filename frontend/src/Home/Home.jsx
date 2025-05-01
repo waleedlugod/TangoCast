@@ -3,6 +3,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import PlaceholderIcon from "../assets/NavBar/PlaceholderIcon.png";
 
 /**
  * A component that holds the current page the user is on in the website.
@@ -72,7 +73,11 @@ export default function Home() {
           {user && (
             <img
               className="left-nav__icon"
-              src={`http://localhost:8000${user?.user.profile_photo}`}
+              src={
+                user?.user.profile_photo
+                  ? `http://localhost:8000${user?.user.profile_photo}`
+                  : PlaceholderIcon
+              }
               alt="User Icon"
             />
           )}
@@ -92,40 +97,42 @@ export default function Home() {
         </form>
         <div className="left-nav__bot"></div>
       </section>
-      {!authTokens ? (
-        <p>Login first to access content.</p>
-      ) : isLoadingRecentPodcasts || isLoadingSharedPodcasts ? (
-        <p>Loading content...</p>
-      ) : (
-        <>
-          <h1>Recently uploaded podcasts by creators you follow</h1>
-          <div className="podcast-container">
-            {recentPodcasts.map((podcast) => (
-              <a
-                key={podcast.id}
-                href={`/podcast/${podcast.id}`}
-                className="podcast"
-              >
-                <p>{podcast.title}</p>
-                <p>By: {podcast.creator.creator_id.username}</p>
-              </a>
-            ))}
-          </div>
-          <h1>Podcasts shared by those you follow</h1>
-          <div className="podcast-container">
-            {sharedPodcasts.map((podcast) => (
-              <a
-                key={podcast.id}
-                href={`/podcast/${podcast.id}`}
-                className="podcast"
-              >
-                <p>{podcast.title}</p>
-                <p>By: {podcast.creator.creator_id.username}</p>
-              </a>
-            ))}
-          </div>
-        </>
-      )}
+      <section>
+        {!authTokens ? (
+          <p>Login first to access content.</p>
+        ) : isLoadingRecentPodcasts || isLoadingSharedPodcasts ? (
+          <p>Loading content...</p>
+        ) : (
+          <>
+            <h1>Recently uploaded podcasts by creators you follow</h1>
+            <div className="podcast-container">
+              {recentPodcasts.map((podcast) => (
+                <a
+                  key={podcast.id}
+                  href={`/podcast/${podcast.id}`}
+                  className="podcast"
+                >
+                  <p>{podcast.title}</p>
+                  <p>By: {podcast.creator.creator_id.username}</p>
+                </a>
+              ))}
+            </div>
+            <h1>Podcasts shared by those you follow</h1>
+            <div className="podcast-container">
+              {sharedPodcasts.map((podcast) => (
+                <a
+                  key={podcast.id}
+                  href={`/podcast/${podcast.id}`}
+                  className="podcast"
+                >
+                  <p>{podcast.title}</p>
+                  <p>By: {podcast.creator.creator_id.username}</p>
+                </a>
+              ))}
+            </div>
+          </>
+        )}
+      </section>
     </section>
   );
 }
