@@ -10,21 +10,23 @@ import { AuthContext } from "../context/AuthContext";
 
 export default function PodcastStudio() {
   const navigate = useNavigate();
-  const { authTokens } = useContext(AuthContext);
+  const { authTokens, user } = useContext(AuthContext);
   useEffect(() => {
     !authTokens && navigate("/login");
+    !user?.creator && navigate("/dashboard");
   }, [authTokens]);
+
   return (
     <section className="container">
       <section className="left-nav">
         <div className="left-nav__top">
-          <a href="#">
+          {user && (
             <img
               className="left-nav__icon"
-              src={PlaceholderIcon}
+              src={user?.user.profile_photo}
               alt="User Icon"
             />
-          </a>
+          )}
         </div>
         <div className="left-nav__bot">
           <Link className="left-nav__link" to={"/studio"}>

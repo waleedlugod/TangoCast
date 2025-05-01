@@ -67,12 +67,12 @@ export default function Analytics() {
               </div>
               <div className="data__views">
                 <p>Views</p>
-                <p>{podcasts.total_views}</p>
+                <p>{podcasts?.total_views}</p>
               </div>
             </div>
             <div className="data__bot">
               <p>Earnings</p>
-              <p>PHP {podcasts.total_earnings}</p>
+              <p>PHP {podcasts?.total_earnings}</p>
             </div>
           </div>
           <div className="top-podcasts">
