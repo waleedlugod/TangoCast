@@ -29,7 +29,7 @@ function Navbar() {
         <button onClick={() => navigate("/search")}>Search</button>
       </div>
       <div className="nav__right">
-        {authTokens && (
+        {user && (
           <Link to={"/studio"}>
             <img
               className="nav__icon"

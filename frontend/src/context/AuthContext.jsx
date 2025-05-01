@@ -23,7 +23,7 @@ export default function AuthProvider({ children }) {
         headers: { Authorization: `Bearer ${authTokens.access}` },
       });
     },
-    queryKey: ["getUser"],
+    queryKey: ["getUser", authTokens],
     select: (data) => (data = data.data),
   });
 
@@ -51,6 +51,7 @@ export default function AuthProvider({ children }) {
     },
     onError: () => {
       setAuthTokens(null);
+      localStorage.removeItem("authTokens");
     },
   });
 
@@ -87,16 +88,12 @@ export default function AuthProvider({ children }) {
       });
     },
     mutationKey: ["logout"],
-    onSuccess: () => {
+    onSettled: () => {
+      navigate("/login");
       localStorage.removeItem("authTokens");
       setAuthTokens(null);
-      navigate("/login");
     },
   });
-
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: ["getUser"] });
-  }, [authTokens]);
 
   return (
     <AuthContext
