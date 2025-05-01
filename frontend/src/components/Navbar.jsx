@@ -33,7 +33,7 @@ function Navbar() {
           <Link to={user?.user.listner ? "/dashboard" : "/studio"}>
             <img
               className="nav__icon"
-              src={`http://localhost:8000/${user?.user.profile_photo}`}
+              src={`http://localhost:8000${user?.user.profile_photo}`}
               alt="User Icon"
             />
           </Link>

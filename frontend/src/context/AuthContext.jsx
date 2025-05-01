@@ -14,8 +14,6 @@ export default function AuthProvider({ children }) {
 
   const navigate = useNavigate();
 
-  const queryClient = useQueryClient();
-
   // query for current user
   const { data: user, error: errorUser } = useQuery({
     queryFn: () => {
