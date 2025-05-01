@@ -1,6 +1,6 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -14,40 +14,84 @@ export default function Home() {
     if (!authTokens) navigate("/login");
     if (user && !user?.listener) navigate("/studio");
   }, [authTokens, user]);
+  let uploadPfpRef = useRef(null);
+  const queryClient = useQueryClient();
 
-  const {
-    data: recentPodcasts,
-    isLoading: isLoadingRecentPodcasts,
-    isError: isErrorRecentPodcasts,
-  } = useQuery({
-    queryFn: () => {
-      return axios.get(
-        `http://localhost:8000/listeners/get_followed_podcasts/`,
+  const { data: recentPodcasts, isLoading: isLoadingRecentPodcasts } = useQuery(
+    {
+      queryFn: () => {
+        return axios.get(
+          `http://localhost:8000/listeners/get_followed_podcasts/`,
+          {
+            headers: { Authorization: `Bearer ${authTokens.access}` },
+          }
+        );
+      },
+      queryKey: ["followingPodcasts"],
+      select: (data) => data.data,
+    }
+  );
+
+  const { data: sharedPodcasts, isLoading: isLoadingSharedPodcasts } = useQuery(
+    {
+      queryFn: () => {
+        return axios.get(
+          `http://localhost:8000/listeners/get_followed_shares/`,
+          {
+            headers: { Authorization: `Bearer ${authTokens.access}` },
+          }
+        );
+      },
+      queryKey: ["followingSharedPodcasts"],
+      select: (data) => data.data,
+    }
+  );
+
+  const { mutate: uploadPfp } = useMutation({
+    mutationKey: ["uploadProfilePhoto"],
+    mutationFn: () => {
+      return axios.patch(
+        `http://localhost:8000/users/${user?.user.id}/`,
+        uploadPfpRef.current,
         {
-          headers: { Authorization: `Bearer ${authTokens.access}` },
+          headers: {
+            Authorization: `Bearer ${authTokens.access}`,
+          },
         }
       );
     },
-    queryKey: ["followingPodcasts"],
-    select: (data) => data.data,
-  });
-
-  const {
-    data: sharedPodcasts,
-    isLoading: isLoadingSharedPodcasts,
-    isError: isErrorSharedPodcasts,
-  } = useQuery({
-    queryFn: () => {
-      return axios.get(`http://localhost:8000/listeners/get_followed_shares/`, {
-        headers: { Authorization: `Bearer ${authTokens.access}` },
-      });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["getUser"] });
     },
-    queryKey: ["followingSharedPodcasts"],
-    select: (data) => data.data,
   });
 
   return (
-    <div className="home">
+    <section className="container">
+      <section className="left-nav">
+        <div className="left-nav__top">
+          {user && (
+            <img
+              className="left-nav__icon"
+              src={`http://localhost:8000${user?.user.profile_photo}`}
+              alt="User Icon"
+            />
+          )}
+        </div>
+        <form
+          ref={uploadPfpRef}
+          onSubmit={(e) => {
+            e.preventDefault();
+            uploadPfp();
+          }}
+        >
+          <div className="form-info__field">
+            <label htmlFor="profile_photo">Change Profile Photo</label>
+            <input id="profile_photo" type="file" name="profile_photo" />
+            <button type="submit">Upload</button>
+          </div>
+        </form>
+        <div className="left-nav__bot"></div>
+      </section>
       {!authTokens ? (
         <p>Login first to access content.</p>
       ) : isLoadingRecentPodcasts || isLoadingSharedPodcasts ? (
@@ -82,6 +126,6 @@ export default function Home() {
           </div>
         </>
       )}
-    </div>
+    </section>
   );
 }

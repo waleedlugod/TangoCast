@@ -45,7 +45,7 @@ export default function PodcastStudio() {
           {user && (
             <img
               className="left-nav__icon"
-              src={`http://localhost:8000${user.user.profile_photo}`}
+              src={`http://localhost:8000${user?.user.profile_photo}`}
               alt="User Icon"
             />
           )}
