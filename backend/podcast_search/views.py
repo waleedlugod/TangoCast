@@ -1,4 +1,6 @@
 from rest_framework import filters, viewsets
+from rest_framework.response import Response
+from rest_framework.decorators import action
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authentication import SessionAuthentication
@@ -21,3 +23,7 @@ class PodcastViewSet(viewsets.ModelViewSet):
     search_fields = ["title"]
     filterset_fields = ["category", "creator"]
     ordering_fields = ["views"]
+
+    @action(detail=False)
+    def get_categories(self, request):
+        return Response(Podcast.objects.all().values_list("category", flat=True))

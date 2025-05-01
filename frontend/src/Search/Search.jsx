@@ -6,6 +6,15 @@ import axios from "axios";
 export default function Search() {
   const [category, setCategory] = useState("");
   const [search, setSearch] = useState("");
+
+  const { data: categories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () => {
+      return axios.get("http://localhost:8000/podcast/get_categories/");
+    },
+    select: (data) => (data = data.data),
+  });
+
   const { data: podcasts, isLoading } = useQuery({
     queryFn: () => {
       return axios.get(
@@ -33,9 +42,11 @@ export default function Search() {
         onChange={(e) => setCategory(e.target.value)}
       >
         <option value="">--Choose a category--</option>
-        <option value="sports">Sports</option>
-        <option value="society">Society</option>
-        <option value="comedy">Comedy</option>
+        {categories?.map((category) => (
+          <option value={category} key={category}>
+            {category}
+          </option>
+        ))}
       </select>
 
       <div className="podcast-container">

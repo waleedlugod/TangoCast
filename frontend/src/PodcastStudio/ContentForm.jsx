@@ -94,7 +94,7 @@ export default function ContentForm({ isUpload }) {
                   />
                 </div>
                 <div className="form-info__field">
-                  <label htmlFor="category">Description</label>
+                  <label htmlFor="category">Category</label>
                   <input
                     id="category"
                     type="text"
@@ -104,12 +104,7 @@ export default function ContentForm({ isUpload }) {
                 </div>
                 <div className="form-info__field">
                   <label htmlFor="thumbnail">Thumbnail</label>
-                  <input
-                    id="thumbnail"
-                    type="file"
-                    name="thumbnail"
-                    defaultValue={podcast?.thumbnail}
-                  />
+                  <input id="thumbnail" type="file" name="thumbnail" />
                 </div>
                 <div className="form-info__field">
                   <label htmlFor="episode">Episode Number</label>
@@ -137,22 +132,11 @@ export default function ContentForm({ isUpload }) {
                 <div className="form-info__right__files">
                   <div className="form-info__file">
                     <label htmlFor="audio">Audio (Required)</label>
-                    <input
-                      id="audio"
-                      type="file"
-                      name="audio"
-                      required
-                      defaultValue={podcast?.audio}
-                    />
+                    <input id="audio" type="file" name="audio" required />
                   </div>
                   <div className="form-info__file">
                     <label htmlFor="video">Video</label>
-                    <input
-                      id="video"
-                      type="file"
-                      name="video"
-                      defaultValue={podcast?.video}
-                    />
+                    <input id="video" type="file" name="video" />
                   </div>
                   <div className="form-info__file">
                     <label htmlFor="transcript">Transcript</label>
