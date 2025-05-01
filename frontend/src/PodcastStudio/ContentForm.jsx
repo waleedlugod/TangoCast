@@ -12,6 +12,15 @@ export default function ContentForm({ isUpload }) {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const { data: podcast } = useQuery({
+    queryKey: ["getstudiopodcast"],
+    queryFn: () => {
+      return axios.get(`http://localhost:8000/podcast/${id}/`);
+    },
+    enabled: !isUpload,
+    select: (data) => (data = data.data),
+  });
+
   const { mutate: upload } = useMutation({
     mutationKey: ["createPodcast"],
     mutationFn: () => {
@@ -50,7 +59,9 @@ export default function ContentForm({ isUpload }) {
             isUpload ? upload() : edit();
           }}
         >
-          <input type="hidden" name="creator_id" value={user.user.id} />
+          {user && (
+            <input type="hidden" name="creator_id" value={user?.user.id} />
+          )}
           <div className="form-body">
             <div className="form-heading">
               <div className="form-heading__left">
@@ -65,37 +76,91 @@ export default function ContentForm({ isUpload }) {
               <div className="form-info__left">
                 <div className="form-info__field">
                   <label htmlFor="title">Title (Required)</label>
-                  <input id="title" type="text" name="title" required />
+                  <input
+                    id="title"
+                    type="text"
+                    name="title"
+                    required
+                    defaultValue={podcast?.title}
+                  />
                 </div>
                 <div className="form-info__field">
-                  <label htmlFor="desc">Description</label>
-                  <input id="desc" type="text" name="desc" />
+                  <label htmlFor="description">Description</label>
+                  <input
+                    id="description"
+                    type="text"
+                    name="description"
+                    defaultValue={podcast?.description}
+                  />
+                </div>
+                <div className="form-info__field">
+                  <label htmlFor="category">Description</label>
+                  <input
+                    id="category"
+                    type="text"
+                    name="category"
+                    defaultValue={podcast?.category}
+                  />
                 </div>
                 <div className="form-info__field">
                   <label htmlFor="thumbnail">Thumbnail</label>
-                  <input id="thumbnail" type="file" name="thumbnail" />
+                  <input
+                    id="thumbnail"
+                    type="file"
+                    name="thumbnail"
+                    defaultValue={podcast?.thumbnail}
+                  />
                 </div>
                 <div className="form-info__field">
-                  <label htmlFor="show">Podcast Show</label>
-                  <input id="show" type="text" name="show" />
+                  <label htmlFor="episode">Episode Number</label>
+                  <input
+                    id="episode_number"
+                    type="number"
+                    name="episode_number"
+                    defaultValue={podcast?.episode_number}
+                  />
+                </div>
+                <div className="form-info__field">
+                  <label htmlFor="episode">Podcast Episode</label>
+                  <input
+                    id="episode"
+                    type="text"
+                    name="episode"
+                    defaultValue={podcast?.episode}
+                  />
                 </div>
               </div>
               <div className="form-info__right">
-                <div className="form-info__right__thumbnail">
+                {/* <div className="form-info__right__thumbnail">
                   Your Thumbnail Will Be Seen Here!
-                </div>
+                </div> */}
                 <div className="form-info__right__files">
                   <div className="form-info__file">
                     <label htmlFor="audio">Audio (Required)</label>
-                    <input id="audio" type="file" name="audio" required />
+                    <input
+                      id="audio"
+                      type="file"
+                      name="audio"
+                      required
+                      defaultValue={podcast?.audio}
+                    />
                   </div>
                   <div className="form-info__file">
                     <label htmlFor="video">Video</label>
-                    <input id="video" type="file" name="video" />
+                    <input
+                      id="video"
+                      type="file"
+                      name="video"
+                      defaultValue={podcast?.video}
+                    />
                   </div>
                   <div className="form-info__file">
                     <label htmlFor="transcript">Transcript</label>
-                    <textarea name="transcript" id="transcript"></textarea>
+                    <textarea
+                      name="transcript"
+                      id="transcript"
+                      defaultValue={podcast?.transcript}
+                    ></textarea>
                   </div>
                 </div>
               </div>

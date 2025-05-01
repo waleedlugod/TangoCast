@@ -112,8 +112,7 @@ export default function Home() {
                   href={`/podcast/${podcast.id}`}
                   className="podcast"
                 >
-                  <p>{podcast.title}</p>
-                  <p>By: {podcast.creator.creator_id.username}</p>
+                  <img src={podcast.thumbnail} alt="" />
                 </a>
               ))}
             </div>
