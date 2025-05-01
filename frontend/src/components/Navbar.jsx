@@ -30,10 +30,10 @@ function Navbar() {
       </div>
       <div className="nav__right">
         {user && (
-          <Link to={"/studio"}>
+          <Link to={user?.user.listner ? "/dashboard" : "/studio"}>
             <img
               className="nav__icon"
-              src={user.user.profile_photo}
+              src={`http://localhost:8000/${user?.user.profile_photo}`}
               alt="User Icon"
             />
           </Link>

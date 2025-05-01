@@ -13,8 +13,8 @@ export default function PodcastStudio() {
   const { authTokens, user } = useContext(AuthContext);
   useEffect(() => {
     !authTokens && navigate("/login");
-    !user?.creator && navigate("/dashboard");
-  }, [authTokens]);
+    user && !user?.creator && navigate("/dashboard");
+  }, [authTokens, user]);
 
   return (
     <section className="container">
@@ -23,7 +23,7 @@ export default function PodcastStudio() {
           {user && (
             <img
               className="left-nav__icon"
-              src={user?.user.profile_photo}
+              src={`http://localhost:8000/${user.user.profile_photo}`}
               alt="User Icon"
             />
           )}

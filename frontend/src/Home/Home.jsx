@@ -9,10 +9,11 @@ import { useNavigate } from "react-router-dom";
  */
 export default function Home() {
   const navigate = useNavigate();
-  const { authTokens } = useContext(AuthContext);
+  const { authTokens, user } = useContext(AuthContext);
   useEffect(() => {
-    if (!authTokens) navigate("/");
-  }, [authTokens]);
+    if (!authTokens) navigate("/login");
+    if (user && !user?.listener) navigate("/studio");
+  }, [authTokens, user]);
 
   const {
     data: recentPodcasts,

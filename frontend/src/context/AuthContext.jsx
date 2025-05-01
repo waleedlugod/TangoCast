@@ -17,7 +17,7 @@ export default function AuthProvider({ children }) {
   const queryClient = useQueryClient();
 
   // query for current user
-  const { data: user } = useQuery({
+  const { data: user, error: errorUser } = useQuery({
     queryFn: () => {
       return axios.get("http://localhost:8000/users/get_me/", {
         headers: { Authorization: `Bearer ${authTokens.access}` },
@@ -54,6 +54,10 @@ export default function AuthProvider({ children }) {
       localStorage.removeItem("authTokens");
     },
   });
+
+  useEffect(() => {
+    if (errorUser) updateTokens();
+  }, [errorUser]);
 
   // update tokens every 10 minutes
   useEffect(() => {
