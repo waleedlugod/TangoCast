@@ -2,11 +2,14 @@ from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import (
+    AllowAny,
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly,
+)
 from rest_framework.authentication import SessionAuthentication
 
 from .models import UserModel, CreatorModel, ListenerModel
@@ -14,7 +17,6 @@ from podcast_search.models import Podcast
 from podcast_search.serializers import PodcastSerializer
 
 from podcast_share.models import SharedPodcast
-from podcast_share.serializers import SharedPodcastSerializer
 
 from .serializers import UserSerializer, CreatorSerializer, ListenerSerializer
 
@@ -49,8 +51,10 @@ class LogoutView(APIView):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = UserModel.objects.all()
     serializer_class = UserSerializer
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
-    @action(detail=False)
+    @action(detail=False, permission_classes=[IsAuthenticated])
     def get_me(self, request):
         user_serializer = UserSerializer(request.user)
         if request.user.role == "listenerUser":
@@ -66,42 +70,36 @@ class UserViewSet(viewsets.ModelViewSet):
                 {"user": user_serializer.data, "creator": creator_serializer.data}
             )
 
-    def get_permissions(self):
-        if self.action == "get_me":
-            permission_classes = [IsAuthenticated]
-        else:
-            permission_classes = []
-        return [permission() for permission in permission_classes]
-
 
 class CreatorViewSet(viewsets.ModelViewSet):
     queryset = CreatorModel.objects.all()
     serializer_class = CreatorSerializer
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    @action(detail=False, permission_classes=[IsAuthenticated])
+    def get_followers(self, request):
+        followers = ListenerModel.objects.filter(follows__creator_id=request.user)
+        serializer = ListenerSerializer(followers, many=True)
+        return Response(serializer.data)
 
 
 class ListenerViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication, SessionAuthentication]
     queryset = ListenerModel.objects.all()
     serializer_class = ListenerSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
-    def get_permissions(self):
-        if (
-            self.action == "get_followed_podcasts"
-            or self.action == "get_followed_shares"
-        ):
-            permission_classes = [IsAuthenticated]
-        else:
-            permission_classes = []
-        return [permission() for permission in permission_classes]
-
-    @action(detail=False)
+    @action(detail=False, permission_classes=[IsAuthenticated])
     def get_followed_podcasts(self, request):
         listener = ListenerModel.objects.get(listener_id=request.user)
-        podcasts = Podcast.objects.filter(creator__in=listener.follows.all())
+        podcasts = Podcast.objects.filter(
+            creator__in=listener.follows.all()
+        ).select_related("creator")
         serializer = PodcastSerializer(podcasts, many=True)
         return Response(serializer.data)
 
-    @action(detail=False)
+    @action(detail=False, permission_classes=[IsAuthenticated])
     def get_followed_shares(self, request):
         followed = ListenerModel.objects.get(listener_id=request.user).follows.all()
         followed_users = UserModel.objects.filter(id__in=followed)

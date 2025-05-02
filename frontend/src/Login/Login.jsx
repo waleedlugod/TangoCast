@@ -1,5 +1,6 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
+import "./Login.css";
 
 function Login() {
   const { login } = useContext(AuthContext);
@@ -13,28 +14,33 @@ function Login() {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          login(formData);
-        }}
-      >
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          onChange={handleChange}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-        />
-        <button type="submit">Login</button>
-      </form>
+    <div className="login">
+      <div className="login__modal">
+        <h2 className="login__heading">Log in</h2>
+        <form
+          className="login__form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            login(formData);
+          }}
+        >
+          <div className="login__inputs">
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              onChange={handleChange}
+            />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              onChange={handleChange}
+            />
+          </div>
+          <button className="login__button" type="submit">Log in</button>
+        </form>
+      </div>
     </div>
   );
 }

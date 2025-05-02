@@ -14,16 +14,14 @@ export default function AuthProvider({ children }) {
 
   const navigate = useNavigate();
 
-  const queryClient = useQueryClient();
-
   // query for current user
-  const { data: user } = useQuery({
+  const { data: user, error: errorUser } = useQuery({
     queryFn: () => {
       return axios.get("http://localhost:8000/users/get_me/", {
         headers: { Authorization: `Bearer ${authTokens.access}` },
       });
     },
-    queryKey: ["getUser"],
+    queryKey: ["getUser", authTokens],
     select: (data) => (data = data.data),
   });
 
@@ -51,8 +49,13 @@ export default function AuthProvider({ children }) {
     },
     onError: () => {
       setAuthTokens(null);
+      localStorage.removeItem("authTokens");
     },
   });
+
+  useEffect(() => {
+    if (errorUser) updateTokens();
+  }, [errorUser]);
 
   // update tokens every 10 minutes
   useEffect(() => {
@@ -87,16 +90,12 @@ export default function AuthProvider({ children }) {
       });
     },
     mutationKey: ["logout"],
-    onSuccess: () => {
+    onSettled: () => {
+      navigate("/login");
       localStorage.removeItem("authTokens");
       setAuthTokens(null);
-      navigate("/login");
     },
   });
-
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: ["getUser"] });
-  }, [authTokens]);
 
   return (
     <AuthContext

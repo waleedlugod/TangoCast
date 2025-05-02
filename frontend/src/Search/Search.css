@@ -1,28 +1,110 @@
 .search-wrapper {
-  padding-inline: 50px;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  flex-grow: 0;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 50px;
 }
 
-.podcast {
-  border: 1px solid black;
-  text-decoration: none;
+.search-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.podcast img {
-  width: 100%;
+.search-bar-form {
+  display: flex;
+  gap: 15px;
+  flex-direction: row;
 }
 
-.podcast-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  column-gap: 100px;
-  row-gap: 100px;
-  padding: 4rem;
+.search-bar-form input {
+  border: 2px solid #16A77C;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  width: 300px;
+}
+
+.search-bar-form button {
+  color: #FFFFFF;
+  font-weight: 700;
+  background: #16A77C;
+  padding: 10px 20px;
+  border-radius: 15px;
+  border: none;
 }
 
 .search-dropdown {
   width: fit-content;
+  border: none;
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  background: #C5E9DE;
+}
+
+.podcast-title {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.podcast-creator {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.podcast-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  column-gap: 20px;
+  row-gap: 50px;
+  padding: 4rem 0;
+  align-content: center;
+}
+
+.podcast {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-decoration: none;
+  flex-shrink: 0;
+  flex-grow: 0;
+  padding: 20px 20px;
+  border: 2px solid #16A77C;
+  border-radius: 20px;
+  width: fit-content;
+  gap: 1rem;
+}
+
+.podcast img {
+  width: 200px;
+  height: 200px;
+  border-radius: 15px;
+}
+
+.podcast p {
+  font-weight: 500;
+  width: 200px;
+}
+
+@media screen and (max-width: 1200px) {
+  .podcast-container {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 950px) {
+  .podcast-container {
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .podcast-container {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
 }
