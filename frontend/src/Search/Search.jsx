@@ -27,28 +27,30 @@ export default function Search() {
 
   return (
     <div className="search-wrapper">
-      <form action={(formData) => setSearch(formData.get("podcast-search"))}>
-        <input
-          type="search"
-          name="podcast-search"
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <button type="submit">Search</button>
-      </form>
+      <div className="search-bar">
+        <form className="search-bar-form" action={(formData) => setSearch(formData.get("podcast-search"))}>
+          <input
+            type="search"
+            name="podcast-search"
+            placeholder="Search"
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <button type="submit">Search</button>
+        </form>
 
-      <select
-        name="category"
-        className="search-dropdown"
-        onChange={(e) => setCategory(e.target.value)}
-      >
-        <option value="">--Choose a category--</option>
-        {categories?.map((category) => (
-          <option value={category} key={category}>
-            {category}
-          </option>
-        ))}
-      </select>
-
+        <select
+          name="category"
+          className="search-dropdown"
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option value="">--Choose a category--</option>
+          {categories?.map((category) => (
+            <option value={category} key={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
       <div className="podcast-container">
         {isLoading ? (
           <p>loading...</p>
@@ -63,8 +65,8 @@ export default function Search() {
                 // TODO: fix url after other TODOs are done
                 href={`/podcast/${podcast.id}`}
               >
-                <p>{podcast.title}</p>
                 <img src={podcast.thumbnail} alt="" />
+                <p>{podcast.title}</p>
               </a>
             );
           })
