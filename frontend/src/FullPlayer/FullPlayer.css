@@ -83,3 +83,9 @@
   padding: 0.275rem;
   border-radius: 0.5rem;
 }
+
+.full-player__video {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

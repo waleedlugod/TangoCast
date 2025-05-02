@@ -113,7 +113,7 @@ export default function FullPlayer({
             </div>
           </div>
           <div className="full-player__video-transcript">
-            <div className="full-player__video visible" id="js-podcast-video">
+            <div className="full-player__video" id="js-podcast-video">
               {isVideoEnabled ? (
                 <ReactPlayer
                   ref={videoRef}

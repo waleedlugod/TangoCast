@@ -32,14 +32,28 @@ export default function AppRoutes() {
         <Route
           path="/podcast/:id"
           element={
-            <FullPlayer
-              setCurrentPodcast={setCurrentPodcast}
-              isPlayFullPlayer={isPlayFullPlayer}
-              setIsPlayFullPlayer={setIsPlayFullPlayer}
-              isVideoEnabled={isVideoEnabled}
-              isTranscriptEnabled={isTranscriptEnabled}
-              videoRef={videoRef}
-            />
+            <>
+              <FullPlayer
+                setCurrentPodcast={setCurrentPodcast}
+                isPlayFullPlayer={isPlayFullPlayer}
+                setIsPlayFullPlayer={setIsPlayFullPlayer}
+                isVideoEnabled={isVideoEnabled}
+                isTranscriptEnabled={isTranscriptEnabled}
+                videoRef={videoRef}
+              />
+              {currentPodcast ? (
+                <Player
+                  podcast={currentPodcast}
+                  setIsVideoEnabled={setIsVideoEnabled}
+                  setIsTranscriptEnabled={setIsTranscriptEnabled}
+                  isPlayFullPlayer={isPlayFullPlayer}
+                  setIsPlayFullPlayer={setIsPlayFullPlayer}
+                  videoRef={videoRef}
+                />
+              ) : (
+                <></>
+              )}
+            </>
           }
         />
         <Route path="/search" element={<Search />} />
@@ -50,18 +64,6 @@ export default function AppRoutes() {
           <Route path="upload" element={<ContentForm isUpload={true} />} />
         </Route>
       </Routes>
-      {currentPodcast ? (
-        <Player
-          podcast={currentPodcast}
-          setIsVideoEnabled={setIsVideoEnabled}
-          setIsTranscriptEnabled={setIsTranscriptEnabled}
-          isPlayFullPlayer={isPlayFullPlayer}
-          setIsPlayFullPlayer={setIsPlayFullPlayer}
-          videoRef={videoRef}
-        />
-      ) : (
-        <></>
-      )}
     </AuthProvider>
   );
 }
