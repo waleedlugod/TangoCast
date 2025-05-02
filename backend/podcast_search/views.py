@@ -26,4 +26,6 @@ class PodcastViewSet(viewsets.ModelViewSet):
 
     @action(detail=False)
     def get_categories(self, request):
-        return Response(Podcast.objects.all().values_list("category", flat=True))
+        return Response(
+            Podcast.objects.all().values_list("category", flat=True).distinct()
+        )
