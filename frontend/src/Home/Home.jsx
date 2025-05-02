@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import PlaceholderIcon from "../assets/NavBar/PlaceholderIcon.png";
+import "./Home.css";
 
 /**
  * A component that holds the current page the user is on in the website.
@@ -70,18 +71,17 @@ export default function Home() {
     <section className="container">
       <section className="left-nav">
         <div className="left-nav__top">
-          {user && (
-            <img
-              className="left-nav__icon"
-              src={
-                user?.user.profile_photo
-                  ? `http://localhost:8000${user?.user.profile_photo}`
-                  : PlaceholderIcon
-              }
-              alt="User Icon"
-            />
-          )}
+          <img
+            className="left-nav__icon"
+            src={
+              user?.user.profile_photo
+                ? `http://localhost:8000${user?.user.profile_photo}`
+                : PlaceholderIcon
+            }
+            alt="User Icon"
+          />
         </div>
+        <p>@{user?.user.username}</p>
         <form
           ref={uploadPfpRef}
           onSubmit={(e) => {
@@ -92,33 +92,46 @@ export default function Home() {
           <div className="form-info__field">
             <label htmlFor="profile_photo">Change Profile Photo</label>
             <input id="profile_photo" type="file" name="profile_photo" />
-            <button type="submit">Upload</button>
+            <button type="submit" className="pfp-submit">
+              Save
+            </button>
           </div>
         </form>
         <div className="left-nav__bot"></div>
       </section>
-      <section>
+      <section className="right-nav">
         {!authTokens ? (
           <p>Login first to access content.</p>
         ) : isLoadingRecentPodcasts || isLoadingSharedPodcasts ? (
           <p>Loading content...</p>
         ) : (
           <>
-            <h1>Recently uploaded podcasts by creators you follow</h1>
+            <h1 className="podcast-header">
+              Recently uploaded podcasts by creators you follow
+            </h1>
             <div className="podcast-container">
-              {recentPodcasts.map((podcast) => (
+              {recentPodcasts?.map((podcast) => (
                 <a
                   key={podcast.id}
                   href={`/podcast/${podcast.id}`}
                   className="podcast"
                 >
-                  <img src={podcast.thumbnail} alt="" />
+                  <img
+                    src={`http://localhost:8000${podcast.thumbnail}`}
+                    alt=""
+                  />
+                  <p className="podcast-title">{podcast.title}</p>
+                  <p className="podcast-creator">
+                    {podcast.creator.creator_id.username}
+                  </p>
                 </a>
               ))}
             </div>
-            <h1>Podcasts shared by those you follow</h1>
+            <h1 className="podcast-header">
+              Podcasts shared by those you follow
+            </h1>
             <div className="podcast-container">
-              {sharedPodcasts.map((podcast) => (
+              {sharedPodcasts?.map((podcast) => (
                 <a
                   key={podcast.id}
                   href={`/podcast/${podcast.id}`}
